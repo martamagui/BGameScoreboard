@@ -19,9 +19,9 @@ class GameListViewModel @Inject constructor(
 
     private var _boardGames: MutableStateFlow<List<BoardGame>> = MutableStateFlow(
         listOf(
-            BoardGame(0, "Hola"),
-            BoardGame(1, "Holaa"),
-            BoardGame(2, "Hoaala"),
+            BoardGame(0, "Hola", null),
+            BoardGame(1, "Holaa", null),
+            BoardGame(2, "Hoaala", null),
         )
     )
     val boardGames: StateFlow<List<BoardGame>> get() = _boardGames

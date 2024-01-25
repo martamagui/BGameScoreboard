@@ -1,5 +1,6 @@
 package com.mmag.bgamescoreboard.data.repository
 
+import android.graphics.Bitmap
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
 import com.mmag.bgamescoreboard.data.db.model.BoardGame
 import kotlinx.coroutines.flow.Flow
@@ -17,8 +18,8 @@ class LocalBoardGameRepositoryRoomImpl @Inject constructor(
         database.boardGameDao().getBoardGameById(id)
     }
 
-    override suspend fun addGame(name: String, picture: ByteArray) {
-        val boardGame = BoardGame(0, name)
+    override suspend fun addGame(name: String, picture: Bitmap) {
+        val boardGame = BoardGame(0, name, null)
         //TODO añadir la foto
         database.boardGameDao().addGame(boardGame)
     }
