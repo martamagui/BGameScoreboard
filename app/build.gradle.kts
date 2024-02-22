@@ -73,6 +73,12 @@ dependencies {
     ksp(Libs.Room.roomCompiler)
     implementation(Libs.Room.roomKtx)
 
+    //For rememberLauncherForActivityResult()
+    implementation("androidx.activity:activity-compose:1.6.1")
+
+    //For PickVisualMedia contract
+    implementation("androidx.activity:activity-ktx:1.6.1")
+
     testImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.testExtJunit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import com.mmag.bgamescoreboard.ui.navigation.BGSNavGraph
 import com.mmag.bgamescoreboard.ui.screen.game_list.GameListScreen
 import com.mmag.bgamescoreboard.ui.theme.BGameScoreboardTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GameListScreen(navHostController = NavHostController(this))
+                    BGSNavGraph()
                 }
             }
         }
