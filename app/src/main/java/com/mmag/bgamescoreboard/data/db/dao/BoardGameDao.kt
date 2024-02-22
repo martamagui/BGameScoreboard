@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordRelation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +15,7 @@ interface BoardGameDao {
     fun getBoardGameList(): Flow<List<BoardGame>>
 
     @Query("SELECT * FROM BoardGame WHERE id = :id ")
-    fun getBoardGameById(id: Int): Flow<List<BoardGame>>
+    fun getBoardGameById(id: Int): Flow<BoardGameWithGameRecordRelation>
 
     @Insert
     suspend fun addGame(boardGame: BoardGame)
