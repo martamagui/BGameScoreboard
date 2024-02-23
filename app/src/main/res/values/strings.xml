@@ -8,4 +8,6 @@
     <string name="new_game_camera_icon_description">Tomar una fotografía</string>
     <string name="new_game_camera_title">Toma una foto del juego</string>
     <string name="new_game_game_name_label">Nombre del juego</string>
+    <string name="new_game_action_button">Guardar juego</string>
+    <string name="new_game_no_photo_error">No fue posible guardar la imagen.</string>
 </resources>

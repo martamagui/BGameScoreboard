@@ -19,7 +19,7 @@ class LocalBoardGameRepositoryRoomImpl @Inject constructor(
     }
 
     override suspend fun addGame(name: String, picture: Bitmap) {
-        val boardGame = BoardGame(0, name, null)
+        val boardGame = BoardGame(0, name, picture)
         //TODO añadir la foto
         database.boardGameDao().addGame(boardGame)
     }
