@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,6 +40,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.ui.common.BGSToolbar
+import com.mmag.bgamescoreboard.ui.model.UiStatus
 
 @Composable
 fun NewGameScreen(
@@ -63,54 +66,60 @@ fun NewGameScreen(
             navController.popBackStack()
         }
     }) { padding ->
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
+        Box(Modifier.padding(padding)) {
+            if (uiState.status == UiStatus.LOADING) {
+                LinearProgressIndicator()
+            }
+            if (uiState.status == UiStatus.SUCCESS) {
+                navController.popBackStack()
+            }
+            BoxWithConstraints(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
             ) {
-                NewGamePhotoSelector(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp),
-                    onClickAction = {
-                        launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    },
-                    selectedImage = selectedImage
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                OutlinedTextField(
-                    value = gameName,
-                    onValueChange = { gameName = it },
-                    label = { Text(text = stringResource(id = R.string.new_game_game_name_label)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
                 Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = uiState.status.toString() )
-                    Button(
-                        onClick = {
-                            val imageStream =
-                                context.contentResolver.openInputStream(selectedImage!!)
-                            viewModel.saveGame(imageStream, gameName)
+                    NewGamePhotoSelector(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp),
+                        onClickAction = {
+                            launcher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
                         },
-                        enabled = (!gameName.isNullOrEmpty() && selectedImage != null),
+                        selectedImage = selectedImage
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                    OutlinedTextField(
+                        value = gameName,
+                        onValueChange = { gameName = it },
+                        label = { Text(text = stringResource(id = R.string.new_game_game_name_label)) },
                         modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.new_game_action_button),
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    }
-                    Spacer(Modifier.height(32.dp))
-                }
+                    )
 
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        Button(
+                            onClick = {
+                                val imageStream =
+                                    context.contentResolver.openInputStream(selectedImage!!)
+                                viewModel.saveGame(imageStream, gameName)
+                            },
+                            enabled = (!gameName.isNullOrEmpty() && selectedImage != null),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.new_game_action_button),
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                        Spacer(Modifier.height(32.dp))
+                    }
+
+                }
             }
         }
     }

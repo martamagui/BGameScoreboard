@@ -9,13 +9,11 @@ import java.io.ByteArrayOutputStream
 class ImageTypeConverters {
     @TypeConverter
     fun fromBitmap(bitmap: Bitmap?): ByteArray? {
-        Log.w("ImageTypeConverters", "bitmap!= null  =  ${bitmap!= null}")
         if (bitmap == null) {
             return null
         }
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        Log.w("ImageTypeConverters", "2")
         return outputStream.toByteArray()
     }
 

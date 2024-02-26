@@ -14,7 +14,7 @@ interface BoardGameDao {
     @Query("SELECT * FROM BoardGame")
     fun getBoardGameList(): Flow<List<BoardGame>>
 
-    @Query("SELECT * FROM BoardGame WHERE id = :id ")
+    @Query("SELECT * FROM BoardGame WHERE id = :id")
     fun getBoardGameById(id: Int): Flow<BoardGameWithGameRecordRelation>
 
     @Insert

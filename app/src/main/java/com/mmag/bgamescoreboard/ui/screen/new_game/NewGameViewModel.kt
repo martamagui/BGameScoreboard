@@ -31,9 +31,14 @@ class NewGameViewModel @Inject constructor(
             val bitmap = convertStreamToBitmap(inputStream)
             if (bitmap != null) {
                 boardGameRepository.addGame(name, bitmap)
-                _uiState.update { it.copy(status = UiStatus.SUCCESS, null) }
+                _uiState.update { it.copy(status = UiStatus.SUCCESS, errorMessage = null) }
             } else {
-                _uiState.update { NewGameUiState(status = UiStatus.ERROR, R.string.new_game_no_photo_error) }
+                _uiState.update {
+                    NewGameUiState(
+                        status = UiStatus.ERROR,
+                        R.string.new_game_no_photo_error
+                    )
+                }
             }
         }
     }
@@ -56,12 +61,22 @@ class NewGameViewModel @Inject constructor(
                     return compressedImage
                 }
             } else {
-                _uiState.update { NewGameUiState(status = UiStatus.ERROR, R.string.new_game_no_photo_error) }
+                _uiState.update {
+                    NewGameUiState(
+                        status = UiStatus.ERROR,
+                        R.string.new_game_no_photo_error
+                    )
+                }
                 return null
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            _uiState.update { NewGameUiState(status = UiStatus.ERROR, R.string.new_game_no_photo_error) }
+            _uiState.update {
+                NewGameUiState(
+                    status = UiStatus.ERROR,
+                    R.string.new_game_no_photo_error
+                )
+            }
             return null
         }
     }

@@ -10,4 +10,6 @@
     <string name="new_game_game_name_label">Nombre del juego</string>
     <string name="new_game_action_button">Guardar juego</string>
     <string name="new_game_no_photo_error">No fue posible guardar la imagen.</string>
+    <string name="game_list_no_games_found_title">Todavía no hay ningún juego añadido.</string>
+    <string name="game_list_searching_games_title">Buscando tus jueguitos...</string>
 </resources>
