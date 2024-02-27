@@ -1,7 +1,7 @@
 package com.mmag.bgamescoreboard.ui.screen.game_list
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,6 +26,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -37,9 +39,9 @@ import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.db.model.BoardGame
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
+import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun GameListScreen(
     viewModel: GameListViewModel = hiltViewModel(),
@@ -47,7 +49,9 @@ fun GameListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Scaffold(floatingActionButton = { NewGameFAB(navHostController) }) { paddingValues ->
+    Scaffold(
+        floatingActionButton = { NewGameFAB(navHostController) }
+    ) { paddingValues ->
         if (uiState.status == UiStatus.LOADING) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             Text(
@@ -136,7 +140,17 @@ fun ItemBoardGame(
                 modifier = Modifier
                     .fillMaxWidth()
             )
-            Text(text = boardGame.name, Modifier.padding(8.dp))
+            Box(
+                modifier = Modifier
+                    .background(vertGradShadow)
+                    .fillMaxSize()
+                    .alpha(0.2f)
+            )
+            Text(
+                text = boardGame.name,
+                color = Color.White,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }

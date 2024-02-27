@@ -68,7 +68,7 @@ fun NewGameScreen(
     }) { padding ->
         Box(Modifier.padding(padding)) {
             if (uiState.status == UiStatus.LOADING) {
-                LinearProgressIndicator()
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
             if (uiState.status == UiStatus.SUCCESS) {
                 navController.popBackStack()

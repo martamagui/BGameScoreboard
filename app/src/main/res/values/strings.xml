@@ -10,6 +10,20 @@
     <string name="new_game_game_name_label">Nombre del juego</string>
     <string name="new_game_action_button">Guardar juego</string>
     <string name="new_game_no_photo_error">No fue posible guardar la imagen.</string>
+
     <string name="game_list_no_games_found_title">Todavía no hay ningún juego añadido.</string>
     <string name="game_list_searching_games_title">Buscando tus jueguitos...</string>
+    <string name="game_detail_no_game_found_title">Juego no encontrado</string>
+    <string name="game_detail_add_icon_description">Añadir nuevo registro</string>
+    <string name="game_detail_no_records_added">Aun no hay ningún registro...\nVa siendo hora de jugar una, ¿no?</string>
+
+    <string name="game_detail_delete_game_dialog_title">Eliminar juego</string>
+    <string name="game_detail_delete_game_dialog_description">Estás a punto de elimnar este juego. ¿Estás seguro de ello?</string>
+    <string name="game_detail_delete_game_dialog_positive_button">Eliminar juego y registros</string>
+
+    <string name="players_screen_title">¿Quién está jugando hoy?</string>
+    <string name="players_screen_no_players_found">No se ha encontrado a ningún jugador aún.</string>
+    <string name="players_screen_button_text">Guardar jugadores</string>
+    <string name="players_screen_hint">Añade a un nuevo jugador</string>
+
 </resources>

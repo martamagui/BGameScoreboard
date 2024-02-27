@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mmag.bgamescoreboard.ui.screen.game_detail.GameDetailScreen
 import com.mmag.bgamescoreboard.ui.screen.game_list.GameListScreen
+import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersScreen
 import com.mmag.bgamescoreboard.ui.screen.new_game.NewGameScreen
 
 @Composable
@@ -31,10 +32,22 @@ fun BGSNavGraph(
             arguments = listOf(
                 navArgument(BGSConfigRoutes.Args.gameId) { type = NavType.IntType }
             )) {
-            GameDetailScreen(gameId = it.arguments?.getInt(BGSConfigRoutes.Args.gameId) ?: 0)
+            val game = it.arguments?.getInt(BGSConfigRoutes.Args.gameId) ?: 0
+            GameDetailScreen(game, navController)
         }
 
-        composable(route = BGSConfigRoutes.NEW_SCORE,
+        composable(route = BGSConfigRoutes.NEW_SCORE_STEP_1,
+            arguments = listOf(
+                navArgument(BGSConfigRoutes.Args.gameId) { type = NavType.IntType }
+            )
+        ) {
+            val game = it.arguments?.getInt(BGSConfigRoutes.Args.gameId) ?: 0
+            if (it.arguments != null) {
+                GameRecordPlayersScreen(game, navController)
+            }
+        }
+
+        composable(route = BGSConfigRoutes.NEW_SCORE_STEP_2,
             arguments = listOf(
                 navArgument(BGSConfigRoutes.Args.gameId) { type = NavType.StringType }
             )

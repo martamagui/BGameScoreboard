@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Player(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String?
+    val name: String
 )
