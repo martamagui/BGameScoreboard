@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class GameRecord(
+data class GameScoreRecord(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val date: String,

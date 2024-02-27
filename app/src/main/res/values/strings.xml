@@ -26,4 +26,10 @@
     <string name="players_screen_button_text">Guardar jugadores</string>
     <string name="players_screen_hint">Añade a un nuevo jugador</string>
 
+    <string name="categories_screen_title">Categorías de puntuación</string>
+    <string name="categories_screen_description">Se puntuará en:</string>
+    <string name="categories_screen_category_hint">Añadir una nueva categoría</string>
+
+    <string name="not_game_found_error">Juego no encontrado.</string>
+
 </resources>

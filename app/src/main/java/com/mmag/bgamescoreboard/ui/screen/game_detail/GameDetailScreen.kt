@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mmag.bgamescoreboard.R
-import com.mmag.bgamescoreboard.data.db.model.GameRecord
+import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordRelation
 import com.mmag.bgamescoreboard.ui.common.BGSScrollableToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
@@ -211,7 +211,7 @@ fun GameDetailContent(modifier: Modifier, data: BoardGameWithGameRecordRelation)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameDetailRecordItem(item: GameRecord, modifier: Modifier, goToDetailAction: () -> Unit) {
+fun GameDetailRecordItem(item: GameScoreRecord, modifier: Modifier, goToDetailAction: () -> Unit) {
     Card(modifier = modifier.padding(8.dp), onClick = { goToDetailAction() }) {
         Text(text = item.date, modifier = Modifier.fillMaxWidth())
     }

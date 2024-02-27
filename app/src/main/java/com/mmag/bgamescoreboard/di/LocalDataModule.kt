@@ -18,7 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object LocalDataModule {
 
-
     @Singleton
     @Provides
     fun providesLocalScoreRepository(database: BGSDatabase): LocalScoreRepository {
