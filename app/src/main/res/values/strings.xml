@@ -28,8 +28,14 @@
 
     <string name="categories_screen_title">Categorías de puntuación</string>
     <string name="categories_screen_description">Se puntuará en:</string>
-    <string name="categories_screen_category_hint">Añadir una nueva categoría</string>
+    <string name="categories_screen_category_hint">Añadir una nueva categoría (si faltara)</string>
+    <string name="categories_screen_action_button">Empezar a puntuar</string>
+
 
     <string name="not_game_found_error">Juego no encontrado.</string>
+    <string name="players_screen_person_icon_description">Icono de persona</string>
+    <string name="record_score_screen_title">Categoría: %1$s</string>
+    <string name="error_category_not_found">Categoría no encontrada.</string>
+    <string name="record_score_category_not_found_button">Regresar a la Home</string>
 
 </resources>

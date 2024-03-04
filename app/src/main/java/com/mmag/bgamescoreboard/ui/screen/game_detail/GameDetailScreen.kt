@@ -74,7 +74,7 @@ fun GameDetailScreen(
         )
     }, floatingActionButton = {
         FloatingActionButton(onClick = {
-            navController.navigate(BGSConfigRoutes.Builder.newScoreStep1(gameId.toString()))
+            navController.navigate(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
         }) {
             Icon(
                 Icons.Filled.Add,

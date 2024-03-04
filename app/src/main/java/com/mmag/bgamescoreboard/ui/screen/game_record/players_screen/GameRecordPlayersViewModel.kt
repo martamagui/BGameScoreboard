@@ -1,11 +1,19 @@
 package com.mmag.bgamescoreboard.ui.screen.game_record.players_screen
 
-import androidx.compose.ui.text.toLowerCase
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.db.model.Player
+import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.repository.LocalPlayerRepository
+import com.mmag.bgamescoreboard.data.repository.LocalScoreRepository
+import com.mmag.bgamescoreboard.ui.model.CategoryWithRecords
+import com.mmag.bgamescoreboard.ui.model.PlayerWithScore
 import com.mmag.bgamescoreboard.ui.model.UiStatus
+import com.mmag.bgamescoreboard.ui.model.toPlayerWithScore
+import com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen.CategoriesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,36 +27,46 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameRecordPlayersViewModel @Inject constructor(
-    private val playerRepository: LocalPlayerRepository
+    private val playerRepository: LocalPlayerRepository,
+    private val scoreRepository: LocalScoreRepository
 ) : ViewModel() {
+    var gameId: Int? = null
 
-
-    private var _uiState: MutableStateFlow<GameRecordsPlayersUiState> =
+    private var _playersUIState: MutableStateFlow<GameRecordsPlayersUiState> =
         MutableStateFlow(GameRecordsPlayersUiState())
-    val uiState: StateFlow<GameRecordsPlayersUiState> get() = _uiState
+    val playersUIState: StateFlow<GameRecordsPlayersUiState> get() = _playersUIState
+
+    private var _categoriesUiState: MutableStateFlow<CategoriesUiState> =
+        MutableStateFlow(CategoriesUiState())
+    val categoriesUiState: MutableStateFlow<CategoriesUiState> get() = _categoriesUiState
+
+    private var _scoreData: MutableList<CategoryWithRecords> = mutableListOf()
+    val scoreData: List<CategoryWithRecords> get() = _scoreData
 
     init {
         playerRepository.getSavedPlayers().onEach { players ->
-            _uiState.update {
+            _playersUIState.update {
                 GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = players)
             }
         }.launchIn(viewModelScope)
     }
 
+    //region --- BD ---
     fun addDeletePlayer(player: Player) {
-        val newList = uiState.value.selectedPlayers.toMutableList()
-        if (uiState.value.selectedPlayers.contains(player)) {
+        val newList = playersUIState.value.selectedPlayers.toMutableList()
+        if (playersUIState.value.selectedPlayers.contains(player)) {
             newList.remove(player)
         } else {
             newList.add(player)
         }
-        _uiState.update {
+        _playersUIState.update {
             it.copy(selectedPlayers = newList)
         }
+        Log.d("players", newList.toString())
     }
 
     fun savePlayer(userName: String) {
-        val filteredList = uiState.value.data.filter { player ->
+        val filteredList = playersUIState.value.data.filter { player ->
             player.name.lowercase(Locale.ROOT) == userName.lowercase(Locale.ROOT)
         }
         if (filteredList.isEmpty()) {
@@ -57,4 +75,66 @@ class GameRecordPlayersViewModel @Inject constructor(
             }
         }
     }
+
+    fun getCategories(gameId: Int) {
+        this.gameId = gameId
+        viewModelScope.launch(Dispatchers.IO) {
+            scoreRepository.getCategoriesByGameId(gameId).collect { data ->
+                if (data != null) {
+                    addCategories(data)
+                }
+                _categoriesUiState.update {
+                    CategoriesUiState(status = UiStatus.SUCCESS, data = data)
+                }
+            }
+        }
+    }
+
+    fun saveCategory(categoryText: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (gameId != null) {
+                scoreRepository.addCategory(gameId!!, categoryText)
+            } else {
+                _categoriesUiState.update {
+                    it.copy(
+                        status = UiStatus.ERROR,
+                        errorMessage = R.string.not_game_found_error
+                    )
+                }
+            }
+        }
+    }
+    //endregion --- BD ---
+
+    //region --- Other ---
+
+    fun addCategories(categories: List<ScoringCategory>) {
+        categories.forEach { category ->
+            _scoreData.add(
+                CategoryWithRecords(
+                    category.id,
+                    playersUIState.value.data.toPlayerWithScore()
+                )
+            )
+        }
+        _scoreData.toSet()
+        Log.d("Result", "Convertido: $_scoreData")
+    }
+
+    fun updatePlayerScoreValue(category: Int, data: PlayerWithScore) {
+        val currentCategoryData = _scoreData.firstOrNull { it.categoryId == category }
+        val currentCategoryDataIndex = _scoreData.indexOf(currentCategoryData)
+        val userScore =
+            currentCategoryData?.savedScores?.firstOrNull { it.playerId == data.playerId }
+        if (userScore != null) {
+            val index = currentCategoryData.savedScores.indexOf(userScore)
+            currentCategoryData.savedScores[index] = data
+        }
+        if (currentCategoryData != null) {
+            _scoreData[currentCategoryDataIndex] =currentCategoryData
+        }
+    }
+
+    //endregion --- Other ---
+
 }
