@@ -72,12 +72,14 @@ fun GameRecordPlayersScreen(
                         placeholder = { Text(text = stringResource(id = R.string.players_screen_hint)) },
                         onValueChange = {
                             if (it.contains("\n")) {
-                                viewModel.savePlayer(userName)
-                                userName = ""
+                                val text = it.trim().replace("\r", "").replace("\n", "")
+                                if (!text.isNullOrEmpty()) {
+                                    viewModel.savePlayer(userName)
+                                    userName = ""
+                                }
                             } else {
                                 userName = it
                             }
-
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -87,11 +89,9 @@ fun GameRecordPlayersScreen(
             Column(Modifier.fillMaxWidth()) {
                 Button(onClick = {
                     if (uiState.selectedPlayers.isNotEmpty()) {
+                        viewModel.getCategories(gameId)
                         navController.navigate(
-                            BGSConfigRoutes.Builder.newScoreStep(
-                                gameId.toString(),
-                                2
-                            )
+                            BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 2)
                         )
                     } else {
                         //TODO mostrar un mensaje de que seleccione personas

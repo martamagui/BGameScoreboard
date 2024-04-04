@@ -43,11 +43,12 @@ import java.util.Locale
 
 @Composable
 fun CategoriesScreen(
-    gameId : Int,
+    gameId: Int,
     navController: NavController,
     viewModel: GameRecordPlayersViewModel = hiltViewModel<GameRecordPlayersViewModel>(
         navController.getBackStackEntry(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
-    ).apply { getCategories(gameId) }) {
+    ).apply { getCategories(gameId) }
+) {
     val uiState by viewModel.categoriesUiState.collectAsState()
     var categoryText by rememberSaveable { mutableStateOf("") }
     Scaffold(
@@ -77,8 +78,10 @@ fun CategoriesScreen(
                         var text = it
                         if (text.contains("\n") && text.isNotEmpty()) {
                             text = it.trim().replace("\r", "").replace("\n", "")
-                            viewModel.saveCategory(text)
-                            categoryText = ""
+                            if (!text.isNullOrEmpty()) {
+                                viewModel.saveCategory(text)
+                                categoryText = ""
+                            }
                         } else {
                             categoryText = text.capitalize(Locale.ROOT)
                         }

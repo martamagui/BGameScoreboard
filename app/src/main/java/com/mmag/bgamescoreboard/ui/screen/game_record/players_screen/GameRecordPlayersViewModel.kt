@@ -22,6 +22,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 
@@ -62,7 +66,6 @@ class GameRecordPlayersViewModel @Inject constructor(
         _playersUIState.update {
             it.copy(selectedPlayers = newList)
         }
-        Log.d("players", newList.toString())
     }
 
     fun savePlayer(userName: String) {
@@ -78,16 +81,14 @@ class GameRecordPlayersViewModel @Inject constructor(
 
     fun getCategories(gameId: Int) {
         this.gameId = gameId
-        viewModelScope.launch(Dispatchers.IO) {
-            scoreRepository.getCategoriesByGameId(gameId).collect { data ->
-                if (data != null) {
-                    addCategories(data)
-                }
-                _categoriesUiState.update {
-                    CategoriesUiState(status = UiStatus.SUCCESS, data = data)
-                }
+        scoreRepository.getCategoriesByGameId(gameId).onEach { data ->
+            if (data != null) {
+                addCategories(data)
             }
-        }
+            _categoriesUiState.update {
+                CategoriesUiState(status = UiStatus.SUCCESS, data = data)
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun saveCategory(categoryText: String) {
@@ -104,9 +105,38 @@ class GameRecordPlayersViewModel @Inject constructor(
             }
         }
     }
+
+    fun saveScoreRecord() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val savedRecord: Int? = gameId?.let {
+                scoreRepository.addRecord("Partida a ${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}", it).toInt()
+            }
+            Log.d("Registro guardado", "ID: $savedRecord")
+
+            if (savedRecord != null) {
+                scoreData.forEach { category ->
+                    category.savedScores.forEach { score ->
+                        scoreRepository.addScore(
+                            score.playerId,
+                            savedRecord,
+                            category.categoryId,
+                            score.score
+                        )
+                    }
+                }
+            }
+
+        }
+
+    }
     //endregion --- BD ---
 
     //region --- Other ---
+    private fun getCurrentDate(): String {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        return formatter.format(time)
+    }
 
     fun addCategories(categories: List<ScoringCategory>) {
         categories.forEach { category ->
@@ -118,7 +148,6 @@ class GameRecordPlayersViewModel @Inject constructor(
             )
         }
         _scoreData.toSet()
-        Log.d("Result", "Convertido: $_scoreData")
     }
 
     fun updatePlayerScoreValue(category: Int, data: PlayerWithScore) {
@@ -131,9 +160,10 @@ class GameRecordPlayersViewModel @Inject constructor(
             currentCategoryData.savedScores[index] = data
         }
         if (currentCategoryData != null) {
-            _scoreData[currentCategoryDataIndex] =currentCategoryData
+            _scoreData[currentCategoryDataIndex] = currentCategoryData
         }
     }
+
 
     //endregion --- Other ---
 

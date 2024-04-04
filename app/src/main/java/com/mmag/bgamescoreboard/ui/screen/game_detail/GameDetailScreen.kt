@@ -65,23 +65,24 @@ fun GameDetailScreen(
     var shouldShowDialog by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold(topBar = {
-        BGSScrollableToolbar(
-            title = state.data?.game?.name ?: "...",
-            backAction = { navController.popBackStack() },
-            action = { shouldShowDialog = true },
-            scrollBehavior = scrollBehavior
-        )
-    }, floatingActionButton = {
-        FloatingActionButton(onClick = {
-            navController.navigate(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
-        }) {
-            Icon(
-                Icons.Filled.Add,
-                contentDescription = stringResource(id = R.string.game_detail_add_icon_description)
+    Scaffold(
+        topBar = {
+            BGSScrollableToolbar(
+                title = state.data?.game?.name ?: "...",
+                backAction = { navController.popBackStack() },
+                action = { shouldShowDialog = true },
+                scrollBehavior = scrollBehavior
             )
-        }
-    }) { paddingValues ->
+        }, floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
+            }) {
+                Icon(
+                    Icons.Filled.Add,
+                    contentDescription = stringResource(id = R.string.game_detail_add_icon_description)
+                )
+            }
+        }) { paddingValues ->
         Column() {
             if (shouldShowDialog) {
                 GameDetailDeleteBGameDialog(
@@ -92,7 +93,7 @@ fun GameDetailScreen(
             when (state.status) {
                 UiStatus.SUCCESS -> {
                     if (state.data != null) {
-                        GameDetailContent(Modifier.fillMaxWidth(), state.data!!)
+                        GameDetailContent(Modifier.fillMaxWidth(), state.data!!, navController)
                     }
                 }
 
@@ -149,7 +150,11 @@ fun GameDetailDeleteBGameDialog(
 }
 
 @Composable
-fun GameDetailContent(modifier: Modifier, data: BoardGameWithGameRecordRelation) {
+fun GameDetailContent(
+    modifier: Modifier,
+    data: BoardGameWithGameRecordRelation,
+    navController: NavController
+) {
     Column(modifier = modifier) {
         ElevatedCard(
             modifier = Modifier.fillMaxWidth(),
@@ -189,10 +194,9 @@ fun GameDetailContent(modifier: Modifier, data: BoardGameWithGameRecordRelation)
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(data.records) { item ->
-                    GameDetailRecordItem(item, Modifier.fillMaxWidth(), {
-                        //TODO ir al detalle
-                    })
-
+                    GameDetailRecordItem(item, Modifier.fillMaxWidth()) {
+                        navController.navigate(BGSConfigRoutes.Builder.scoreRecordDetail(item.id))
+                    }
                 }
             }
         } else {
@@ -205,7 +209,6 @@ fun GameDetailContent(modifier: Modifier, data: BoardGameWithGameRecordRelation)
                     .padding(24.dp)
             )
         }
-
     }
 }
 
@@ -213,7 +216,11 @@ fun GameDetailContent(modifier: Modifier, data: BoardGameWithGameRecordRelation)
 @Composable
 fun GameDetailRecordItem(item: GameScoreRecord, modifier: Modifier, goToDetailAction: () -> Unit) {
     Card(modifier = modifier.padding(8.dp), onClick = { goToDetailAction() }) {
-        Text(text = item.date, modifier = Modifier.fillMaxWidth())
+        Text(
+            text = item.date, modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
     }
 }
 

@@ -5,12 +5,12 @@ import androidx.room.Relation
 import com.mmag.bgamescoreboard.data.db.model.Player
 import com.mmag.bgamescoreboard.data.db.model.Score
 
-
-data class PlayerWithRecords(
-    @Embedded val player: Player,
+data class ScoreWithPlayer(
+    @Embedded
+    val scoreList: Score,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "player_id"
+        parentColumn = "player_id",
+        entityColumn = "id"
     )
-    val scoreList: List<Score>
+    val player: Player
 )

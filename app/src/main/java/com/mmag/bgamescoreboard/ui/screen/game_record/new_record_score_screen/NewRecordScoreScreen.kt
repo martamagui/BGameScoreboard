@@ -1,6 +1,5 @@
-package com.mmag.bgamescoreboard.ui.screen.game_record.record_score_screen
+package com.mmag.bgamescoreboard.ui.screen.game_record.new_record_score_screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +32,7 @@ import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersViewModel
 
 @Composable
-fun RecordScoreScreen(
+fun NewRecordScoreScreen(
     navController: NavController,
     gameId: Int,
     viewModel: GameRecordPlayersViewModel = hiltViewModel(
@@ -45,13 +44,13 @@ fun RecordScoreScreen(
     val playerState by viewModel.playersUIState.collectAsState()
     val pattern = remember { Regex("^\\d+\$") }
 
-    if (categoryState.data.size > step) {
+    if (categoryState.data.size > (step - 3)) {
         Scaffold(
             topBar = {
                 BGSToolbar(
                     title = stringResource(
                         id = R.string.record_score_screen_title,
-                        categoryState.data[step].categoryName
+                        categoryState.data[step - 3].categoryName
                     )
                 ) { navController.popBackStack() }
             }
@@ -62,7 +61,6 @@ fun RecordScoreScreen(
                     .padding(bottom = 32.dp, start = 32.dp, end = 32.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Log.d("Select", "${playerState.selectedPlayers}")
                 if (!playerState.selectedPlayers.isNullOrEmpty()) {
                     LazyColumn() {
                         items(playerState.selectedPlayers) { player ->
@@ -73,32 +71,66 @@ fun RecordScoreScreen(
                                     text = player.name,
                                     modifier = Modifier.padding(bottom = 12.dp)
                                 )
-                                TextField(value = score,
+                                TextField(
+                                    value = score,
                                     maxLines = 1,
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     onValueChange = {
                                         if (it.isEmpty() || it.matches(pattern)) {
                                             score = it
                                             viewModel.updatePlayerScoreValue(
-                                                categoryState.data[step].id,
+                                                categoryState.data[step - 3].id,
                                                 PlayerWithScore(player.id, it.toInt())
                                             )
                                         }
-                                    })
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 16.dp)
+                                )
                             }
                         }
                     }
                 }
 
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp)
+                ) {
+                    Button(onClick = {
+                        navController.navigate(
+                            BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), step + 1)
+                        )
+                    }, modifier = Modifier.fillMaxWidth()) {
+                        Text(text = stringResource(id = R.string.record_score_screen_save_scores_button))
+                    }
+                }
 
             }
         }
     } else {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Text(text = stringResource(id = R.string.error_category_not_found))
-            Button(onClick = { }) {
-                Text(text = stringResource(id = R.string.record_score_category_not_found_button))
-
+        Scaffold(
+            topBar = {
+                BGSToolbar(
+                    title = stringResource(
+                        id = R.string.error_category_not_found
+                    )
+                ) { }
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding( 32.dp)
+                    .fillMaxSize()
+            ) {
+                Button(onClick = {
+                    viewModel.saveScoreRecord()
+                    navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
+                }, modifier = Modifier.fillMaxWidth()) {
+                    Text(text = stringResource(id = R.string.record_score_category_not_found_button))
+                }
             }
         }
     }

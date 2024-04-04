@@ -71,7 +71,7 @@ fun NewGameScreen(
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
             if (uiState.status == UiStatus.SUCCESS) {
-                navController.popBackStack()
+                navController.navigateUp()
             }
             BoxWithConstraints(
                 modifier = Modifier

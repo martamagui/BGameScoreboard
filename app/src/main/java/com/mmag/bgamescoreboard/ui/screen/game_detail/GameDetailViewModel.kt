@@ -16,17 +16,17 @@ import javax.inject.Inject
 class GameDetailViewModel @Inject constructor(
     private val boardGameRepository: LocalBoardGameRepository
 ) : ViewModel() {
-    private var _uiSatate: MutableStateFlow<GameDetailUIState> =
+    private var _uiState: MutableStateFlow<GameDetailUIState> =
         MutableStateFlow(GameDetailUIState())
-    val uiState: MutableStateFlow<GameDetailUIState> get() = _uiSatate
+    val uiState: MutableStateFlow<GameDetailUIState> get() = _uiState
 
     fun getGameDetails(id:Int){
-        _uiSatate.update { it.copy(status = UiStatus.LOADING) }
+        _uiState.update { it.copy(status = UiStatus.LOADING) }
         viewModelScope.launch(Dispatchers.IO) {
             boardGameRepository.getBoardGames(id).collect{response->
                 Log.d("RESPONSE", "$response")
                 if(response!= null){
-                    _uiSatate.update { GameDetailUIState(status = UiStatus.SUCCESS, data = response) }
+                    _uiState.update { GameDetailUIState(status = UiStatus.SUCCESS, data = response) }
                 }
             }
         }

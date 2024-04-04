@@ -37,5 +37,6 @@
     <string name="record_score_screen_title">Categoría: %1$s</string>
     <string name="error_category_not_found">Categoría no encontrada.</string>
     <string name="record_score_category_not_found_button">Regresar a la Home</string>
+    <string name="record_score_screen_save_scores_button">Guardar puntuación</string>
 
 </resources>
