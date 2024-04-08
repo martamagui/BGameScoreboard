@@ -49,7 +49,7 @@ fun BGSNavGraph(
             )
         ) {
             val record = it.arguments?.getInt(BGSConfigRoutes.Args.scoreRecordId) ?: 0
-            RecordDetailScreen(recordId = record)
+            RecordDetailScreen(recordId = record, navController)
         }
 
         composable(route = BGSConfigRoutes.NEW_SCORE_STEP,

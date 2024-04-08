@@ -9,7 +9,7 @@ data class RecordWithCategories(
     @Embedded val record: GameScoreRecord,
     @Relation(
         parentColumn = "board_game_id",
-        entityColumn = "player_id"
+        entityColumn = "game_id"
     )
-    val scoreList: List<ScoringCategory>
+    val scoringCategories: List<ScoringCategory>
 )

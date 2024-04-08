@@ -16,12 +16,15 @@ import com.mmag.bgamescoreboard.ui.model.toPlayerWithScore
 import com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen.CategoriesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -106,24 +109,37 @@ class GameRecordPlayersViewModel @Inject constructor(
         }
     }
 
-    fun saveScoreRecord() {
+    fun saveScoreRecord(onDoneCallback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val savedRecord: Int? = gameId?.let {
-                scoreRepository.addRecord("Partida a ${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}", it).toInt()
+                scoreRepository.addRecord(
+                    "Partida a ${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}",
+                    it
+                ).toInt()
             }
             Log.d("Registro guardado", "ID: $savedRecord")
 
             if (savedRecord != null) {
                 scoreData.forEach { category ->
                     category.savedScores.forEach { score ->
-                        scoreRepository.addScore(
-                            score.playerId,
+                        val isNotSaved = scoreRepository.getScoreByRecordIdAndPlayer(
                             savedRecord,
-                            category.categoryId,
-                            score.score
-                        )
+                            score.playerId
+                        ) == null
+                        if (isNotSaved) {
+                            scoreRepository.addScore(
+                                score.playerId,
+                                savedRecord,
+                                category.categoryId,
+                                score.score
+                            )
+                        }
                     }
                 }
+            }
+
+            withContext(Dispatchers.Main) {
+                onDoneCallback()
             }
 
         }
@@ -138,15 +154,19 @@ class GameRecordPlayersViewModel @Inject constructor(
         return formatter.format(time)
     }
 
-    fun addCategories(categories: List<ScoringCategory>) {
-        categories.forEach { category ->
-            _scoreData.add(
-                CategoryWithRecords(
-                    category.id,
-                    playersUIState.value.data.toPlayerWithScore()
-                )
-            )
-        }
+    private suspend fun addCategories(categories: List<ScoringCategory>) {
+        runBlocking {
+            async {
+                categories.forEach { category ->
+                    _scoreData.add(
+                        CategoryWithRecords(
+                            category.id,
+                            playersUIState.value.data.toPlayerWithScore()
+                        )
+                    )
+                }
+            }
+        }.await()
         _scoreData.toSet()
     }
 

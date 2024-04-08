@@ -7,7 +7,7 @@ import com.mmag.bgamescoreboard.data.db.model.Score
 
 data class ScoreWithPlayer(
     @Embedded
-    val scoreList: Score,
+    val score: Score,
     @Relation(
         parentColumn = "player_id",
         entityColumn = "id"

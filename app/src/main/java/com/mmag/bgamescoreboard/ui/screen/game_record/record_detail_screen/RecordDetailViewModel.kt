@@ -2,6 +2,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
 import com.mmag.bgamescoreboard.data.repository.LocalScoreRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,13 +10,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordDetailViewModel @Inject constructor(
-    private val scoreRepository: LocalScoreRepository
+    private val scoreRepository: LocalScoreRepository,
+    private val gameRepository: LocalBoardGameRepository
 ) : ViewModel() {
+
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
         RecordDetailUiState()
     )
@@ -23,11 +27,32 @@ class RecordDetailViewModel @Inject constructor(
 
     fun getCategories(recordId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            scoreRepository.getCategoriesByGameRecord(recordId).collectLatest { data ->
-                _uiState.emit(
-                    RecordDetailUiState(categoriesList = data, status = UiStatus.SUCCESS)
-                )
+            scoreRepository.getRecordWithCategories(recordId).collectLatest { data ->
+                if (data != null) {
+                    data.scoringCategories.forEach { category ->
+                        getRecordByCategory(recordId, category.id)
+                    }
+                    _uiState.update {
+                        it.copy(
+                            recordWithCategories = data,
+                            status = UiStatus.SUCCESS
+                        )
+                    }
+                }
             }
         }
     }
+
+    private fun getRecordByCategory(recordId: Int, categoryId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            scoreRepository.getScoresWithPlayersByCategory(recordId, categoryId)
+                .collectLatest { data ->
+                    val currentScores = uiState.value.scoresByPlayersAndCategories
+                    currentScores[categoryId] = data
+                    _uiState.update { it.copy(scoresByPlayersAndCategories = currentScores) }
+                }
+        }
+    }
+
+
 }

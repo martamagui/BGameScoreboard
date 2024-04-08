@@ -23,7 +23,7 @@ class GameDetailViewModel @Inject constructor(
     fun getGameDetails(id:Int){
         _uiState.update { it.copy(status = UiStatus.LOADING) }
         viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.getBoardGames(id).collect{response->
+            boardGameRepository.getBoardGame(id).collect{ response->
                 Log.d("RESPONSE", "$response")
                 if(response!= null){
                     _uiState.update { GameDetailUIState(status = UiStatus.SUCCESS, data = response) }

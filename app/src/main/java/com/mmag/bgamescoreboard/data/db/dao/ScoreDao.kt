@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.Score
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import kotlinx.coroutines.flow.Flow
 
@@ -18,15 +19,21 @@ interface ScoreDao {
     @Query("SELECT * FROM ScoringCategory WHERE game_id=:gameId")
     fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>>
 
-
-    /*@Query("SELECT * FROM GameScoreRecord WHERE board_game_id=:gameId")
-    fun getCategoriesByGameReport(gameId: Int): Flow<List<ScoringCategory>>*/
+    @Query("SELECT * FROM ScoringCategory WHERE game_id=:gameId")
+    fun getCategoriesByGameReport(gameId: Int): Flow<List<ScoringCategory>>
 
     @Insert
     suspend fun addScore(score: Score)
 
     @Insert
     suspend fun addRecord(gameScoreRecord: GameScoreRecord): Long
+
+    @Transaction
+    @Query("SELECT *  FROM GameScoreRecord WHERE id=:recordId")
+    fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories>
+
+    @Query("SELECT *  FROM Score WHERE game_record_id=:recordId AND player_id=:playerId")
+    fun getScoreByRecordIdAndPlayer(recordId: Int, playerId:Int): Score?
 
     @Transaction
     @Query("SELECT * FROM Score WHERE game_record_id=:recordId AND category_id=:categoryId")

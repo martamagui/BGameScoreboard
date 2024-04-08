@@ -13,7 +13,7 @@ class LocalBoardGameRepositoryRoomImpl @Inject constructor(
 ) : LocalBoardGameRepository {
     override fun getAllBoardGames(): Flow<List<BoardGame>?> = database.boardGameDao().getBoardGameList()
 
-    override fun getBoardGames(id: Int): Flow<BoardGameWithGameRecordRelation> = database.boardGameDao().getBoardGameById(id)
+    override fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation> = database.boardGameDao().getBoardGameById(id)
 
     override suspend fun addGame(name: String, picture: Bitmap) {
         val boardGame = BoardGame(0, name, picture)

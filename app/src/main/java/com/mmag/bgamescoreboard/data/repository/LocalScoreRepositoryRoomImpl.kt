@@ -4,6 +4,7 @@ import com.mmag.bgamescoreboard.data.db.BGSDatabase
 import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.Score
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import javax.inject.Inject
 class LocalScoreRepositoryRoomImpl @Inject constructor(
     val database: BGSDatabase
 ) : LocalScoreRepository {
+
     override suspend fun addCategory(gameId: Int, categoryName: String) {
         val category = ScoringCategory(0, gameId, categoryName)
         database.scoreDao().addCategory(category)
@@ -19,9 +21,19 @@ class LocalScoreRepositoryRoomImpl @Inject constructor(
     override fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>> =
         database.scoreDao().getCategoriesByGameId(gameId)
 
-    override fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>>  = database.scoreDao().getCategoriesByGameId(gameRecordId)
+    override fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories> =
+        database.scoreDao().getRecordWithCategories(recordId)
 
-    override fun getScoresWithPlayers(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>> =
+    override fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>> =
+        database.scoreDao().getCategoriesByGameId(gameRecordId)
+
+    override suspend fun getScoreByRecordIdAndPlayer(recordId: Int, playerId: Int): Score? =
+        database.scoreDao().getScoreByRecordIdAndPlayer(recordId, playerId)
+
+    override fun getScoresWithPlayersByCategory(
+        recordId: Int,
+        categoryId: Int
+    ): Flow<List<ScoreWithPlayer>> =
         database.scoreDao().getScoresWithPlayers(recordId, categoryId)
 
     override suspend fun addScore(

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class ScoringCategory(
+data class  ScoringCategory(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo("game_id")

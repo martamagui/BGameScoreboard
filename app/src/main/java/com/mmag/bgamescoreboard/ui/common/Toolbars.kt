@@ -25,7 +25,7 @@ fun BGSToolbar(title: String, backAction: () -> Unit) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(),
         title = {
-            Text(title)
+            Text(title, maxLines = 1,overflow = TextOverflow.Ellipsis)
         },
         navigationIcon = {
             IconButton(onClick = { backAction() }) {

@@ -38,5 +38,6 @@
     <string name="error_category_not_found">Categoría no encontrada.</string>
     <string name="record_score_category_not_found_button">Regresar a la Home</string>
     <string name="record_score_screen_save_scores_button">Guardar puntuación</string>
+    <string name="record_detail_not_found_message">Parece que las puntuaciones que estás buscando no están aquí.</string>
 
 </resources>

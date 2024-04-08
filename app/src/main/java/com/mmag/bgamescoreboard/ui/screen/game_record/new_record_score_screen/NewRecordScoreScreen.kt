@@ -64,7 +64,6 @@ fun NewRecordScoreScreen(
                 if (!playerState.selectedPlayers.isNullOrEmpty()) {
                     LazyColumn() {
                         items(playerState.selectedPlayers) { player ->
-                            //TODO añadir el campo de texto de los puntos
                             var score by rememberSaveable { mutableStateOf("") }
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Text(
@@ -78,10 +77,14 @@ fun NewRecordScoreScreen(
                                     onValueChange = {
                                         if (it.isEmpty() || it.matches(pattern)) {
                                             score = it
-                                            viewModel.updatePlayerScoreValue(
-                                                categoryState.data[step - 3].id,
-                                                PlayerWithScore(player.id, it.toInt())
-                                            )
+                                            try {
+                                                viewModel.updatePlayerScoreValue(
+                                                    categoryState.data[step - 3].id,
+                                                    PlayerWithScore(player.id, score.toInt())
+                                                )
+                                            } catch (e: NumberFormatException) {
+                                                e.printStackTrace()
+                                            }
                                         }
                                     },
                                     modifier = Modifier
@@ -106,7 +109,6 @@ fun NewRecordScoreScreen(
                         Text(text = stringResource(id = R.string.record_score_screen_save_scores_button))
                     }
                 }
-
             }
         }
     } else {
@@ -122,12 +124,13 @@ fun NewRecordScoreScreen(
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding( 32.dp)
+                    .padding(32.dp)
                     .fillMaxSize()
             ) {
                 Button(onClick = {
-                    viewModel.saveScoreRecord()
-                    navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
+                    viewModel.saveScoreRecord() {
+                        navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
+                    }
                 }, modifier = Modifier.fillMaxWidth()) {
                     Text(text = stringResource(id = R.string.record_score_category_not_found_button))
                 }
