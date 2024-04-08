@@ -20,7 +20,11 @@ interface LocalScoreRepository {
 
     fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>>
 
-    suspend fun getScoreByRecordIdAndPlayer(recordId: Int, playerId: Int): Score?
+    suspend fun getScoreByRecordIdAndPlayer(
+        recordId: Int,
+        playerId: Int,
+        categoryId: Int
+    ): Score?
 
     fun getScoresWithPlayersByCategory(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>>
 

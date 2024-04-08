@@ -32,8 +32,8 @@ interface ScoreDao {
     @Query("SELECT *  FROM GameScoreRecord WHERE id=:recordId")
     fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories>
 
-    @Query("SELECT *  FROM Score WHERE game_record_id=:recordId AND player_id=:playerId")
-    fun getScoreByRecordIdAndPlayer(recordId: Int, playerId:Int): Score?
+    @Query("SELECT *  FROM Score WHERE game_record_id=:recordId AND player_id=:playerId AND category_id=:categoryId")
+    fun getScoreByRecordIdCategoryAndPlayer(recordId: Int, playerId:Int, categoryId: Int): Score?
 
     @Transaction
     @Query("SELECT * FROM Score WHERE game_record_id=:recordId AND category_id=:categoryId")

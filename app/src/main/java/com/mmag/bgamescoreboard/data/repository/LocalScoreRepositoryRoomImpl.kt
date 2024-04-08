@@ -27,8 +27,12 @@ class LocalScoreRepositoryRoomImpl @Inject constructor(
     override fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>> =
         database.scoreDao().getCategoriesByGameId(gameRecordId)
 
-    override suspend fun getScoreByRecordIdAndPlayer(recordId: Int, playerId: Int): Score? =
-        database.scoreDao().getScoreByRecordIdAndPlayer(recordId, playerId)
+    override suspend fun getScoreByRecordIdAndPlayer(
+        recordId: Int,
+        playerId: Int,
+        categoryId: Int
+    ): Score? =
+        database.scoreDao().getScoreByRecordIdCategoryAndPlayer(recordId, playerId, categoryId)
 
     override fun getScoresWithPlayersByCategory(
         recordId: Int,

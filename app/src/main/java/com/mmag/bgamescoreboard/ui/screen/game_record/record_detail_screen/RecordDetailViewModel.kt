@@ -32,14 +32,32 @@ class RecordDetailViewModel @Inject constructor(
                     data.scoringCategories.forEach { category ->
                         getRecordByCategory(recordId, category.id)
                     }
-                    _uiState.update {
-                        it.copy(
-                            recordWithCategories = data,
-                            status = UiStatus.SUCCESS
-                        )
+                    if (uiState.value.selectedCategoryIndex == null &&
+                        !data.scoringCategories.isNullOrEmpty()
+                    ) {
+                        _uiState.update {
+                            it.copy(
+                                recordWithCategories = data,
+                                status = UiStatus.SUCCESS,
+                                selectedCategoryIndex = 0
+                            )
+                        }
+                    } else {
+                        _uiState.update {
+                            it.copy(
+                                recordWithCategories = data,
+                                status = UiStatus.SUCCESS
+                            )
+                        }
                     }
                 }
             }
+        }
+    }
+
+    fun updateCategorySelected(selectedCategory: Int) {
+        _uiState.update {
+            it.copy(selectedCategoryIndex = selectedCategory)
         }
     }
 

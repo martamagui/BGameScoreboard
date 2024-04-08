@@ -124,7 +124,8 @@ class GameRecordPlayersViewModel @Inject constructor(
                     category.savedScores.forEach { score ->
                         val isNotSaved = scoreRepository.getScoreByRecordIdAndPlayer(
                             savedRecord,
-                            score.playerId
+                            score.playerId,
+                            category.categoryId
                         ) == null
                         if (isNotSaved) {
                             scoreRepository.addScore(

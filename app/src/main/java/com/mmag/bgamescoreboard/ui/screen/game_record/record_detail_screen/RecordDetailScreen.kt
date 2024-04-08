@@ -1,20 +1,14 @@
 package com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen
 
-import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -77,7 +71,10 @@ fun RecordDetailScreen(
                                     state.recordWithCategories?.scoringCategories?.forEachIndexed { index, text ->
                                         Tab(
                                             selected = tabIndex == index,
-                                            onClick = { tabIndex = index }
+                                            onClick = {
+                                                tabIndex = index
+                                                viewModel.updateCategorySelected(index)
+                                            }
                                         ) {
                                             Text(
                                                 text = text.categoryName,
@@ -88,10 +85,7 @@ fun RecordDetailScreen(
                                 }
                             }
 
-                            if (state.scoresByPlayersAndCategories[state.recordWithCategories?.scoringCategories?.get(
-                                    tabIndex
-                                )?.id] != null
-                            ) {
+                            if (state.selectedCategoryIndex != null) {
                                 val scores = state.scoresByPlayersAndCategories[
                                     state.recordWithCategories?.scoringCategories?.get(tabIndex)?.id
                                 ] ?: listOf()
