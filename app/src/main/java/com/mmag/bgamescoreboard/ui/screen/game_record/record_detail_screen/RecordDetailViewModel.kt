@@ -16,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordDetailViewModel @Inject constructor(
-    private val scoreRepository: LocalScoreRepository,
-    private val gameRepository: LocalBoardGameRepository
+    private val scoreRepository: LocalScoreRepository
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
@@ -71,6 +70,4 @@ class RecordDetailViewModel @Inject constructor(
                 }
         }
     }
-
-
 }

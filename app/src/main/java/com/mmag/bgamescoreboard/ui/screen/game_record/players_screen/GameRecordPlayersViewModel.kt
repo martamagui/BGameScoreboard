@@ -139,9 +139,7 @@ class GameRecordPlayersViewModel @Inject constructor(
                 }
             }
 
-            withContext(Dispatchers.Main) {
-                onDoneCallback()
-            }
+            withContext(Dispatchers.Main) { onDoneCallback() }
 
         }
 

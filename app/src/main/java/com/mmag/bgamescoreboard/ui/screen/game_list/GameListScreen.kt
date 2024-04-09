@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -31,17 +32,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
+import java.time.format.TextStyle
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameListScreen(
     viewModel: GameListViewModel = hiltViewModel(),
@@ -50,60 +56,83 @@ fun GameListScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        floatingActionButton = { NewGameFAB(navHostController) }
+        floatingActionButton = { NewGameFAB(navHostController) },
+        topBar = { CenterAlignedTopAppBar(title = { Text(
+            text = stringResource(id = R.string.game_list_screen_title),
+            fontSize = 32.sp,
+            modifier = Modifier.padding(top =32.dp, bottom = 16.dp)
+        )}) }
     ) { paddingValues ->
         if (uiState.status == UiStatus.LOADING) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            GameListProgressScreen(Modifier.fillMaxWidth())
+        } else {
+            GameListContent(
+                paddingValues,
+                uiState,
+                modifier = Modifier.fillMaxSize(),
+                naviGateToGameDetail = { game ->
+                    val route = BGSConfigRoutes.Builder.gameDetail("${game.id}")
+                    navHostController.navigate(route)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun GameListContent(
+    paddingValues: PaddingValues,
+    uiState: GameListUiState,
+    modifier: Modifier,
+    naviGateToGameDetail: (boardGame: BoardGame) -> Unit
+) {
+    BoxWithConstraints(
+        modifier = modifier
+            .padding(paddingValues)
+            .padding(12.dp)
+    ) {
+        if (uiState.status == UiStatus.SUCCESS) {
+            LazyColumn(
+                contentPadding = PaddingValues(4.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (uiState.data != null) {
+                    items(uiState.data!!) { boardGame ->
+                        ItemBoardGame(
+                            {
+                                naviGateToGameDetail(boardGame)
+                            },
+                            boardGame,
+                            Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth()
+                                .heightIn(min = 120.dp)
+                        )
+                    }
+                }
+            }
+        } else {
             Text(
-                text = stringResource(id = R.string.game_list_searching_games_title),
+                text = stringResource(id = R.string.game_list_no_games_found_title),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(24.dp),
                 textAlign = TextAlign.Center
             )
-        } else {
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(12.dp)
-            ) {
-                if (uiState.status == UiStatus.SUCCESS) {
-                    LazyColumn(
-                        contentPadding = PaddingValues(4.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        if (uiState.data != null) {
-                            items(uiState.data!!) { boardGame ->
-                                ItemBoardGame(
-                                    {
-                                        val route =
-                                            BGSConfigRoutes.Builder.gameDetail("${boardGame.id}")
-                                        navHostController.navigate(route)
-                                    },
-                                    boardGame,
-                                    Modifier
-                                        .padding(vertical = 8.dp)
-                                        .fillMaxWidth()
-                                        .heightIn(min = 120.dp)
-                                )
-                            }
-                        }
-                    }
-                } else {
-                    Text(
-                        text = stringResource(id = R.string.game_list_no_games_found_title),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-            }
         }
-
     }
+}
+
+@Composable
+private fun GameListProgressScreen(modifier: Modifier) {
+    LinearProgressIndicator(modifier = modifier)
+    Text(
+        text = stringResource(id = R.string.game_list_searching_games_title),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp),
+        textAlign = TextAlign.Center
+    )
 }
 
 @Composable

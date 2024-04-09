@@ -156,38 +156,9 @@ fun GameDetailContent(
     navController: NavController
 ) {
     Column(modifier = modifier) {
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    bitmap = data.game.image.asImageBitmap(),
-                    contentDescription = data.game.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                Box(
-                    modifier = Modifier
-                        .background(vertGradShadow)
-                        .fillMaxSize()
-                        .alpha(0.3f)
-                )
-                Text(
-                    text = data.game.name.capitalize(),
-                    Modifier.padding(8.dp),
-                    style = Typography.headlineLarge,
-                    color = Color.White
-                )
-            }
 
-        }
+        GameDetailContentHeader(data, Modifier.fillMaxWidth())
+
         if (!data.records.isNullOrEmpty()) {
             LazyColumn(
                 contentPadding = PaddingValues(4.dp),
@@ -209,6 +180,45 @@ fun GameDetailContent(
                     .padding(24.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun GameDetailContentHeader(
+    data: BoardGameWithGameRecordRelation,
+    modifier: Modifier
+) {
+    ElevatedCard(
+        modifier = modifier,
+        shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                bitmap = data.game.image.asImageBitmap(),
+                contentDescription = data.game.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Box(
+                modifier = Modifier
+                    .background(vertGradShadow)
+                    .fillMaxSize()
+                    .alpha(0.3f)
+            )
+            Text(
+                text = data.game.name.capitalize(),
+                Modifier.padding(8.dp),
+                style = Typography.headlineLarge,
+                color = Color.White
+            )
+        }
+
     }
 }
 

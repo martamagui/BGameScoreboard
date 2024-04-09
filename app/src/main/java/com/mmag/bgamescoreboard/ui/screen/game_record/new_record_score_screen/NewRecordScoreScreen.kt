@@ -38,7 +38,7 @@ fun NewRecordScoreScreen(
     viewModel: GameRecordPlayersViewModel = hiltViewModel(
         navController.getBackStackEntry(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
     ),
-    step: Int,
+    step: Int
 ) {
     val categoryState by viewModel.categoriesUiState.collectAsState()
     val playerState by viewModel.playersUIState.collectAsState()
@@ -102,9 +102,15 @@ fun NewRecordScoreScreen(
                         .padding(bottom = 32.dp)
                 ) {
                     Button(onClick = {
-                        navController.navigate(
-                            BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), step + 1)
-                        )
+                        if (categoryState.data.size <= step - 2) {
+                            viewModel.saveScoreRecord() {
+                                navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
+                            }
+                        } else {
+                            navController.navigate(
+                                BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), step + 1)
+                            )
+                        }
                     }, modifier = Modifier.fillMaxWidth()) {
                         Text(text = stringResource(id = R.string.record_score_screen_save_scores_button))
                     }

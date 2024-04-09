@@ -19,9 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mmag.bgamescoreboard.R
@@ -93,11 +95,18 @@ fun RecordDetailScreen(
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(horizontal = 24.dp, vertical = 4.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween
+                                            .padding(horizontal = 24.dp, vertical = 12.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.Bottom
                                     ) {
-                                        Text(text = score.player.name)
-                                        Text(text = score.score.scoreAmount.toString())
+                                        Text(
+                                            text = score.player.name,
+                                            fontSize = 20.sp
+                                        )
+                                        Text(
+                                            text = score.score.scoreAmount.toString(),
+                                            fontSize = 20.sp
+                                        )
                                     }
                                 }
                             }

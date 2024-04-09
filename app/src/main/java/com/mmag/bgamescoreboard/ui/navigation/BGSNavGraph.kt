@@ -71,7 +71,5 @@ fun BGSNavGraph(
                 else -> NewRecordScoreScreen(navController, game, step = step)
             }
         }
-
-
     }
 }
