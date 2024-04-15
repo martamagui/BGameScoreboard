@@ -26,8 +26,7 @@ import com.mmag.bgamescoreboard.R
 fun SwipeableItemBackground(dismissState: DismissState) {
     val color = when (dismissState.dismissDirection) {
         DismissDirection.StartToEnd -> MaterialTheme.colorScheme.errorContainer
-        DismissDirection.EndToStart -> MaterialTheme.colorScheme.surfaceTint
-        null -> Color.Transparent
+        else -> Color.Transparent
     }
     val direction = dismissState.dismissDirection
 

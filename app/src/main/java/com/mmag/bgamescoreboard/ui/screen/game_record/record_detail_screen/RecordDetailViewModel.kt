@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordDetailViewModel @Inject constructor(
-    private val scoringRepository: ScoringRepository
+    private val scoringRepository: ScoringRepository,
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
@@ -50,6 +50,12 @@ class RecordDetailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun deleteRecord(recordId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            scoringRepository.deleteRecordAndScores(recordId)
         }
     }
 

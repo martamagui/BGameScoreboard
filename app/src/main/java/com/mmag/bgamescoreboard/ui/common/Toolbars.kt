@@ -3,6 +3,7 @@ package com.mmag.bgamescoreboard.ui.common
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -58,8 +59,8 @@ fun BGSScrollableToolbar(
         actions = {
             IconButton(onClick = { action() }) {
                 Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(id = R.string.game_detail_add_icon_description)
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = stringResource(id = R.string.delete_icon_description)
                 )
             }
         },

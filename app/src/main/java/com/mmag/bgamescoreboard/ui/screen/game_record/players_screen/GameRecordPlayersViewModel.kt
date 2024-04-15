@@ -110,7 +110,7 @@ class GameRecordPlayersViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val savedRecord: Int? = gameId?.let {
                 scoringRepository.addRecord(
-                    "Partida a ${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}",
+                    "${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}",
                     it
                 ).toInt()
             }

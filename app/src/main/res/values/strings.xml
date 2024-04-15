@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">BGame Scoreboard</string>
+    <string name="app_name">BG Record</string>
     <string name="toolbar_back_action_description">Retroceder</string>
+    <string name="toolbar_delete_action_description">Borrar</string>
 
     <string name="game_list_add">Añadir nuevo juego</string>
 
@@ -20,6 +21,12 @@
     <string name="game_detail_delete_game_dialog_title">Eliminar juego</string>
     <string name="game_detail_delete_game_dialog_description">Estás a punto de elimnar este juego y todos los registros de puntuación relacionados con él. ¿Estás seguro de ello?</string>
     <string name="game_detail_delete_game_dialog_positive_button">Eliminar juego y registros</string>
+    <string name="game_detail_delete_game_dialog_negative_button">Cancelar</string>
+
+    <string name="game_detail_delete_record_dialog_title">Eliminar registro</string>
+    <string name="game_detail_delete_record_dialog_description">Estás a punto de elimnar este registro de puntuación. ¿Estás seguro de ello?</string>
+    <string name="game_detail_delete_record_dialog_positive_button">Eliminar registro</string>
+    <string name="game_detail_delete_record_dialog_negative_button">Cancelar</string>
 
     <string name="players_screen_title">¿Quién está jugando hoy?</string>
     <string name="players_screen_no_players_found">No se ha encontrado a ningún jugador aún.</string>

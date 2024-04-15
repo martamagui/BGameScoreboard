@@ -42,7 +42,6 @@ class BoardGameRepositoryRoomImpl @Inject constructor(
 
 
     /*region --- OTHERS ---*/
-
     private fun logData(msg: String) {
         Log.d("BoardGameRep", msg)
     }

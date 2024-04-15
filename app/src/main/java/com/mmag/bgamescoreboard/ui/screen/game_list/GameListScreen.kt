@@ -10,12 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissState
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -185,54 +190,73 @@ fun ItemBoardGame(
     modifier: Modifier
 ) {
     var show by remember { mutableStateOf(true) }
-    val dismissState = rememberDismissState(
+    var resetState by remember { mutableStateOf(false) }
+
+    var dismissState = rememberDismissState(
         confirmValueChange = {
             if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
                 show = false
+                !resetState
                 true
             } else false
-        }, positionalThreshold = { 150.dp.toPx() }
+        }, positionalThreshold = { 100.dp.toPx() }
     )
 
     ElevatedCard(
         modifier = modifier,
         onClick = { onClickAction() }
     ) {
-        SwipeToDismiss(state = dismissState, background = {
-            SwipeableItemBackground(dismissState = dismissState)
-        }, dismissContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(shape = RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    bitmap = boardGame.image.asImageBitmap(),
-                    contentDescription = boardGame.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
+        SwipeToDismiss(
+            state = dismissState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { state ->
+                    if (!state.hasFocus) {
+                        resetState = true
+                    }
+                },
+            background = { SwipeableItemBackground(dismissState = dismissState) },
+            directions = setOf(DismissDirection.StartToEnd),
+            dismissContent = {
                 Box(
                     modifier = Modifier
-                        .background(vertGradShadow)
-                        .fillMaxSize()
-                        .alpha(0.2f)
-                )
-                Text(
-                    text = boardGame.name,
-                    color = Color.White,
-                    modifier = Modifier.padding(8.dp)
-                )
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .clip(shape = RoundedCornerShape(12.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        bitmap = boardGame.image.asImageBitmap(),
+                        contentDescription = boardGame.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Box(
+                        modifier = Modifier
+                            .background(vertGradShadow)
+                            .fillMaxSize()
+                            .alpha(0.2f)
+                    )
+                    Text(
+                        text = boardGame.name,
+                        color = Color.White,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
-        }, modifier = Modifier.fillMaxWidth())
+        )
     }
+
     LaunchedEffect(show) {
-        delay(500)
+        delay(200)
         if (!show) {
             onDismiss()
+            dismissState.reset()
+        }
+        if (resetState) {
+            dismissState.reset()
+            resetState = false
         }
     }
 }

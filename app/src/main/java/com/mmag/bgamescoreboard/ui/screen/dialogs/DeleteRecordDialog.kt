@@ -9,16 +9,16 @@ import com.mmag.bgamescoreboard.R
 import java.io.StringReader
 
 @Composable
-fun DeleteBGameDialog(
+fun DeleteRecordDialog(
     onDismiss: () -> Unit,
     onPositiveAction: () -> Unit
 ) {
     AlertDialog(
         title = {
-            Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_title))
+            Text(text = stringResource(id = R.string.game_detail_delete_record_dialog_title))
         },
         text = {
-            Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_description))
+            Text(text = stringResource(id = R.string.game_detail_delete_record_dialog_description))
         },
         onDismissRequest = {
             onDismiss()
@@ -27,14 +27,14 @@ fun DeleteBGameDialog(
             TextButton(
                 onClick = { onPositiveAction() }
             ) {
-                Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_positive_button))
+                Text(text = stringResource(id = R.string.game_detail_delete_record_dialog_positive_button))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = { onDismiss() }
             ) {
-                Text(stringResource(id = R.string.game_detail_delete_game_dialog_negative_button))
+                Text(stringResource(id = R.string.game_detail_delete_record_dialog_negative_button))
             }
         }
     )

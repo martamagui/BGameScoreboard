@@ -1,5 +1,6 @@
 package com.mmag.bgamescoreboard.data.repository
 
+import android.util.Log
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
 import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.Score
@@ -40,6 +41,15 @@ class ScoringRepositoryRoomImpl @Inject constructor(
     ): Flow<List<ScoreWithPlayer>> =
         database.scoreDao().getScoresWithPlayers(recordId, categoryId)
 
+    override suspend fun deleteRecordAndScores(recordId: Int) {
+        val deletedRecords = database.recordDao().deleteRecordById(recordId)
+        val deletedScores = database.scoreDao().deleteScoresByRecords(recordId)
+        logData(
+            "deletedRecords: ${deletedRecords}\n" +
+                    "deletedScores: ${deletedScores}"
+        )
+    }
+
     override suspend fun addScore(
         playerId: Int,
         gameRecordId: Int,
@@ -55,6 +65,12 @@ class ScoringRepositoryRoomImpl @Inject constructor(
         return database.recordDao().addRecord(record)
     }
 
+
+    /*region --- OTHERS ---*/
+    private fun logData(msg: String) {
+        Log.d("ScoreRep", msg)
+    }
+    /*endregion --- OTHERS ---*/
 
 
 }

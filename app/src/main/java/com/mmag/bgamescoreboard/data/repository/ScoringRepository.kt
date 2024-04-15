@@ -27,5 +27,5 @@ interface ScoringRepository {
     ): Score?
 
     fun getScoresWithPlayersByCategory(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>>
-
+    suspend fun deleteRecordAndScores(recordId: Int)
 }

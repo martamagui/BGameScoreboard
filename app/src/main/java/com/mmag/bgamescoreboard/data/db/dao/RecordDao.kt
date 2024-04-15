@@ -16,6 +16,9 @@ interface RecordDao {
     @Query("DELETE FROM GameScoreRecord WHERE board_game_id=:gameId")
     fun deleteRecordsByGame(gameId: Int):Int
 
+    @Query("DELETE FROM GameScoreRecord WHERE id=:recordId")
+    fun deleteRecordById(recordId: Int):Int
+
     @Transaction
     @Query("SELECT *  FROM GameScoreRecord WHERE id=:recordId")
     fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories>
