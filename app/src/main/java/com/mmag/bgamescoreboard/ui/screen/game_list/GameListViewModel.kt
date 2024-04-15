@@ -1,15 +1,14 @@
 package com.mmag.bgamescoreboard.ui.screen.game_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
+import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameListViewModel @Inject constructor(
-    private val boardGameRepository: LocalBoardGameRepository
+    private val boardGameRepository: BoardGameRepository
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<GameListUiState> = MutableStateFlow(GameListUiState())
@@ -31,13 +30,19 @@ class GameListViewModel @Inject constructor(
 
     private fun getAllGames() {
         viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.getAllBoardGames().onEach { games ->
+            boardGameRepository.getAllBoardGames().collect{ games ->
                 if (games != null) {
                     _uiState.update { GameListUiState(status = UiStatus.SUCCESS, data = games) }
                 } else {
                     _uiState.update { GameListUiState(status = UiStatus.EMPTY_RESPONSE) }
                 }
-            }.launchIn(viewModelScope)
+            }
+        }
+    }
+
+    fun deleteGame(gameId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            boardGameRepository.deleteGame(gameId)
         }
     }
 }

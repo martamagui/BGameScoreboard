@@ -2,12 +2,10 @@ package com.mmag.bgamescoreboard.ui.screen.new_game
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.R
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
+import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewGameViewModel @Inject constructor(
-    private val boardGameRepository: LocalBoardGameRepository
+    private val boardGameRepository: BoardGameRepository
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<NewGameUiState> = MutableStateFlow(NewGameUiState())

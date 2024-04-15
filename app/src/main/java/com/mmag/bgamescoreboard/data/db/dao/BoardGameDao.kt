@@ -22,6 +22,7 @@ interface BoardGameDao {
     @Insert
     suspend fun addGame(boardGame: BoardGame)
 
-    @Delete
-    suspend fun deleteGame(boardGame: BoardGame)
+    @Transaction
+    @Query("DELETE FROM BoardGame WHERE id = :id")
+    fun deleteGame(id: Int): Int
 }

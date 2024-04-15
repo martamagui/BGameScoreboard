@@ -18,7 +18,7 @@
     <string name="game_detail_no_records_added">Aun no hay ningún registro...\nVa siendo hora de jugar una, ¿no?</string>
 
     <string name="game_detail_delete_game_dialog_title">Eliminar juego</string>
-    <string name="game_detail_delete_game_dialog_description">Estás a punto de elimnar este juego. ¿Estás seguro de ello?</string>
+    <string name="game_detail_delete_game_dialog_description">Estás a punto de elimnar este juego y todos los registros de puntuación relacionados con él. ¿Estás seguro de ello?</string>
     <string name="game_detail_delete_game_dialog_positive_button">Eliminar juego y registros</string>
 
     <string name="players_screen_title">¿Quién está jugando hoy?</string>
@@ -40,5 +40,6 @@
     <string name="record_score_screen_save_scores_button">Guardar puntuación</string>
     <string name="record_detail_not_found_message">Parece que las puntuaciones que estás buscando no están aquí.</string>
     <string name="game_list_screen_title">Tus juegos</string>
+    <string name="delete_icon_description">Delete</string>
 
 </resources>

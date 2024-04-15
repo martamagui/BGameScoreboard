@@ -1,14 +1,13 @@
 package com.mmag.bgamescoreboard.ui.screen.game_record.players_screen
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.db.model.Player
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.repository.LocalPlayerRepository
-import com.mmag.bgamescoreboard.data.repository.LocalScoreRepository
+import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.ui.model.CategoryWithRecords
 import com.mmag.bgamescoreboard.ui.model.PlayerWithScore
 import com.mmag.bgamescoreboard.ui.model.UiStatus
@@ -26,8 +25,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -35,7 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameRecordPlayersViewModel @Inject constructor(
     private val playerRepository: LocalPlayerRepository,
-    private val scoreRepository: LocalScoreRepository
+    private val scoringRepository: ScoringRepository
 ) : ViewModel() {
     var gameId: Int? = null
 
@@ -84,7 +81,7 @@ class GameRecordPlayersViewModel @Inject constructor(
 
     fun getCategories(gameId: Int) {
         this.gameId = gameId
-        scoreRepository.getCategoriesByGameId(gameId).onEach { data ->
+        scoringRepository.getCategoriesByGameId(gameId).onEach { data ->
             if (data != null) {
                 addCategories(data)
             }
@@ -97,7 +94,7 @@ class GameRecordPlayersViewModel @Inject constructor(
     fun saveCategory(categoryText: String) {
         viewModelScope.launch(Dispatchers.IO) {
             if (gameId != null) {
-                scoreRepository.addCategory(gameId!!, categoryText)
+                scoringRepository.addCategory(gameId!!, categoryText)
             } else {
                 _categoriesUiState.update {
                     it.copy(
@@ -112,7 +109,7 @@ class GameRecordPlayersViewModel @Inject constructor(
     fun saveScoreRecord(onDoneCallback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val savedRecord: Int? = gameId?.let {
-                scoreRepository.addRecord(
+                scoringRepository.addRecord(
                     "Partida a ${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}",
                     it
                 ).toInt()
@@ -122,13 +119,13 @@ class GameRecordPlayersViewModel @Inject constructor(
             if (savedRecord != null) {
                 scoreData.forEach { category ->
                     category.savedScores.forEach { score ->
-                        val isNotSaved = scoreRepository.getScoreByRecordIdAndPlayer(
+                        val isNotSaved = scoringRepository.getScoreByRecordIdAndPlayer(
                             savedRecord,
                             score.playerId,
                             category.categoryId
                         ) == null
                         if (isNotSaved) {
-                            scoreRepository.addScore(
+                            scoringRepository.addScore(
                                 score.playerId,
                                 savedRecord,
                                 category.categoryId,
@@ -160,7 +157,7 @@ class GameRecordPlayersViewModel @Inject constructor(
                     _scoreData.add(
                         CategoryWithRecords(
                             category.id,
-                            playersUIState.value.data.toPlayerWithScore()
+                            playersUIState.value.selectedPlayers.toPlayerWithScore()
                         )
                     )
                 }

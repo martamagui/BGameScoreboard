@@ -6,7 +6,7 @@ import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import kotlinx.coroutines.flow.Flow
 
-interface LocalScoreRepository {
+interface ScoringRepository {
 
     suspend fun addCategory(gameId: Int, categoryName: String)
 

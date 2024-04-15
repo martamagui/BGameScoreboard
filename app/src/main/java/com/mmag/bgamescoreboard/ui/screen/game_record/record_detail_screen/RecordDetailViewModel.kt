@@ -2,8 +2,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
-import com.mmag.bgamescoreboard.data.repository.LocalScoreRepository
+import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordDetailViewModel @Inject constructor(
-    private val scoreRepository: LocalScoreRepository
+    private val scoringRepository: ScoringRepository
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
@@ -26,7 +25,7 @@ class RecordDetailViewModel @Inject constructor(
 
     fun getCategories(recordId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            scoreRepository.getRecordWithCategories(recordId).collectLatest { data ->
+            scoringRepository.getRecordWithCategories(recordId).collectLatest { data ->
                 if (data != null) {
                     data.scoringCategories.forEach { category ->
                         getRecordByCategory(recordId, category.id)
@@ -62,7 +61,7 @@ class RecordDetailViewModel @Inject constructor(
 
     private fun getRecordByCategory(recordId: Int, categoryId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            scoreRepository.getScoresWithPlayersByCategory(recordId, categoryId)
+            scoringRepository.getScoresWithPlayersByCategory(recordId, categoryId)
                 .collectLatest { data ->
                     val currentScores = uiState.value.scoresByPlayersAndCategories
                     currentScores[categoryId] = data

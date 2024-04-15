@@ -1,12 +1,12 @@
 package com.mmag.bgamescoreboard.di
 
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepositoryRoomImpl
+import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
+import com.mmag.bgamescoreboard.data.repository.BoardGameRepositoryRoomImpl
 import com.mmag.bgamescoreboard.data.repository.LocalPlayerRepository
 import com.mmag.bgamescoreboard.data.repository.LocalPlayerRepositoryRoomImpl
-import com.mmag.bgamescoreboard.data.repository.LocalScoreRepository
-import com.mmag.bgamescoreboard.data.repository.LocalScoreRepositoryRoomImpl
+import com.mmag.bgamescoreboard.data.repository.ScoringRepository
+import com.mmag.bgamescoreboard.data.repository.ScoringRepositoryRoomImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +19,8 @@ object LocalDataRepositoryModule {
 
     @Singleton
     @Provides
-    fun providesLocalScoreRepository(database: BGSDatabase): LocalScoreRepository {
-        return LocalScoreRepositoryRoomImpl(database)
+    fun providesLocalScoreRepository(database: BGSDatabase): ScoringRepository {
+        return ScoringRepositoryRoomImpl(database)
     }
 
     @Singleton
@@ -31,7 +31,7 @@ object LocalDataRepositoryModule {
 
     @Singleton
     @Provides
-    fun providesLocalBoardGameRepository(database: BGSDatabase): LocalBoardGameRepository {
-        return LocalBoardGameRepositoryRoomImpl(database)
+    fun providesLocalBoardGameRepository(database: BGSDatabase): BoardGameRepository {
+        return BoardGameRepositoryRoomImpl(database)
     }
 }

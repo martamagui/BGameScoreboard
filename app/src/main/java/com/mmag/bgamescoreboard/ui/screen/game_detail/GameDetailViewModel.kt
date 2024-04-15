@@ -3,7 +3,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.repository.LocalBoardGameRepository
+import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameDetailViewModel @Inject constructor(
-    private val boardGameRepository: LocalBoardGameRepository
+    private val boardGameRepository: BoardGameRepository
 ) : ViewModel() {
     private var _uiState: MutableStateFlow<GameDetailUIState> =
         MutableStateFlow(GameDetailUIState())

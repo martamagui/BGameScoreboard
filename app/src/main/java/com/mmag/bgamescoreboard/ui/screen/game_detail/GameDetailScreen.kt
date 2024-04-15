@@ -49,6 +49,7 @@ import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordR
 import com.mmag.bgamescoreboard.ui.common.BGSScrollableToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
+import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteBGameDialog
 import com.mmag.bgamescoreboard.ui.theme.Typography
 import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
 
@@ -85,7 +86,7 @@ fun GameDetailScreen(
         }) { paddingValues ->
         Column() {
             if (shouldShowDialog) {
-                GameDetailDeleteBGameDialog(
+                DeleteBGameDialog(
                     onDismiss = { shouldShowDialog = false }) {
                     viewModel.deleteGame(gameId)
                 }
@@ -115,39 +116,6 @@ fun GameDetailScreen(
     }
 }
 
-@Composable
-fun GameDetailDeleteBGameDialog(
-    onDismiss: () -> Unit,
-    onPositiveAction: () -> Unit
-) {
-    AlertDialog(
-        title = {
-            Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_title))
-        },
-        text = {
-            Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_description))
-        },
-        onDismissRequest = {
-            onDismiss()
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onPositiveAction() }
-            ) {
-                Text(text = stringResource(id = R.string.game_detail_delete_game_dialog_positive_button))
-
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = { onDismiss() }
-            ) {
-                Text("Dismiss")
-            }
-        }
-    )
-
-}
 
 @Composable
 fun GameDetailContent(
