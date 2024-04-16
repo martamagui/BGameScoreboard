@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.mmag.bgamescoreboard.R
@@ -37,9 +39,13 @@ import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordP
 fun NewRecordScoreScreen(
     navController: NavController,
     gameId: Int,
-    viewModel: GameRecordPlayersViewModel = hiltViewModel(
-        navController.getBackStackEntry(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
-    ),
+    viewModel: GameRecordPlayersViewModel = if (
+        getViewModelReference(navController, gameId) != null
+    ) {
+        hiltViewModel(getViewModelReference(navController, gameId)!!)
+    } else {
+        hiltViewModel()
+    },
     step: Int
 ) {
     val categoryState by viewModel.categoriesUiState.collectAsState()
@@ -106,9 +112,11 @@ fun NewRecordScoreScreen(
                     Button(onClick = {
                         if (categoryState.data.size <= step - 2) {
                             viewModel.saveScoreRecord() {
-                               // navController.popBackStack(BGSConfigRoutes.HOME, true)
-                                navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
-                                navController.popBackStack(BGSConfigRoutes.Builder.gameDetail(gameId.toString()), false)
+                                // navController.popBackStack(BGSConfigRoutes.HOME, true)
+                                //TODO navegar a un redirect
+                                navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString())) {
+                                    popUpTo(BGSConfigRoutes.HOME) { inclusive = false }
+                                }
                             }
                         } else {
                             navController.navigate(
@@ -149,4 +157,15 @@ fun NewRecordScoreScreen(
     }
 
 
+}
+
+fun getViewModelReference(navController: NavController, gameId: Int): ViewModelStoreOwner? {
+    return try {
+        navController.getBackStackEntry(
+            BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1)
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }
