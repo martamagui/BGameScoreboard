@@ -20,19 +20,26 @@ class GameDetailViewModel @Inject constructor(
         MutableStateFlow(GameDetailUIState())
     val uiState: MutableStateFlow<GameDetailUIState> get() = _uiState
 
-    fun getGameDetails(id:Int){
+    fun getGameDetails(id: Int) {
         _uiState.update { it.copy(status = UiStatus.LOADING) }
         viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.getBoardGame(id).collect{ response->
+            boardGameRepository.getBoardGame(id).collect { response ->
                 Log.d("RESPONSE", "$response")
-                if(response!= null){
-                    _uiState.update { GameDetailUIState(status = UiStatus.SUCCESS, data = response) }
+                if (response != null) {
+                    _uiState.update {
+                        GameDetailUIState(
+                            status = UiStatus.SUCCESS,
+                            data = response
+                        )
+                    }
                 }
             }
         }
     }
 
     fun deleteGame(gameId: Int) {
-        //TODO borrar juego y registros
+        viewModelScope.launch(Dispatchers.IO) {
+            boardGameRepository.deleteGame(gameId)
+        }
     }
 }

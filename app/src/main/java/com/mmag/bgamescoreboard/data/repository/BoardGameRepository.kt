@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BoardGameRepository {
     fun getAllBoardGames(): Flow<List<BoardGame>?>
-    fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation>
+    fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation?>
     suspend fun addGame(name: String, picture: Bitmap)
     suspend fun deleteGame(gameId:Int)
 }

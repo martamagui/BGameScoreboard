@@ -17,7 +17,7 @@ interface BoardGameDao {
 
     @Transaction
     @Query("SELECT * FROM BoardGame WHERE id = :id")
-    fun getBoardGameById(id: Int): Flow<BoardGameWithGameRecordRelation>
+    fun getBoardGameById(id: Int): Flow<BoardGameWithGameRecordRelation?>
 
     @Insert
     suspend fun addGame(boardGame: BoardGame)

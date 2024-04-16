@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.PlayerWithScore
@@ -104,7 +106,9 @@ fun NewRecordScoreScreen(
                     Button(onClick = {
                         if (categoryState.data.size <= step - 2) {
                             viewModel.saveScoreRecord() {
+                               // navController.popBackStack(BGSConfigRoutes.HOME, true)
                                 navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
+                                navController.popBackStack(BGSConfigRoutes.Builder.gameDetail(gameId.toString()), false)
                             }
                         } else {
                             navController.navigate(

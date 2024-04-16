@@ -1,15 +1,23 @@
 package com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +30,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -31,6 +41,7 @@ import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersViewModel
 import java.util.Locale
+
 
 @Composable
 fun CategoriesScreen(
@@ -42,6 +53,8 @@ fun CategoriesScreen(
 ) {
     val uiState by viewModel.categoriesUiState.collectAsState()
     var categoryText by rememberSaveable { mutableStateOf("") }
+    var isNewCategoryVisible by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             BGSToolbar(
@@ -64,24 +77,53 @@ fun CategoriesScreen(
                             .fillMaxWidth()
                     )
                 }
-                TextField(
-                    value = categoryText, onValueChange = {
-                        var text = it
-                        if (text.contains("\n") && text.isNotEmpty()) {
-                            text = it.trim().replace("\r", "").replace("\n", "")
-                            if (!text.isNullOrEmpty()) {
-                                viewModel.saveCategory(text)
-                                categoryText = ""
-                            }
+
+                Row(modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .clickable {
+                        isNewCategoryVisible = !isNewCategoryVisible
+                    }) {
+                    Text(
+                        text = stringResource(id = R.string.categories_screen_category_hint),
+                    )
+                    Icon(
+                        imageVector = if (isNewCategoryVisible) {
+                            Icons.Filled.KeyboardArrowUp
                         } else {
-                            categoryText = text.capitalize(Locale.ROOT)
-                        }
-                    },
-                    placeholder = { Text(text = stringResource(id = R.string.categories_screen_category_hint)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
-                )
+                            Icons.Filled.KeyboardArrowDown
+                        },
+                        contentDescription = stringResource(
+                            id = if (isNewCategoryVisible) {
+                                R.string.categories_screen_category_close_description
+                            } else {
+                                R.string.categories_screen_category_open_description
+                            }
+                        )
+                    )
+                }
+                AnimatedVisibility(isNewCategoryVisible) {
+                    TextField(
+                        value = categoryText, onValueChange = {
+                            var text = it
+                            if (text.contains("\n") && text.isNotEmpty()) {
+                                text = it.trim().replace("\r", "").replace("\n", "")
+                                if (!text.isNullOrEmpty()) {
+                                    viewModel.saveCategory(text)
+                                    categoryText = ""
+                                }
+                            } else {
+                                categoryText = text.capitalize(Locale.ROOT)
+                            }
+                        },
+                        placeholder = { Text(text = stringResource(id = R.string.categories_screen_category_hint)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp)
+                    )
+                }
+
+                Divider(Modifier.padding(vertical = 12.dp))
+
                 if (uiState.data != null) {
                     LazyColumn(
                         modifier = Modifier
@@ -108,14 +150,18 @@ fun CategoriesScreen(
                     .fillMaxWidth()
                     .padding(vertical = 32.dp)
             ) {
-                Button(onClick = {
-                    navController.navigate(
-                        BGSConfigRoutes.Builder.newScoreStep(
-                            viewModel.gameId.toString(),
-                            3
+                Button(
+                    onClick = {
+                        navController.navigate(
+                            BGSConfigRoutes.Builder.newScoreStep(
+                                viewModel.gameId.toString(),
+                                3
+                            )
                         )
-                    )
-                }, modifier = Modifier.fillMaxWidth()) {
+                    },
+                    enabled = uiState.data.isNotEmpty(),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(text = stringResource(id = R.string.categories_screen_action_button))
                 }
             }

@@ -36,6 +36,8 @@
     <string name="categories_screen_title">Categorías de puntuación</string>
     <string name="categories_screen_description">Se puntuará en:</string>
     <string name="categories_screen_category_hint">Añadir una nueva categoría (si faltara)</string>
+    <string name="categories_screen_category_open_description">Abrir</string>
+    <string name="categories_screen_category_close_description">Cerrar</string>
     <string name="categories_screen_action_button">Empezar a puntuar</string>
 
 

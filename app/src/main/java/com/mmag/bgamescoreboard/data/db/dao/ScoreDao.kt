@@ -16,12 +16,12 @@ interface ScoreDao {
     suspend fun addScore(score: Score)
 
     @Query("SELECT *  FROM Score WHERE game_record_id=:recordId AND player_id=:playerId AND category_id=:categoryId")
-    fun getScoreByRecordIdCategoryAndPlayer(recordId: Int, playerId:Int, categoryId: Int): Score?
+    fun getScoreByRecordIdCategoryAndPlayer(recordId: Int, playerId: Int, categoryId: Int): Score?
 
     @Transaction
     @Query("SELECT * FROM Score WHERE game_record_id=:recordId AND category_id=:categoryId")
     fun getScoresWithPlayers(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>>
 
     @Query("DELETE FROM Score WHERE game_record_id=:gameRecord")
-    fun deleteScoresByRecords(gameRecord: Int) :Int
+    fun deleteScoresByRecords(gameRecord: Int): Int
 }

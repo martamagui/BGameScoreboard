@@ -16,7 +16,7 @@ interface ScoringRepository {
 
     fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>>
 
-    fun getRecordWithCategories(gameId: Int): Flow<RecordWithCategories>
+    fun getRecordWithCategories(gameId: Int): Flow<RecordWithCategories?>
 
     fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>>
 

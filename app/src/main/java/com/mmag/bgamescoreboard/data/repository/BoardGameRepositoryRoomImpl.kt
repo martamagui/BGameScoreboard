@@ -16,7 +16,7 @@ class BoardGameRepositoryRoomImpl @Inject constructor(
     override fun getAllBoardGames(): Flow<List<BoardGame>?> =
         database.boardGameDao().getBoardGameList()
 
-    override fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation> =
+    override fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation?> =
         database.boardGameDao().getBoardGameById(id)
 
     override suspend fun addGame(name: String, picture: Bitmap) {
@@ -27,16 +27,19 @@ class BoardGameRepositoryRoomImpl @Inject constructor(
     override suspend fun deleteGame(gameId: Int) {
         val records = database.recordDao().getRecordWithCategories(gameId).first()
 
-        val deletedScores = database.scoreDao().deleteScoresByRecords(records.record.id)
+        var deletedScores = 0
+        if (records?.record?.id != null) {
+            deletedScores = database.scoreDao().deleteScoresByRecords(records.record.id!!)
+        }
         val deletedCategories = database.categoryDao().deleteCategoryByGame(gameId)
         val deletedRecords = database.recordDao().deleteRecordsByGame(gameId)
-        val deletedGames  =  database.boardGameDao().deleteGame(gameId)
+        val deletedGames = database.boardGameDao().deleteGame(gameId)
 
         logData(
             "deletedScores: ${deletedScores}, \n" +
-            "deletedCategories: ${deletedCategories}, \n" +
-            "deletedRecords: ${deletedRecords}, \n" +
-            "deletedGames: ${deletedGames} \n"
+                    "deletedCategories: ${deletedCategories}, \n" +
+                    "deletedRecords: ${deletedRecords}, \n" +
+                    "deletedGames: ${deletedGames} \n"
         )
     }
 
