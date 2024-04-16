@@ -135,7 +135,7 @@ fun GameDetailContent(
                 contentPadding = PaddingValues(4.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(data.records) { item ->
+                items(data.records.reversed()) { item ->
                     GameDetailRecordItem(item, Modifier.fillMaxWidth()) {
                         navController.navigate(BGSConfigRoutes.Builder.scoreRecordDetail(item.id))
                     }

@@ -9,16 +9,24 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,8 +36,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -40,6 +50,7 @@ import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersViewModel
+import com.mmag.bgamescoreboard.ui.theme.Typography
 import java.util.Locale
 
 
@@ -78,13 +89,19 @@ fun CategoriesScreen(
                     )
                 }
 
-                Row(modifier = Modifier
-                    .padding(vertical = 16.dp)
-                    .clickable {
-                        isNewCategoryVisible = !isNewCategoryVisible
-                    }) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .clickable {
+                            isNewCategoryVisible = !isNewCategoryVisible
+                        },
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = stringResource(id = R.string.categories_screen_category_hint),
+                        style = Typography.bodyLarge
                     )
                     Icon(
                         imageVector = if (isNewCategoryVisible) {
@@ -98,28 +115,48 @@ fun CategoriesScreen(
                             } else {
                                 R.string.categories_screen_category_open_description
                             }
-                        )
+                        ), modifier = Modifier.size(32.dp)
                     )
                 }
                 AnimatedVisibility(isNewCategoryVisible) {
-                    TextField(
-                        value = categoryText, onValueChange = {
-                            var text = it
-                            if (text.contains("\n") && text.isNotEmpty()) {
-                                text = it.trim().replace("\r", "").replace("\n", "")
-                                if (!text.isNullOrEmpty()) {
-                                    viewModel.saveCategory(text)
-                                    categoryText = ""
-                                }
-                            } else {
-                                categoryText = text.capitalize(Locale.ROOT)
-                            }
-                        },
-                        placeholder = { Text(text = stringResource(id = R.string.categories_screen_category_hint)) },
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp)
-                    )
+                            .padding(vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextField(
+                            value = categoryText, onValueChange = {
+                                var text = it
+                                if (text.contains("\n") && text.isNotEmpty()) {
+                                    text = it.trim().replace("\r", "").replace("\n", "")
+                                    if (!text.isNullOrEmpty()) {
+                                        viewModel.saveCategory(text)
+                                        categoryText = ""
+                                    }
+                                } else {
+                                    categoryText = text.capitalize(Locale.ROOT)
+                                }
+                            },
+                            placeholder = { Text(text = stringResource(id = R.string.categories_screen_category_hint)) },
+                            modifier = Modifier.fillMaxWidth(0.85f)
+                        )
+                        FilledIconButton(
+                            onClick = {
+                                viewModel.saveCategory(categoryText)
+                                categoryText = ""
+                            },
+                            enabled = !categoryText.trim().isNullOrEmpty()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Add, contentDescription = stringResource(
+                                    id = R.string.categories_screen_category_description
+                                ), modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+
                 }
 
                 Divider(Modifier.padding(vertical = 12.dp))
@@ -132,7 +169,9 @@ fun CategoriesScreen(
 
                         ) {
                         items(uiState.data) { item ->
-                            Card(modifier = Modifier.fillMaxWidth()) {
+                            OutlinedCard(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
                                 Text(
                                     text = item.categoryName.capitalize(Locale.ROOT),
                                     modifier = Modifier
