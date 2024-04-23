@@ -4,6 +4,8 @@
     <string name="toolbar_delete_action_description">Borrar</string>
 
     <string name="game_list_add">Añadir nuevo juego</string>
+    <string name="game_list_record_amount_title">Partidas registradas</string>
+    <string name="game_list_games_amount_title">Juegos</string>
 
     <string name="new_game_title">Añadir nuevo juego</string>
     <string name="new_game_camera_icon_description">Tomar una fotografía</string>
@@ -49,7 +51,9 @@
     <string name="record_score_category_not_found_button">Regresar a la Home</string>
     <string name="record_score_screen_save_scores_button">Guardar puntuación</string>
     <string name="record_detail_not_found_message">Parece que las puntuaciones que estás buscando no están aquí.</string>
-    <string name="game_list_screen_title">Tus juegos</string>
+    <string name="game_list_screen_title">Bienvenid@!</string>
+    <string name="game_list_screen_sub_title">Tus juegos</string>
     <string name="delete_icon_description">Delete</string>
+    <string name="record_detail_category_added_later_than_record">Esta categoría fue creada después de este registro.</string>
 
 </resources>

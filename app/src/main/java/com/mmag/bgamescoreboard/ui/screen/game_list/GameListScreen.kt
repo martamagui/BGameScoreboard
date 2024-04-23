@@ -2,21 +2,28 @@ package com.mmag.bgamescoreboard.ui.screen.game_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissState
@@ -58,6 +65,7 @@ import com.mmag.bgamescoreboard.ui.common.SwipeableItemBackground
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteBGameDialog
+import com.mmag.bgamescoreboard.ui.theme.Typography
 import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
 import kotlinx.coroutines.delay
 
@@ -132,6 +140,69 @@ private fun GameListContent(
                 contentPadding = PaddingValues(4.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
+                if (uiState.data != null) {
+                    item {
+                        Column(Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(126.dp)
+                            ) {
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.6f)
+                                        .fillMaxHeight()
+                                ) {
+                                    Column(
+                                        horizontalAlignment = Alignment.Start,
+                                        verticalArrangement = Arrangement.Bottom,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(12.dp)
+                                    ) {
+                                        Text(
+                                            text = "${uiState.recordsCount}",
+                                            style = Typography.displayMedium
+                                        )
+                                        Text(text = stringResource(id = R.string.game_list_record_amount_title))
+                                    }
+
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .fillMaxHeight()
+                                ) {
+                                    Column(
+                                        horizontalAlignment = Alignment.Start,
+                                        verticalArrangement = Arrangement.Bottom,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(12.dp)
+                                    ) {
+                                        Text(
+                                            text = "${uiState.data?.size ?: 0}",
+                                            style = Typography.displayMedium
+                                        )
+                                        Text(text = stringResource(id = R.string.game_list_games_amount_title))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                        Text(
+                            text = stringResource(id = R.string.game_list_screen_sub_title),
+                            fontSize = 24.sp,
+                            modifier = Modifier.padding(top = 24.dp, bottom = 12.dp)
+                        )
+                    }
+                }
+
                 if (uiState.data != null) {
                     items(uiState.data!!) { boardGame ->
                         ItemBoardGame(

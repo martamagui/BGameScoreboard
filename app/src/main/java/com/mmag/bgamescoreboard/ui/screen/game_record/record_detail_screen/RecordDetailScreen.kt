@@ -178,6 +178,16 @@ private fun RecordDetailContent(
             val scores = state.scoresByPlayersAndCategories[
                 state.recordWithCategories?.scoringCategories?.get(tabIndex)?.id
             ] ?: listOf()
+            if (scores.isNullOrEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.record_detail_category_added_later_than_record),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 12.dp),
+                    )
+                }
+            }
             items(scores) { score ->
                 Row(
                     modifier = Modifier

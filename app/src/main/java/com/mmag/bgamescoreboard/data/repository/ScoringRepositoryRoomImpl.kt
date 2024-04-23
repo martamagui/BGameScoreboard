@@ -22,6 +22,9 @@ class ScoringRepositoryRoomImpl @Inject constructor(
     override fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>> =
         database.categoryDao().getCategoriesByGameId(gameId)
 
+    override fun getRecordsCount(): Flow<List<GameScoreRecord>> = database.recordDao().getRecords()
+
+
     override fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories?> =
         database.recordDao().getRecordWithCategories(recordId)
 

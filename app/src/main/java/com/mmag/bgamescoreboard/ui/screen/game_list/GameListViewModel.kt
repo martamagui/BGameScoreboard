@@ -3,6 +3,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
+import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameListViewModel @Inject constructor(
-    private val boardGameRepository: BoardGameRepository
+    private val boardGameRepository: BoardGameRepository,
+    private val scoringRepository: ScoringRepository
+
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<GameListUiState> = MutableStateFlow(GameListUiState())
@@ -26,15 +29,24 @@ class GameListViewModel @Inject constructor(
     init {
         _uiState.update { GameListUiState(status = UiStatus.LOADING) }
         getAllGames()
+        getRecordsCount()
+    }
+
+    private fun getRecordsCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            scoringRepository.getRecordsCount().collect { records ->
+                _uiState.update { it.copy(recordsCount = records?.size ?: 0) }
+            }
+        }
     }
 
     private fun getAllGames() {
         viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.getAllBoardGames().collect{ games ->
+            boardGameRepository.getAllBoardGames().collect { games ->
                 if (games != null) {
-                    _uiState.update { GameListUiState(status = UiStatus.SUCCESS, data = games) }
+                    _uiState.update { it.copy(status = UiStatus.SUCCESS, data = games) }
                 } else {
-                    _uiState.update { GameListUiState(status = UiStatus.EMPTY_RESPONSE) }
+                    _uiState.update { it.copy(status = UiStatus.EMPTY_RESPONSE) }
                 }
             }
         }

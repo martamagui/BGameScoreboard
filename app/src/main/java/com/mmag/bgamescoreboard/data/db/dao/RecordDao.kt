@@ -23,6 +23,9 @@ interface RecordDao {
     @Query("SELECT *  FROM GameScoreRecord WHERE id=:recordId")
     fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories?>
 
+    @Query("SELECT *  FROM GameScoreRecord")
+    fun getRecords(): Flow<List<GameScoreRecord>>
+
     @Transaction
     @Query("SELECT *  FROM GameScoreRecord WHERE board_game_id =:gameId")
     fun getRecordsByGameId(gameId: Int): Flow<RecordWithCategories?>

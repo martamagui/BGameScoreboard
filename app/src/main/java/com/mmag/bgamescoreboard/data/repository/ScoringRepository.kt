@@ -1,5 +1,6 @@
 package com.mmag.bgamescoreboard.data.repository
 
+import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.Score
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
@@ -15,6 +16,7 @@ interface ScoringRepository {
     suspend fun addRecord(date: String, boardGameId: Int): Long
 
     fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>>
+    fun getRecordsCount(): Flow<List<GameScoreRecord>>
 
     fun getRecordWithCategories(gameId: Int): Flow<RecordWithCategories?>
 
