@@ -45,7 +45,6 @@ import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteRecordDialog
 import kotlinx.coroutines.delay
 
 
-
 @Composable
 fun RecordDetailScreen(
     recordId: Int,
@@ -65,7 +64,7 @@ fun RecordDetailScreen(
 
     Scaffold(
         topBar = {
-            RecordToolbar(state, {shouldShowDeleteDialog = true}, navController)
+            RecordToolbar(state, { shouldShowDeleteDialog = true }, navController)
         }
     ) { paddingValues ->
         Column(
@@ -84,9 +83,11 @@ fun RecordDetailScreen(
             ) {
                 when (state.status) {
                     UiStatus.LOADING -> {}
-                    UiStatus.SUCCESS -> {
-                        RecordDetailContent(tabIndex, state, viewModel)
-                    }
+                    UiStatus.SUCCESS -> RecordDetailContent(
+                        tabIndex,
+                        state,
+                        viewModel
+                    ) { tab -> tabIndex = tab }
 
                     UiStatus.ERROR -> {}
                     else -> {
@@ -108,7 +109,7 @@ fun RecordDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun RecordToolbar(
     state: RecordDetailUiState,
-    showDeleteDialog: ()->Unit,
+    showDeleteDialog: () -> Unit,
     navController: NavController
 ) {
     TopAppBar(
@@ -121,7 +122,7 @@ private fun RecordToolbar(
             )
         },
         actions = {
-            IconButton(onClick = { showDeleteDialog()}) {
+            IconButton(onClick = { showDeleteDialog() }) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
@@ -142,25 +143,25 @@ private fun RecordToolbar(
 private fun RecordDetailContent(
     tabIndex: Int,
     state: RecordDetailUiState,
-    viewModel: RecordDetailViewModel
+    viewModel: RecordDetailViewModel,
+    selectTab: (tab: Int) -> Unit
 ) {
-    var tabIndex1 = tabIndex
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(4.dp)
     ) {
         item {
             ScrollableTabRow(
-                selectedTabIndex = tabIndex1,
+                selectedTabIndex = tabIndex,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp)
             ) {
                 state.recordWithCategories?.scoringCategories?.forEachIndexed { index, text ->
                     Tab(
-                        selected = tabIndex1 == index,
+                        selected = tabIndex == index,
                         onClick = {
-                            tabIndex1 = index
+                            selectTab(index)
                             viewModel.updateCategorySelected(index)
                         }
                     ) {
@@ -175,7 +176,7 @@ private fun RecordDetailContent(
 
         if (state.selectedCategoryIndex != null) {
             val scores = state.scoresByPlayersAndCategories[
-                state.recordWithCategories?.scoringCategories?.get(tabIndex1)?.id
+                state.recordWithCategories?.scoringCategories?.get(tabIndex)?.id
             ] ?: listOf()
             items(scores) { score ->
                 Row(
