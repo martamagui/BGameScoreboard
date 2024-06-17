@@ -2,37 +2,21 @@ package com.mmag.bgamescoreboard.ui.screen.game_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DismissDirection
-import androidx.compose.material3.DismissState
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
@@ -65,8 +49,13 @@ import com.mmag.bgamescoreboard.ui.common.SwipeableItemBackground
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteBGameDialog
-import com.mmag.bgamescoreboard.ui.theme.Typography
+import com.mmag.bgamescoreboard.ui.screen.game_list.components.GameListContentHeader
+import com.mmag.bgamescoreboard.ui.screen.game_list.components.GameListItemBoardGame
+import com.mmag.bgamescoreboard.ui.screen.game_list.components.GameListProgressIndicator
+import com.mmag.bgamescoreboard.ui.screen.game_list.components.GameListScreenNewGameFAB
+import com.mmag.bgamescoreboard.ui.screen.game_list.components.GameListScreenTopAppBar
 import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
+import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter
 import kotlinx.coroutines.delay
 
 
@@ -84,16 +73,8 @@ fun GameListScreen(
         mutableStateOf(null)
     }
     Scaffold(
-        floatingActionButton = { NewGameFAB(navHostController) },
-        topBar = {
-            CenterAlignedTopAppBar(title = {
-                Text(
-                    text = stringResource(id = R.string.game_list_screen_title),
-                    fontSize = 32.sp,
-                    modifier = Modifier.padding(top = 32.dp, bottom = 16.dp)
-                )
-            })
-        }
+        floatingActionButton = { GameListScreenNewGameFAB(navHostController) },
+        topBar = { GameListScreenTopAppBar() }
     ) { paddingValues ->
         if (showDeleteDialog) {
             DeleteBGameDialog(onDismiss = { showDeleteDialog = false }) {
@@ -104,7 +85,7 @@ fun GameListScreen(
             }
         }
         if (uiState.status == UiStatus.LOADING) {
-            GameListProgressScreen(Modifier.fillMaxWidth())
+            GameListProgressIndicator(Modifier.fillMaxWidth())
         } else {
             GameListContent(
                 paddingValues,
@@ -141,71 +122,23 @@ private fun GameListContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (uiState.data != null) {
-                    item {
-                        Column(Modifier.fillMaxWidth()) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(126.dp)
-                            ) {
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.6f)
-                                        .fillMaxHeight()
-                                ) {
-                                    Column(
-                                        horizontalAlignment = Alignment.Start,
-                                        verticalArrangement = Arrangement.Bottom,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(12.dp)
-                                    ) {
-                                        Text(
-                                            text = "${uiState.recordsCount}",
-                                            style = Typography.displayMedium
-                                        )
-                                        Text(text = stringResource(id = R.string.game_list_record_amount_title))
-                                    }
-
-                                }
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .fillMaxHeight()
-                                ) {
-                                    Column(
-                                        horizontalAlignment = Alignment.Start,
-                                        verticalArrangement = Arrangement.Bottom,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(12.dp)
-                                    ) {
-                                        Text(
-                                            text = "${uiState.data?.size ?: 0}",
-                                            style = Typography.displayMedium
-                                        )
-                                        Text(text = stringResource(id = R.string.game_list_games_amount_title))
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    item { GameListContentHeader(uiState, Modifier.fillMaxWidth()) }
                 }
 
                 item {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-                        Text(
-                            text = stringResource(id = R.string.game_list_screen_sub_title),
-                            fontSize = 24.sp,
-                            modifier = Modifier.padding(top = 24.dp, bottom = 12.dp)
-                        )
-                    }
+                    Text(
+                        text = stringResource(id = R.string.game_list_screen_sub_title),
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp, bottom = 12.dp)
+                    )
                 }
 
                 if (uiState.data != null) {
                     items(uiState.data!!) { boardGame ->
-                        ItemBoardGame(
+                        GameListItemBoardGame(
                             { naviGateToGameDetail(boardGame) },
                             { deleteGame(boardGame) },
                             boardGame,
@@ -229,105 +162,4 @@ private fun GameListContent(
     }
 }
 
-@Composable
-private fun GameListProgressScreen(modifier: Modifier) {
-    LinearProgressIndicator(modifier = modifier)
-    Text(
-        text = stringResource(id = R.string.game_list_searching_games_title),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp),
-        textAlign = TextAlign.Center
-    )
-}
 
-@Composable
-private fun NewGameFAB(navHostController: NavHostController) {
-    FloatingActionButton(
-        onClick = { navHostController.navigate(BGSConfigRoutes.NEW_GAME) },
-        modifier = Modifier
-            .padding(24.dp)
-    ) {
-        Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.game_list_add))
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ItemBoardGame(
-    onClickAction: () -> Unit,
-    onDismiss: () -> Unit,
-    boardGame: BoardGame,
-    modifier: Modifier
-) {
-    var show by remember { mutableStateOf(true) }
-    var resetState by remember { mutableStateOf(false) }
-
-    var dismissState = rememberDismissState(
-        confirmValueChange = {
-            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
-                show = false
-                !resetState
-                true
-            } else false
-        }, positionalThreshold = { 100.dp.toPx() }
-    )
-
-    ElevatedCard(
-        modifier = modifier,
-        onClick = { onClickAction() }
-    ) {
-        SwipeToDismiss(
-            state = dismissState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .onFocusChanged { state ->
-                    if (!state.hasFocus) {
-                        resetState = true
-                    }
-                },
-            background = { SwipeableItemBackground(dismissState = dismissState) },
-            directions = setOf(DismissDirection.StartToEnd),
-            dismissContent = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp)
-                        .clip(shape = RoundedCornerShape(12.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        bitmap = boardGame.image.asImageBitmap(),
-                        contentDescription = boardGame.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .background(vertGradShadow)
-                            .fillMaxSize()
-                            .alpha(0.2f)
-                    )
-                    Text(
-                        text = boardGame.name,
-                        color = Color.White,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-            }
-        )
-    }
-
-    LaunchedEffect(show) {
-        delay(200)
-        if (!show) {
-            onDismiss()
-            dismissState.reset()
-        }
-        if (resetState) {
-            dismissState.reset()
-            resetState = false
-        }
-    }
-}
