@@ -8,6 +8,7 @@ import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class ScoringRepositoryRoomImpl @Inject constructor(
@@ -43,6 +44,18 @@ class ScoringRepositoryRoomImpl @Inject constructor(
         categoryId: Int
     ): Flow<List<ScoreWithPlayer>> =
         database.scoreDao().getScoresWithPlayers(recordId, categoryId)
+
+    override suspend fun getPlayersScoresFromRecord(
+        recordId: Int,
+        playerId: Int
+    ): Int {
+        val response = database.scoreDao().getPlayersScoresFromRecord(recordId, playerId).first()
+        var points = 0
+        response.forEach { item ->
+            points += item.scoreAmount
+        }
+        return points
+    }
 
     override suspend fun deleteRecordAndScores(recordId: Int) {
         val deletedRecords = database.recordDao().deleteRecordById(recordId)

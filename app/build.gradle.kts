@@ -49,6 +49,16 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    applicationVariants.all {
+        val variant = this
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+            val newApkName =
+                "BGameScoreBoard-${variant.versionName}-${variant.name}.apk"
+            output.outputFileName = newApkName
+        }
+    }
 }
 
 dependencies {

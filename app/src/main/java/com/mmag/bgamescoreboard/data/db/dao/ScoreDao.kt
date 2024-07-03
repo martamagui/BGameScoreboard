@@ -22,6 +22,11 @@ interface ScoreDao {
     @Query("SELECT * FROM Score WHERE game_record_id=:recordId AND category_id=:categoryId")
     fun getScoresWithPlayers(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>>
 
+    @Transaction
+    @Query("SELECT * FROM Score WHERE game_record_id=:recordId AND player_id=:playerId")
+    fun getPlayersScoresFromRecord(recordId: Int, playerId: Int): Flow<List<Score>>
+
+
     @Query("DELETE FROM Score WHERE game_record_id=:gameRecord")
     fun deleteScoresByRecords(gameRecord: Int): Int
 }
