@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,11 +32,11 @@ import kotlinx.coroutines.delay
 fun RecordDetailScreen(
     recordId: Int,
     navController: NavController,
-    viewModel: RecordDetailViewModel = hiltViewModel<RecordDetailViewModel>().also {
-        it.getCategories(recordId)
-    }
+    viewModel: RecordDetailViewModel = hiltViewModel<RecordDetailViewModel>()
 ) {
-    var tabIndex by remember { mutableIntStateOf(0) }
+    LaunchedEffect(rememberCoroutineScope()) {
+        viewModel.getCategories(recordId)
+    }
     var shouldShowDeleteDialog by rememberSaveable {
         mutableStateOf(false)
     }
@@ -66,10 +67,8 @@ fun RecordDetailScreen(
                 when (state.status) {
                     UiStatus.LOADING -> {}
                     UiStatus.SUCCESS -> RecordDetailContent(
-                        tabIndex,
-                        state,
                         viewModel
-                    ) { tab -> tabIndex = tab }
+                    )
 
                     UiStatus.ERROR -> {}
                     else -> {

@@ -14,14 +14,12 @@ fun RecordDetailTab(
     tabIndex: Int,
     index: Int,
     selectTab: (tab: Int) -> Unit,
-    viewModel: RecordDetailViewModel,
     text: ScoringCategory
 ) {
     Tab(
         selected = tabIndex == index,
         onClick = {
             selectTab(index)
-            viewModel.updateCategorySelected(index)
         }
     ) {
         Text(

@@ -9,7 +9,5 @@ import com.mmag.bgamescoreboard.ui.model.UiStatus
 data class RecordDetailUiState(
     val recordWithCategories: RecordWithCategories? = null,
     val scoresByPlayersAndCategories: HashMap<Int, List<ScoreWithPlayer>> = HashMap(),
-    val totalScoresByPlayersAndCategories: HashMap<Int, List<ScoreWithPlayer>> = HashMap(),
-    val status: UiStatus = UiStatus.UNKNOWN,
-    val selectedCategoryIndex: Int = 0
+    val status: UiStatus = UiStatus.UNKNOWN
 )
