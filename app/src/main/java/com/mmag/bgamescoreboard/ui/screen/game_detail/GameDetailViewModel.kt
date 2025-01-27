@@ -1,14 +1,11 @@
 package com.mmag.bgamescoreboard.ui.screen.game_detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
-import com.mmag.bgamescoreboard.domain.use_cases.game_detail.DeleteGameUseCase
-import com.mmag.bgamescoreboard.domain.use_cases.game_detail.GetGameDetailsUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game.DeleteGameUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game.GetGameDetailsUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

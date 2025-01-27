@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.domain.use_cases.game_detail
+package com.mmag.bgamescoreboard.domain.use_cases.game
 
 import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordRelation
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository

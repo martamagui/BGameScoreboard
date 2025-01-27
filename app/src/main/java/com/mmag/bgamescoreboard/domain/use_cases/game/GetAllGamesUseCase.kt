@@ -1,14 +1,14 @@
-package com.mmag.bgamescoreboard.domain.use_cases.game_detail
+package com.mmag.bgamescoreboard.domain.use_cases.game
 
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DeleteGameUseCase @Inject constructor(
+class GetAllGamesUseCase @Inject constructor(
     private val boardGameRepository: BoardGameRepository
-)  {
-    suspend operator fun invoke(gameId: Int)= withContext(Dispatchers.IO){
-        boardGameRepository.deleteGame(gameId)
+) {
+    suspend fun invoke() = withContext(Dispatchers.IO) {
+        boardGameRepository.getAllBoardGames()
     }
 }
