@@ -7,7 +7,7 @@ import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
-import com.mmag.bgamescoreboard.domain.use_cases.DeleteRecordUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game_record.DeleteRecordUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

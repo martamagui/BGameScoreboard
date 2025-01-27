@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
+import com.mmag.bgamescoreboard.domain.use_cases.game_detail.DeleteGameUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game_detail.GetGameDetailsUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,32 +16,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameDetailViewModel @Inject constructor(
-    private val boardGameRepository: BoardGameRepository
+    private val deleteGameUseCase: DeleteGameUseCase,
+    private val getGameDetailsUseCase: GetGameDetailsUseCase,
 ) : ViewModel() {
     private var _uiState: MutableStateFlow<GameDetailUIState> =
-        MutableStateFlow(GameDetailUIState())
+        MutableStateFlow(GameDetailUIState(status = UiStatus.LOADING))
     val uiState: MutableStateFlow<GameDetailUIState> get() = _uiState
 
-    fun getGameDetails(id: Int) {
-        _uiState.update { it.copy(status = UiStatus.LOADING) }
-        viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.getBoardGame(id).collect { response ->
-                Log.d("RESPONSE", "$response")
-                if (response != null) {
-                    _uiState.update {
-                        GameDetailUIState(
-                            status = UiStatus.SUCCESS,
-                            data = response
-                        )
-                    }
-                }
+    fun getGameDetails(id: Int) = viewModelScope.launch {
+        getGameDetailsUseCase.invoke(id).collect { response ->
+            _uiState.update {
+                GameDetailUIState(
+                    status = UiStatus.SUCCESS,
+                    data = response
+                )
             }
         }
     }
 
-    fun deleteGame(gameId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            boardGameRepository.deleteGame(gameId)
-        }
+    fun deleteGame(gameId: Int) = viewModelScope.launch {
+        deleteGameUseCase.invoke(gameId)
     }
+
 }

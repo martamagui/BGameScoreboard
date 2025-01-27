@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.domain.use_cases
+package com.mmag.bgamescoreboard.domain.use_cases.game_record
 
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import kotlinx.coroutines.Dispatchers
