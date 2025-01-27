@@ -1,39 +1,42 @@
 package com.mmag.bgamescoreboard.ui.screen.game_record.players_screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.db.model.Player
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
-import com.mmag.bgamescoreboard.data.repository.LocalPlayerRepository
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
+import com.mmag.bgamescoreboard.domain.use_cases.categories.GetGameCategoriesUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.categories.SaveCategoryUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.player.GetSavedPlayersUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.player.SavePlayerUseCase
 import com.mmag.bgamescoreboard.ui.model.CategoryWithRecords
 import com.mmag.bgamescoreboard.ui.model.PlayerWithScore
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.model.toPlayerWithScore
 import com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen.CategoriesUiState
+import com.mmag.bgamescoreboard.utils.getCurrentDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class GameRecordPlayersViewModel @Inject constructor(
-    private val playerRepository: LocalPlayerRepository,
-    private val scoringRepository: ScoringRepository
+    private val scoringRepository: ScoringRepository,
+    private val saveCategoryUseCase: SaveCategoryUseCase,
+    private val savePlayerUseCase: SavePlayerUseCase,
+    private val getGameCategoriesUseCase: GetGameCategoriesUseCase,
+    private val getSavedPlayersUseCase: GetSavedPlayersUseCase,
 ) : ViewModel() {
+
     var gameId: Int? = null
 
     private var _playersUIState: MutableStateFlow<GameRecordsPlayersUiState> =
@@ -45,17 +48,21 @@ class GameRecordPlayersViewModel @Inject constructor(
     val categoriesUiState: MutableStateFlow<CategoriesUiState> get() = _categoriesUiState
 
     private var _scoreData: MutableList<CategoryWithRecords> = mutableListOf()
-    val scoreData: List<CategoryWithRecords> get() = _scoreData
+    private val scoreData: List<CategoryWithRecords> get() = _scoreData
 
     init {
-        playerRepository.getSavedPlayers().onEach { players ->
-            _playersUIState.update {
-                GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = players)
-            }
-        }.launchIn(viewModelScope)
+        getSavedPlayers()
     }
 
     //region --- BD ---
+    private fun getSavedPlayers() = viewModelScope.launch {
+        getSavedPlayersUseCase.invoke().collect { players ->
+            _playersUIState.update {
+                GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = players)
+            }
+        }
+    }
+
     fun addDeletePlayer(player: Player) {
         val newList = playersUIState.value.selectedPlayers.toMutableList()
         if (playersUIState.value.selectedPlayers.contains(player)) {
@@ -69,52 +76,34 @@ class GameRecordPlayersViewModel @Inject constructor(
     }
 
     fun savePlayer(userName: String) {
-        val filteredList = playersUIState.value.data.filter { player ->
-            player.name.lowercase(Locale.ROOT) == userName.lowercase(Locale.ROOT)
-        }
-        if (filteredList.isEmpty()) {
-            viewModelScope.launch(Dispatchers.IO) {
-                playerRepository.savePlayer(userName)
-            }
+        if (!isPlayerAlreadySaved(userName)) {
+            viewModelScope.launch { savePlayerUseCase.invoke(userName) }
         }
     }
 
     fun getCategories(gameId: Int) {
         this.gameId = gameId
-        scoringRepository.getCategoriesByGameId(gameId).onEach { data ->
-            if (data != null) {
+        viewModelScope.launch {
+            getGameCategoriesUseCase.invoke(gameId).collect { data ->
                 addCategories(data)
-            }
-            _categoriesUiState.update {
-                CategoriesUiState(status = UiStatus.SUCCESS, data = data)
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    fun saveCategory(categoryText: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (gameId != null) {
-                scoringRepository.addCategory(gameId!!, categoryText)
-            } else {
                 _categoriesUiState.update {
-                    it.copy(
-                        status = UiStatus.ERROR,
-                        errorMessage = R.string.not_game_found_error
-                    )
+                    CategoriesUiState(status = UiStatus.SUCCESS, data = data)
                 }
             }
         }
     }
 
+    fun saveCategory(categoryText: String) = viewModelScope.launch {
+        saveCategoryUseCase.invoke(gameId!!, categoryText)
+    }
+
     fun saveScoreRecord(onDoneCallback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            val recordTitle =
+                "${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}"
             val savedRecord: Int? = gameId?.let {
-                scoringRepository.addRecord(
-                    "${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}",
-                    it
-                ).toInt()
+                scoringRepository.addRecord(recordTitle, it).toInt()
             }
-            Log.d("Registro guardado", "ID: $savedRecord")
 
             if (savedRecord != null) {
                 scoreData.forEach { category ->
@@ -142,12 +131,6 @@ class GameRecordPlayersViewModel @Inject constructor(
     //endregion --- BD ---
 
     //region --- Other ---
-    private fun getCurrentDate(): String {
-        val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
-        return formatter.format(time)
-    }
-
     private suspend fun addCategories(categories: List<ScoringCategory>) {
         runBlocking {
             async {
@@ -178,7 +161,12 @@ class GameRecordPlayersViewModel @Inject constructor(
         }
     }
 
-
+    private fun isPlayerAlreadySaved(userName: String): Boolean {
+        val filteredList = playersUIState.value.data.filter { player ->
+            player.name.lowercase(Locale.ROOT) == userName.lowercase(Locale.ROOT)
+        }
+        return filteredList.isNotEmpty()
+    }
     //endregion --- Other ---
 
 }
