@@ -8,6 +8,7 @@ import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.domain.use_cases.game_record.DeleteRecordUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.scores.GetScoresWithPlayersByCategoryUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class RecordDetailViewModel @Inject constructor(
     private val scoringRepository: ScoringRepository,
     private val deleteRecordUseCase: DeleteRecordUseCase,
+    private val getScoresWithPlayersByCategoryUseCase: GetScoresWithPlayersByCategoryUseCase
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
@@ -34,7 +36,7 @@ class RecordDetailViewModel @Inject constructor(
             scoringRepository.getRecordWithCategories(recordId).collectLatest { data ->
                 if (data != null) {
                     data.scoringCategories.forEach { category ->
-                        getRecordByCategory(recordId, category.id)
+                        getRecordByCategory(data, category.id)
                     }
                     _uiState.update {
                         it.copy(
@@ -95,13 +97,13 @@ class RecordDetailViewModel @Inject constructor(
         currentCategories.add(ScoringCategory(-1, currentCategories.first().gameId, "TOTAL"))
     }
 
-    private fun getRecordByCategory(recordId: Int, categoryId: Int) {
+    private fun getRecordByCategory(record: RecordWithCategories, categoryId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            scoringRepository.getScoresWithPlayersByCategory(recordId, categoryId)
+            getScoresWithPlayersByCategoryUseCase.invoke(record, categoryId)
                 .collectLatest { data ->
                     val currentScores = uiState.value.scoresByPlayersAndCategories
                     currentScores[categoryId] = data
-                    obtainTotalAmountState(recordId, currentScores)
+                    obtainTotalAmountState(record.record.id, currentScores)
                 }
         }
     }

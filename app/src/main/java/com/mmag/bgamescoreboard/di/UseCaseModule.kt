@@ -12,6 +12,7 @@ import com.mmag.bgamescoreboard.domain.use_cases.game_record.DeleteRecordUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game_record.GetRecordsCountUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.player.GetSavedPlayersUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.player.SavePlayerUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.scores.GetScoresWithPlayersByCategoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -69,6 +70,14 @@ object UseCaseModule {
         return GetGameCategoriesUseCase(scoringRepository)
     }
     //endregion Category
+
+    //region Score
+    @Provides
+    @Singleton
+    fun provideGetScoresWithPlayersByCategoryUseCase(scoringRepository: ScoringRepository): GetScoresWithPlayersByCategoryUseCase {
+        return GetScoresWithPlayersByCategoryUseCase(scoringRepository)
+    }
+    //endregion Score
 
     //region Player
     @Provides
