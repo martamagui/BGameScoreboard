@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +43,7 @@ fun NewRecordScoreScreen(
     } else {
         hiltViewModel()
     },
-    step: Int
+    step: Int,
 ) {
     val categoryState by viewModel.categoriesUiState.collectAsState()
     val playerState by viewModel.playersUIState.collectAsState()
@@ -67,7 +66,7 @@ fun NewRecordScoreScreen(
                     .padding(bottom = 32.dp, start = 32.dp, end = 32.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                if (!playerState.selectedPlayers.isNullOrEmpty()) {
+                if (playerState.selectedPlayers.isNotEmpty()) {
                     LazyColumn() {
                         items(playerState.selectedPlayers) { player ->
                             var score by rememberSaveable { mutableStateOf("") }
@@ -128,33 +127,41 @@ fun NewRecordScoreScreen(
             }
         }
     } else {
-        Scaffold(
-            topBar = {
-                BGSToolbar(
-                    title = stringResource(
-                        id = R.string.error_category_not_found
-                    )
-                ) { }
-            }
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(32.dp)
-                    .fillMaxSize()
-            ) {
-                Button(onClick = {
-                    viewModel.saveScoreRecord() {
-                        navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
-                    }
-                }, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = stringResource(id = R.string.record_score_category_not_found_button))
-                }
+        CategoryNotFoundContent() {
+            viewModel.saveScoreRecord() {
+                navController.navigate(BGSConfigRoutes.Builder.gameDetail(gameId.toString()))
             }
         }
     }
 
 
+}
+
+@Composable
+private fun CategoryNotFoundContent(onClick: () -> Unit) {
+    Scaffold(
+        topBar = {
+            BGSToolbar(
+                title = stringResource(
+                    id = R.string.error_category_not_found
+                )
+            ) { }
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(32.dp)
+                .fillMaxSize()
+        ) {
+            Button(
+                onClick = { onClick() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(id = R.string.record_score_category_not_found_button))
+            }
+        }
+    }
 }
 
 fun getViewModelReference(navController: NavController, gameId: Int): ViewModelStoreOwner? {

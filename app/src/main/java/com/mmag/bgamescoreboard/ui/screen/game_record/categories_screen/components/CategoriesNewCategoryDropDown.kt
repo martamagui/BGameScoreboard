@@ -20,14 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mmag.bgamescoreboard.R
-import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersViewModel
 import java.util.Locale
 
 
 @Composable
 fun CategoriesNewCategoryDropDown(
-    viewModel: GameRecordPlayersViewModel,
-    modifier: Modifier
+    modifier: Modifier,
+    saveCategory: (String) -> Unit,
 ) {
     var categoryText by rememberSaveable { mutableStateOf("") }
 
@@ -37,16 +36,16 @@ fun CategoriesNewCategoryDropDown(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-            value = categoryText, onValueChange = {
-                var text = it
+            value = categoryText, onValueChange = { inputTExt ->
+                var text = inputTExt
                 if (text.contains("\n") && text.isNotEmpty()) {
-                    text = it.trim().replace("\r", "").replace("\n", "")
-                    if (!text.isNullOrEmpty()) {
-                        viewModel.saveCategory(text)
+                    text = inputTExt.trim().replace("\r", "").replace("\n", "")
+                    if (text.isNotEmpty()) {
+                        saveCategory(text)
                         categoryText = ""
                     }
                 } else {
-                    categoryText = text.capitalize(Locale.ROOT)
+                    categoryText = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                 }
             },
             placeholder = { Text(text = stringResource(id = R.string.categories_screen_category_hint)) },
@@ -54,10 +53,10 @@ fun CategoriesNewCategoryDropDown(
         )
         FilledIconButton(
             onClick = {
-                viewModel.saveCategory(categoryText)
+                saveCategory(categoryText)
                 categoryText = ""
             },
-            enabled = !categoryText.trim().isNullOrEmpty()
+            enabled = categoryText.trim().isNotEmpty()
         ) {
             Icon(
                 imageVector = Icons.Filled.Add, contentDescription = stringResource(

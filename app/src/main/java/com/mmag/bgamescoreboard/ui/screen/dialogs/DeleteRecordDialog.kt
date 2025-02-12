@@ -6,7 +6,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mmag.bgamescoreboard.R
-import java.io.StringReader
 
 @Composable
 fun DeleteRecordDialog(

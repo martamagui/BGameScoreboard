@@ -5,26 +5,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,8 +40,6 @@ import com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen.componen
 import com.mmag.bgamescoreboard.ui.screen.game_record.categories_screen.components.CategoriesNewCategoryDropDown
 import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersViewModel
 import com.mmag.bgamescoreboard.ui.theme.Typography
-import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter
-import java.util.Locale
 
 
 @Composable
@@ -56,7 +48,7 @@ fun CategoriesScreen(
     navController: NavController,
     viewModel: GameRecordPlayersViewModel = hiltViewModel<GameRecordPlayersViewModel>(
         navController.getBackStackEntry(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
-    ).apply { getCategories(gameId) }
+    ).apply { getCategories(gameId) },
 ) {
     val uiState by viewModel.categoriesUiState.collectAsState()
 
@@ -81,7 +73,9 @@ fun CategoriesScreen(
                         .fillMaxWidth()
                 )
             }
-            CategoriesContent(  viewModel, uiState, navController)
+            CategoriesContent(uiState, gameId.toString(), navController) { text ->
+                viewModel.saveCategory(text)
+            }
 
         }
     }
@@ -90,60 +84,21 @@ fun CategoriesScreen(
 
 @Composable
 private fun CategoriesContent(
-    viewModel: GameRecordPlayersViewModel,
     uiState: CategoriesUiState,
-    navController: NavController
+    gameId: String,
+    navController: NavController,
+    saveCategory: (String) -> Unit,
 ) {
-    var isNewCategoryVisible1 by rememberSaveable { mutableStateOf(false) }
-
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-                    .clickable {
-                        isNewCategoryVisible1 = !isNewCategoryVisible1
-                    },
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.categories_screen_category_hint),
-                    style = Typography.bodyLarge
-                )
-                Icon(
-                    imageVector = if (isNewCategoryVisible1) {
-                        Icons.Filled.KeyboardArrowUp
-                    } else {
-                        Icons.Filled.KeyboardArrowDown
-                    },
-                    contentDescription = stringResource(
-                        id = if (isNewCategoryVisible1) {
-                            R.string.categories_screen_category_close_description
-                        } else {
-                            R.string.categories_screen_category_open_description
-                        }
-                    ), modifier = Modifier.size(32.dp)
-                )
-            }
-            AnimatedVisibility(isNewCategoryVisible1) {
-                CategoriesNewCategoryDropDown(
-                     viewModel, Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp)
-                )
-            }
-
+            CategoryAdditionContent() { text -> saveCategory(text) }
             Divider(Modifier.padding(vertical = 12.dp))
-
             if (uiState.data != null) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 24.dp),
-
-                    ) {
+                        .padding(vertical = 24.dp)
+                ) {
                     items(
                         items = uiState.data,
                         key = { item: ScoringCategory ->
@@ -167,10 +122,7 @@ private fun CategoriesContent(
             Button(
                 onClick = {
                     navController.navigate(
-                        BGSConfigRoutes.Builder.newScoreStep(
-                            viewModel.gameId.toString(),
-                            3
-                        )
+                        BGSConfigRoutes.Builder.newScoreStep(gameId, 3)
                     )
                 },
                 enabled = uiState.data.isNotEmpty(),
@@ -178,6 +130,52 @@ private fun CategoriesContent(
             ) {
                 Text(text = stringResource(id = R.string.categories_screen_action_button))
             }
+        }
+    }
+}
+
+@Composable
+private fun CategoryAdditionContent(
+    saveCategory: (String) -> Unit,
+) {
+    var isNewCategoryVisible1 by rememberSaveable { mutableStateOf(false) }
+
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+                .clickable {
+                    isNewCategoryVisible1 = !isNewCategoryVisible1
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.categories_screen_category_hint),
+                style = Typography.bodyLarge
+            )
+            Icon(
+                imageVector = if (isNewCategoryVisible1) {
+                    Icons.Filled.KeyboardArrowUp
+                } else {
+                    Icons.Filled.KeyboardArrowDown
+                },
+                contentDescription = stringResource(
+                    id = if (isNewCategoryVisible1) {
+                        R.string.categories_screen_category_close_description
+                    } else {
+                        R.string.categories_screen_category_open_description
+                    }
+                ), modifier = Modifier.size(32.dp)
+            )
+        }
+        AnimatedVisibility(isNewCategoryVisible1) {
+            CategoriesNewCategoryDropDown(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) { text -> saveCategory(text) }
         }
     }
 }
