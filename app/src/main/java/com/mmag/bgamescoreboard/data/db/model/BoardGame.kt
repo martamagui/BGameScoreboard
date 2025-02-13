@@ -9,5 +9,6 @@ data class BoardGame(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val image: Bitmap
+    val image: Bitmap,
+    val isFavorite: Boolean = false
 )

@@ -1,9 +1,10 @@
 package com.mmag.bgamescoreboard.ui.common
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,8 +44,10 @@ fun BGSToolbar(title: String, backAction: (() -> Unit)?) {
 fun BGSScrollableToolbar(
     title: String,
     backAction: () -> Unit,
-    action: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior
+    deleteAction: () -> Unit,
+    markAsFavouriteAction: () -> Unit,
+    isFavorite: Boolean,
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     CenterAlignedTopAppBar(
         title = { },
@@ -57,7 +60,13 @@ fun BGSScrollableToolbar(
             }
         },
         actions = {
-            IconButton(onClick = { action() }) {
+            IconButton(onClick = { markAsFavouriteAction() }) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                    contentDescription = stringResource(id = R.string.favorite_icon_description)
+                )
+            }
+            IconButton(onClick = { deleteAction() }) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = stringResource(id = R.string.delete_icon_description)

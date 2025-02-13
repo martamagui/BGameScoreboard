@@ -8,6 +8,7 @@ import com.mmag.bgamescoreboard.domain.use_cases.categories.SaveCategoryUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.DeleteGameUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.GetAllGamesUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.GetGameDetailsUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game.MarkAsFavoriteUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game_record.DeleteRecordUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game_record.GetRecordsCountUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.player.GetSavedPlayersUseCase
@@ -40,6 +41,12 @@ object UseCaseModule {
     @Singleton
     fun provideDeleteGameUseCase(boardGameRepository: BoardGameRepository): DeleteGameUseCase {
         return DeleteGameUseCase(boardGameRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesMarkAsFavoriteUseCase(boardGameRepository: BoardGameRepository): MarkAsFavoriteUseCase {
+        return MarkAsFavoriteUseCase(boardGameRepository)
     }
     //endregion Game
 

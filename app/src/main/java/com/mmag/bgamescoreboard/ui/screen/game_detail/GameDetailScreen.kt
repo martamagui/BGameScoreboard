@@ -46,7 +46,7 @@ fun GameDetailScreen(
     navController: NavController,
     viewModel: GameDetailViewModel = hiltViewModel<GameDetailViewModel>().also {
         it.getGameDetails(gameId)
-    }
+    },
 ) {
     val state by viewModel.uiState.collectAsState()
     var shouldShowDialog by rememberSaveable { mutableStateOf(false) }
@@ -57,8 +57,15 @@ fun GameDetailScreen(
             BGSScrollableToolbar(
                 title = state.data?.game?.name ?: "...",
                 backAction = { navController.popBackStack() },
-                action = { shouldShowDialog = true },
-                scrollBehavior = scrollBehavior
+                markAsFavouriteAction = {
+                    viewModel.markAsFavourite(
+                        gameId,
+                        state.data?.game?.isFavorite ?: false
+                    )
+                },
+                deleteAction = { shouldShowDialog = true },
+                scrollBehavior = scrollBehavior,
+                isFavorite = state.data?.game?.isFavorite ?: false
             )
         }, floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -107,7 +114,7 @@ fun GameDetailScreen(
 fun GameDetailContent(
     modifier: Modifier,
     data: BoardGameWithGameRecordRelation,
-    navController: NavController
+    navController: NavController,
 ) {
     Column(modifier = modifier) {
         GameDetailContentHeader(data, Modifier.fillMaxWidth())
