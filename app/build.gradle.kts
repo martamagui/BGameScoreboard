@@ -52,7 +52,6 @@ android {
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
-
     applicationVariants.all {
         val variant = this
         outputs.all {
@@ -93,7 +92,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     testImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.testExtJunit)

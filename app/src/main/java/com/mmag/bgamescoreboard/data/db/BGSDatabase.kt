@@ -23,7 +23,7 @@ import com.mmag.bgamescoreboard.data.db.utils.ImageTypeConverters
         Score::class,
         ScoringCategory::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(ImageTypeConverters::class)
 abstract class BGSDatabase : RoomDatabase() {
