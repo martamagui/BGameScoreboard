@@ -38,6 +38,6 @@ class GameDetailViewModel @Inject constructor(
     }
 
     fun markAsFavourite(gameId: Int, isFavorite: Boolean) = viewModelScope.launch {
-        markAsFavoriteUseCase.invoke(gameId, !isFavorite)
+        markAsFavoriteUseCase.invoke(gameId, isFavorite)
     }
 }

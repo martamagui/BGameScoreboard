@@ -14,10 +14,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.mmag.bgamescoreboard.R
+import java.lang.reflect.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +64,9 @@ fun BGSScrollableToolbar(
         actions = {
             IconButton(onClick = { markAsFavouriteAction() }) {
                 Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
-                    contentDescription = stringResource(id = R.string.favorite_icon_description)
+                    imageVector = Icons.Filled.Star,
+                    tint = if(isFavorite) Color.Yellow else Color.White.copy(alpha = 0.6f),
+                    contentDescription = stringResource(id = R.string.favorite_icon_description),
                 )
             }
             IconButton(onClick = { deleteAction() }) {

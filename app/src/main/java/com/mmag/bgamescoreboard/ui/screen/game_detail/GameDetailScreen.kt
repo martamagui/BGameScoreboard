@@ -60,7 +60,7 @@ fun GameDetailScreen(
                 markAsFavouriteAction = {
                     viewModel.markAsFavourite(
                         gameId,
-                        state.data?.game?.isFavorite ?: false
+                        !(state.data?.game?.isFavorite ?: false)
                     )
                 },
                 deleteAction = { shouldShowDialog = true },
