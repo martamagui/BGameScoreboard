@@ -54,6 +54,7 @@
     <string name="game_list_screen_title">Bienvenid@!</string>
     <string name="game_list_screen_sub_title">Tus juegos</string>
     <string name="delete_icon_description">Delete</string>
+    <string name="favorite_icon_description">Añadir a favoritos</string>
     <string name="record_detail_category_added_later_than_record">Esta categoría fue creada después de este registro.</string>
 
 </resources>

@@ -1,9 +1,10 @@
 package com.mmag.bgamescoreboard.ui.common
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -13,10 +14,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.mmag.bgamescoreboard.R
+import java.lang.reflect.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,8 +46,10 @@ fun BGSToolbar(title: String, backAction: (() -> Unit)?) {
 fun BGSScrollableToolbar(
     title: String,
     backAction: () -> Unit,
-    action: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior
+    deleteAction: () -> Unit,
+    markAsFavouriteAction: () -> Unit,
+    isFavorite: Boolean,
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     CenterAlignedTopAppBar(
         title = { },
@@ -57,7 +62,14 @@ fun BGSScrollableToolbar(
             }
         },
         actions = {
-            IconButton(onClick = { action() }) {
+            IconButton(onClick = { markAsFavouriteAction() }) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    tint = if(isFavorite) Color.Yellow else Color.White.copy(alpha = 0.6f),
+                    contentDescription = stringResource(id = R.string.favorite_icon_description),
+                )
+            }
+            IconButton(onClick = { deleteAction() }) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = stringResource(id = R.string.delete_icon_description)

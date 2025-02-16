@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.domain.use_cases.game.DeleteGameUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.GetGameDetailsUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.game.MarkAsFavoriteUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class GameDetailViewModel @Inject constructor(
     private val deleteGameUseCase: DeleteGameUseCase,
     private val getGameDetailsUseCase: GetGameDetailsUseCase,
+    private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
     private var _uiState: MutableStateFlow<GameDetailUIState> =
         MutableStateFlow(GameDetailUIState(status = UiStatus.LOADING))
@@ -35,4 +37,7 @@ class GameDetailViewModel @Inject constructor(
         deleteGameUseCase.invoke(gameId)
     }
 
+    fun markAsFavourite(gameId: Int, isFavorite: Boolean) = viewModelScope.launch {
+        markAsFavoriteUseCase.invoke(gameId, isFavorite)
+    }
 }
