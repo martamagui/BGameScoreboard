@@ -41,6 +41,7 @@ import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.theme.Typography
+import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter
 
 @Composable
 fun GameRecordPlayersScreen(
@@ -48,7 +49,7 @@ fun GameRecordPlayersScreen(
     navController: NavController,
     viewModel: GameRecordPlayersViewModel = hiltViewModel<GameRecordPlayersViewModel>().apply {
         this.gameId = gameId
-    }
+    },
 ) {
     val uiState by viewModel.playersUIState.collectAsState()
     var userName by rememberSaveable { mutableStateOf("") }
@@ -82,7 +83,7 @@ fun GameRecordPlayersScreen(
                                     userName = ""
                                 }
                             } else {
-                                userName = it
+                                userName = it.capitalizeFirstLetter()
                             }
                         },
                         modifier = Modifier.fillMaxWidth(0.85f)

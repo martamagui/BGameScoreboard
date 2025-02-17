@@ -39,7 +39,11 @@ class GameListViewModel @Inject constructor(
     private fun getAllGames() = viewModelScope.launch(Dispatchers.IO) {
         getAllGamesUseCase.invoke().collect { games ->
             if (games != null) {
-                _uiState.update { it.copy(status = UiStatus.SUCCESS, data = games) }
+                _uiState.update {
+                    it.copy(
+                        status = UiStatus.SUCCESS,
+                        data = games.sortedByDescending { game -> game.isFavorite })
+                }
             } else {
                 _uiState.update { it.copy(status = UiStatus.EMPTY_RESPONSE) }
             }
