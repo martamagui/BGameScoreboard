@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toolbar_back_action_description">Zurück</string>
+    <string name="toolbar_delete_action_description">Löschen</string>
+
+    <string name="game_list_add">Neues Spiel hinzufügen</string>
+    <string name="game_list_record_amount_title">Partien</string>
+    <string name="game_list_games_amount_title">Spiele</string>
+
+    <string name="new_game_title">Neues Spiel hinzufügen</string>
+    <string name="new_game_camera_icon_description">Foto machen</string>
+    <string name="new_game_camera_title">Mache ein Foto vom Spiel</string>
+    <string name="new_game_game_name_label">Spielname</string>
+    <string name="new_game_action_button">Spiel speichern</string>
+    <string name="new_game_no_photo_error">Das Bild konnte nicht gespeichert werden.</string>
+
+    <string name="game_list_no_games_found_title">Noch keine Spiele hinzugefügt.</string>
+    <string name="game_list_searching_games_title">Suche nach deinen Spielen…</string>
+    <string name="game_detail_no_game_found_title">Spiel nicht gefunden</string>
+    <string name="game_detail_add_icon_description">Neuen Eintrag hinzufügen</string>
+    <string name="game_detail_no_records_added">Noch keine Einträge…\nZeit für eine Runde, oder?</string>
+
+    <string name="game_detail_delete_game_dialog_title">Spiel löschen</string>
+    <string name="game_detail_delete_game_dialog_description">Du bist dabei, dieses Spiel und alle zugehörigen Punkteaufzeichnungen zu löschen. Bist du sicher?</string>
+    <string name="game_detail_delete_game_dialog_positive_button">Spiel und Aufzeichnungen löschen</string>
+    <string name="game_detail_delete_game_dialog_negative_button">Abbrechen</string>
+
+    <string name="game_detail_delete_record_dialog_title">Eintrag löschen</string>
+    <string name="game_detail_delete_record_dialog_description">Du bist dabei, diesen Punkte-Eintrag zu löschen. Bist du sicher?</string>
+    <string name="game_detail_delete_record_dialog_positive_button">Eintrag löschen</string>
+    <string name="game_detail_delete_record_dialog_negative_button">Abbrechen</string>
+
+    <string name="players_screen_title">Wer spielt heute mit?</string>
+    <string name="players_screen_no_players_found">Noch keine Spieler gefunden.</string>
+    <string name="players_screen_button_text">Spieler speichern</string>
+    <string name="players_screen_hint">Neuen Spieler hinzufügen</string>
+
+    <string name="categories_screen_title">Punkte-Kategorien</string>
+    <string name="categories_screen_description">Die Punkte werden für folgende Kategorien erfasst:</string>
+    <string name="categories_screen_category_hint">Neue Kategorie hinzufügen</string>
+    <string name="categories_screen_category_description">Kategorie hinzufügen</string>
+    <string name="categories_screen_category_open_description">Öffnen</string>
+    <string name="categories_screen_category_close_description">Schließen</string>
+    <string name="categories_screen_action_button">Punkte erfassen</string>
+
+    <string name="not_game_found_error">Spiel nicht gefunden.</string>
+    <string name="players_screen_person_icon_description">Personen-Symbol</string>
+    <string name="record_score_screen_title">Kategorie: %1$s</string>
+    <string name="error_category_not_found">Kategorie nicht gefunden.</string>
+    <string name="record_score_category_not_found_button">Zur Startseite zurückkehren</string>
+    <string name="record_score_screen_save_scores_button">Punkte speichern</string>
+    <string name="record_detail_not_found_message">Die gesuchten Punkte scheinen nicht hier zu sein.</string>
+
+    <string name="game_list_screen_title">Willkommen!</string>
+    <string name="game_list_screen_sub_title">Deine Spiele</string>
+    <string name="record_detail_category_added_later_than_record">Diese Kategorie wurde nach diesem Eintrag erstellt.</string>
+
+    <string name="delete_icon_description">Löschen</string>
+    <string name="favorite_icon_description">Zu Favoriten hinzufügen</string>
+</resources>

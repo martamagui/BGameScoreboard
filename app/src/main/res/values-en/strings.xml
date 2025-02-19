@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toolbar_back_action_description">Go back</string>
+    <string name="toolbar_delete_action_description">Delete</string>
+
+    <string name="game_list_add">Add new game</string>
+    <string name="game_list_record_amount_title">Recorded matches</string>
+    <string name="game_list_games_amount_title">Games</string>
+
+    <string name="new_game_title">Add new game</string>
+    <string name="new_game_camera_icon_description">Take a photo</string>
+    <string name="new_game_camera_title">Take a picture of the game</string>
+    <string name="new_game_game_name_label">Game name</string>
+    <string name="new_game_action_button">Save game</string>
+    <string name="new_game_no_photo_error">The image could not be saved.</string>
+
+    <string name="game_list_no_games_found_title">No games added yet.</string>
+    <string name="game_list_searching_games_title">Searching for your games…</string>
+    <string name="game_detail_no_game_found_title">Game not found</string>
+    <string name="game_detail_add_icon_description">Add new record</string>
+    <string name="game_detail_no_records_added">No records yet…\nTime to play a game, right?</string>
+
+    <string name="game_detail_delete_game_dialog_title">Delete game</string>
+    <string name="game_detail_delete_game_dialog_description">You are about to delete this game and all related score records. Are you sure?</string>
+    <string name="game_detail_delete_game_dialog_positive_button">Delete game and records</string>
+    <string name="game_detail_delete_game_dialog_negative_button">Cancel</string>
+
+    <string name="game_detail_delete_record_dialog_title">Delete record</string>
+    <string name="game_detail_delete_record_dialog_description">You are about to delete this score record. Are you sure?</string>
+    <string name="game_detail_delete_record_dialog_positive_button">Delete record</string>
+    <string name="game_detail_delete_record_dialog_negative_button">Cancel</string>
+
+    <string name="players_screen_title">Who\'s playing today?</string>
+    <string name="players_screen_no_players_found">No players found yet.</string>
+    <string name="players_screen_button_text">Save players</string>
+    <string name="players_screen_hint">Add a new player</string>
+
+    <string name="categories_screen_title">Scoring categories</string>
+    <string name="categories_screen_description">Scores will be recorded in:</string>
+    <string name="categories_screen_category_hint">Add a new category</string>
+    <string name="categories_screen_category_description">Add category</string>
+    <string name="categories_screen_category_open_description">Open</string>
+    <string name="categories_screen_category_close_description">Close</string>
+    <string name="categories_screen_action_button">Start scoring</string>
+
+    <string name="not_game_found_error">Game not found.</string>
+    <string name="players_screen_person_icon_description">Person icon</string>
+    <string name="record_score_screen_title">Category: %1$s</string>
+    <string name="error_category_not_found">Category not found.</string>
+    <string name="record_score_category_not_found_button">Return to Home</string>
+    <string name="record_score_screen_save_scores_button">Save score</string>
+    <string name="record_detail_not_found_message">It looks like the scores you\'re looking for aren\'t here.</string>
+
+    <string name="game_list_screen_title">Welcome!</string>
+    <string name="game_list_screen_sub_title">Your games</string>
+    <string name="record_detail_category_added_later_than_record">This category was created after this record.</string>
+
+    <string name="delete_icon_description">Delete</string>
+    <string name="favorite_icon_description">Add to favorites</string>
+</resources>
