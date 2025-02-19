@@ -24,11 +24,13 @@
     <string name="game_detail_delete_game_dialog_description">Du bist dabei, dieses Spiel und alle zugehörigen Punkteaufzeichnungen zu löschen. Bist du sicher?</string>
     <string name="game_detail_delete_game_dialog_positive_button">Spiel und Aufzeichnungen löschen</string>
     <string name="game_detail_delete_game_dialog_negative_button">Abbrechen</string>
-
     <string name="game_detail_delete_record_dialog_title">Eintrag löschen</string>
     <string name="game_detail_delete_record_dialog_description">Du bist dabei, diesen Punkte-Eintrag zu löschen. Bist du sicher?</string>
     <string name="game_detail_delete_record_dialog_positive_button">Eintrag löschen</string>
     <string name="game_detail_delete_record_dialog_negative_button">Abbrechen</string>
+    <string name="game_detail_game_marked_favorite_message">Spiel als Favorit gespeichert</string>
+    <string name="game_detail_game_unmarked_favorite_message">Spiel aus Favoriten entfernt</string>
+    <string name="game_detail_game_undo_favorite">Rückgängig machen</string>
 
     <string name="players_screen_title">Wer spielt heute mit?</string>
     <string name="players_screen_no_players_found">Noch keine Spieler gefunden.</string>

@@ -2,7 +2,10 @@ package com.mmag.bgamescoreboard.ui.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,8 +24,9 @@ import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.Recor
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun BGSNavGraph(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ) {
+
     NavHost(
         navController = navController,
         startDestination = BGSConfigRoutes.HOME

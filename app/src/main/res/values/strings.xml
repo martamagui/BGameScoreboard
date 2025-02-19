@@ -16,19 +16,21 @@
 
     <string name="game_list_no_games_found_title">Todavía no hay ningún juego añadido.</string>
     <string name="game_list_searching_games_title">Buscando tus jueguitos…</string>
+
     <string name="game_detail_no_game_found_title">Juego no encontrado</string>
     <string name="game_detail_add_icon_description">Añadir nuevo registro</string>
     <string name="game_detail_no_records_added">Aun no hay ningún registro…\nVa siendo hora de jugar una, ¿no?</string>
-
     <string name="game_detail_delete_game_dialog_title">Eliminar juego</string>
     <string name="game_detail_delete_game_dialog_description">Estás a punto de elimnar este juego y todos los registros de puntuación relacionados con él. ¿Estás seguro de ello?</string>
     <string name="game_detail_delete_game_dialog_positive_button">Eliminar juego y registros</string>
     <string name="game_detail_delete_game_dialog_negative_button">Cancelar</string>
-
     <string name="game_detail_delete_record_dialog_title">Eliminar registro</string>
     <string name="game_detail_delete_record_dialog_description">Estás a punto de elimnar este registro de puntuación. ¿Estás seguro de ello?</string>
     <string name="game_detail_delete_record_dialog_positive_button">Eliminar registro</string>
     <string name="game_detail_delete_record_dialog_negative_button">Cancelar</string>
+    <string name="game_detail_game_marked_favorite_message">Juego guardado como favorito</string>
+    <string name="game_detail_game_unmarked_favorite_message">Juego quitado de tus favoritos</string>
+    <string name="game_detail_game_undo_favorite">Deshacer</string>
 
     <string name="players_screen_title">¿Quién está jugando hoy?</string>
     <string name="players_screen_no_players_found">No se ha encontrado a ningún jugador aún.</string>
@@ -42,7 +44,6 @@
     <string name="categories_screen_category_open_description">Abrir</string>
     <string name="categories_screen_category_close_description">Cerrar</string>
     <string name="categories_screen_action_button">Empezar a puntuar</string>
-
 
     <string name="not_game_found_error">Juego no encontrado.</string>
     <string name="players_screen_person_icon_description">Icono de persona</string>

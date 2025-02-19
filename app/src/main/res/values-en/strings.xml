@@ -16,19 +16,21 @@
 
     <string name="game_list_no_games_found_title">No games added yet.</string>
     <string name="game_list_searching_games_title">Searching for your games…</string>
+
     <string name="game_detail_no_game_found_title">Game not found</string>
     <string name="game_detail_add_icon_description">Add new record</string>
     <string name="game_detail_no_records_added">No records yet…\nTime to play a game, right?</string>
-
     <string name="game_detail_delete_game_dialog_title">Delete game</string>
     <string name="game_detail_delete_game_dialog_description">You are about to delete this game and all related score records. Are you sure?</string>
     <string name="game_detail_delete_game_dialog_positive_button">Delete game and records</string>
     <string name="game_detail_delete_game_dialog_negative_button">Cancel</string>
-
     <string name="game_detail_delete_record_dialog_title">Delete record</string>
     <string name="game_detail_delete_record_dialog_description">You are about to delete this score record. Are you sure?</string>
     <string name="game_detail_delete_record_dialog_positive_button">Delete record</string>
     <string name="game_detail_delete_record_dialog_negative_button">Cancel</string>
+    <string name="game_detail_game_marked_favorite_message">Game marked as favorite</string>
+    <string name="game_detail_game_unmarked_favorite_message">Game removed from favorites</string>
+    <string name="game_detail_game_undo_favorite">Undo</string>
 
     <string name="players_screen_title">Who\'s playing today?</string>
     <string name="players_screen_no_players_found">No players found yet.</string>
