@@ -1,5 +1,7 @@
 package com.mmag.bgamescoreboard.ui.screen.game_list.components
 
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +17,9 @@ import com.mmag.bgamescoreboard.R
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun GameListScreenTopAppBar() {
-    CenterAlignedTopAppBar(title = {
+    CenterAlignedTopAppBar(
+        modifier = Modifier.defaultMinSize(minHeight = 80.dp),
+        title = {
         Text(
             text = stringResource(id = R.string.game_list_screen_title),
             fontSize = 32.sp,

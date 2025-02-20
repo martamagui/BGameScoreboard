@@ -12,14 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.DismissDirection
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,7 +41,7 @@ import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
 import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun GameListItemBoardGame(
     onClickAction: () -> Unit,
@@ -54,21 +52,21 @@ fun GameListItemBoardGame(
     var show by remember { mutableStateOf(true) }
     var resetState by remember { mutableStateOf(false) }
 
-    var dismissState = rememberDismissState(
+    var dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+            if (it == SwipeToDismissBoxValue.EndToStart || it ==  SwipeToDismissBoxValue.StartToEnd) {
                 show = false
                 !resetState
                 true
             } else false
-        }, positionalThreshold = { 100.dp.toPx() }
+        }, positionalThreshold = { 100F }
     )
 
     ElevatedCard(
         modifier = modifier,
         onClick = { onClickAction() }
     ) {
-        SwipeToDismiss(
+        SwipeToDismissBox(
             state = dismissState,
             modifier = Modifier
                 .fillMaxWidth()
@@ -77,33 +75,33 @@ fun GameListItemBoardGame(
                         resetState = true
                     }
                 },
-            background = { SwipeableItemBackground(dismissState = dismissState) },
-            directions = setOf(DismissDirection.StartToEnd),
-            dismissContent = {
-                Box(
+            backgroundContent = { SwipeableItemBackground(dismissState = dismissState) },
+            enableDismissFromStartToEnd = true,
+            enableDismissFromEndToStart = false
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .clip(shape = RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    bitmap = boardGame.image.asImageBitmap(),
+                    contentDescription = boardGame.name,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp)
-                        .clip(shape = RoundedCornerShape(12.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        bitmap = boardGame.image.asImageBitmap(),
-                        contentDescription = boardGame.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .background(vertGradShadow)
-                            .fillMaxSize()
-                            .alpha(0.2f)
-                    )
-                    GameListItemTitle(boardGame, Modifier.fillMaxWidth())
-                }
+                )
+                Box(
+                    modifier = Modifier
+                        .background(vertGradShadow)
+                        .fillMaxSize()
+                        .alpha(0.2f)
+                )
+                GameListItemTitle(boardGame, Modifier.fillMaxWidth())
             }
-        )
+        }
     }
 
     LaunchedEffect(show) {

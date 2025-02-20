@@ -1,13 +1,13 @@
 plugins {
-    id(Plugins.application)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.ksp)
-    id(Plugins.hilt)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.mmag.bgamescoreboard"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.mmag.bgamescoreboard"
@@ -65,41 +65,32 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core)
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.navigation.compose)
 
-    implementation(Libs.AndroidX.coreKtx)
-    implementation(Libs.AndroidX.lifecycleRuntimeKtx)
-    implementation(Libs.AndroidX.Compose.activityCompose)
-    implementation(platform(Libs.AndroidX.Compose.composeBom))
-    implementation(Libs.AndroidX.Compose.composeUi)
-    implementation(Libs.AndroidX.Compose.composeUiGraphics)
-    implementation(Libs.AndroidX.Compose.composeUiToolingPreview)
-    implementation(Libs.AndroidX.Compose.composeMaterial3)
-    implementation(Libs.AndroidX.Compose.navigationCompose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
-    implementation(Libs.Hilt.hiltAndroid)
-    ksp(Libs.Hilt.hiltAndroidCompiler)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    implementation(Libs.AndroidX.Compose.hiltNavigationCompose)
+    implementation(libs.coil.compose)
 
-    implementation(Libs.Room.roomRuntime)
-    annotationProcessor(Libs.Room.roomCompiler)
-    ksp(Libs.Room.roomCompiler)
-    implementation(Libs.Room.roomKtx)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test)
+    androidTestImplementation(platform(libs.compose.bom.test))
 
-    //For rememberLauncherForActivityResult()
-    implementation("androidx.activity:activity-compose:1.8.2")
-
-    //For PickVisualMedia contract
-    implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-    testImplementation(Libs.AndroidX.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.testExtJunit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
-    androidTestImplementation(Libs.AndroidX.Test.composeUiTestJUnit4)
-    androidTestImplementation(platform(Libs.AndroidX.Compose.composeBom))
-    debugImplementation(Libs.AndroidX.Compose.composeUiTooling)
-    debugImplementation(Libs.AndroidX.Test.composeUiTestManifest)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.test.manifest)
 }
