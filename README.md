@@ -31,11 +31,11 @@ Native Android app to save board game scores. It allows users to record and upda
 ## Roadmap
 - [x] Include the posibility to mark a game as favourite and show it in the UI.
 - [x] Complete the migration to DB v2.
-- [ ] Introduce english translations for string resources.
+- [x] Introduce english translations for string resources.
 - [ ] Include a dialog to warn the user when no players has been selected to create a new record.
 - [ ] Build a edit game screen.
 - [ ] Add a edit score screen.
-- [ ] Migrate gradle to version catalog.
+- [x] Migrate gradle to version catalog.
 - [ ] Add tests to the project.
 
 If you have any questions or suggestions, feel free to open an issue or contact me via GitHub or Linkedin.
