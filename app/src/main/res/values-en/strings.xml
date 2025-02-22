@@ -2,6 +2,7 @@
 <resources>
     <string name="toolbar_back_action_description">Go back</string>
     <string name="toolbar_delete_action_description">Delete</string>
+    <string name="toolbar_edit_action_description">Edit</string>
 
     <string name="game_list_add">Add new game</string>
     <string name="game_list_record_amount_title">Recorded matches</string>

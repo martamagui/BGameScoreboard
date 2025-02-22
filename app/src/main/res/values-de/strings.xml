@@ -2,6 +2,7 @@
 <resources>
     <string name="toolbar_back_action_description">Zurück</string>
     <string name="toolbar_delete_action_description">Löschen</string>
+    <string name="toolbar_edit_action_description">Bearbeiten</string>
 
     <string name="game_list_add">Neues Spiel hinzufügen</string>
     <string name="game_list_record_amount_title">Partien</string>

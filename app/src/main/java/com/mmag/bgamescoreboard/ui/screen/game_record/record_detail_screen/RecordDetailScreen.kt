@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 fun RecordDetailScreen(
     recordId: Int,
     navController: NavController,
-    viewModel: RecordDetailViewModel = hiltViewModel<RecordDetailViewModel>()
+    viewModel: RecordDetailViewModel = hiltViewModel<RecordDetailViewModel>(),
 ) {
     LaunchedEffect(rememberCoroutineScope()) {
         viewModel.getCategories(recordId)
@@ -47,7 +47,7 @@ fun RecordDetailScreen(
 
     Scaffold(
         topBar = {
-            RecordToolbar(state, { shouldShowDeleteDialog = true }, navController)
+            RecordToolbar(state, { shouldShowDeleteDialog = true }, {/*TODO add edit mode*/}, navController)
         }
     ) { paddingValues ->
         Column(
@@ -66,10 +66,7 @@ fun RecordDetailScreen(
             ) {
                 when (state.status) {
                     UiStatus.LOADING -> {}
-                    UiStatus.SUCCESS -> RecordDetailContent(
-                        viewModel
-                    )
-
+                    UiStatus.SUCCESS -> RecordDetailContent(viewModel)
                     UiStatus.ERROR -> {}
                     else -> {
                         Text(text = stringResource(id = R.string.record_detail_not_found_message))

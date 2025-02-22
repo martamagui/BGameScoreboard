@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">BG Record</string>
     <string name="toolbar_back_action_description">Retroceder</string>
     <string name="toolbar_delete_action_description">Borrar</string>
+    <string name="toolbar_edit_action_description">Editar</string>
 
     <string name="game_list_add">Añadir nuevo juego</string>
     <string name="game_list_record_amount_title">Partidas registradas</string>
