@@ -6,13 +6,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.sp
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 
 @Composable
 fun RecordDetailItem(score: ScoreWithPlayer, modifier: Modifier) {
     Row(
-        modifier = modifier,
+        modifier = modifier.testTag("RecordDetailItem"),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom
     ) {
