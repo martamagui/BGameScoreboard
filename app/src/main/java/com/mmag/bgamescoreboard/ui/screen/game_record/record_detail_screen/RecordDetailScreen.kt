@@ -23,7 +23,9 @@ import androidx.navigation.NavController
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteRecordDialog
+import com.mmag.bgamescoreboard.ui.screen.dialogs.QuitEditRecordDialog
 import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.components.RecordDetailContent
+import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.components.RecordDetailEditContent
 import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.components.RecordToolbar
 import kotlinx.coroutines.delay
 
@@ -43,11 +45,24 @@ fun RecordDetailScreen(
     var wasRecordDeleted by rememberSaveable {
         mutableStateOf(false)
     }
+    var isEditMode by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var shouldShowEditDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
     val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
-            RecordToolbar(state, { shouldShowDeleteDialog = true }, {/*TODO add edit mode*/}, navController)
+            RecordToolbar(
+                state,
+                showDeleteDialog = { shouldShowDeleteDialog = true },
+                enableDisableEditMode = { isEditMode = true },
+                quitEditModeMode = { shouldShowEditDialog = true },
+                isEditMode,
+                navController
+            )
         }
     ) { paddingValues ->
         Column(
@@ -61,12 +76,35 @@ fun RecordDetailScreen(
                     wasRecordDeleted = true
                 }
             }
+
+            if (shouldShowEditDialog) {
+                QuitEditRecordDialog(
+                    onQuitWithoutSaving = {
+                        isEditMode = false
+                        shouldShowEditDialog = false
+                    },
+                    onSaveAndQuit = {
+                        //TODO save changes
+                        isEditMode = false
+                        shouldShowEditDialog = false
+                    },
+                    onDismiss = {
+                        shouldShowEditDialog = false
+                    })
+            }
+
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
                 when (state.status) {
                     UiStatus.LOADING -> {}
-                    UiStatus.SUCCESS -> RecordDetailContent(viewModel)
+                    UiStatus.SUCCESS ->
+                        if (isEditMode) {
+                            RecordDetailEditContent(viewModel)
+                        } else {
+                            RecordDetailContent(viewModel)
+                        }
+
                     UiStatus.ERROR -> {}
                     else -> {
                         Text(text = stringResource(id = R.string.record_detail_not_found_message))

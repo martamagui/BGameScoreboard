@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">BG Record</string>
+
     <string name="toolbar_back_action_description">Retroceder</string>
     <string name="toolbar_delete_action_description">Borrar</string>
+    <string name="toolbar_finish_action_description">Finalizar</string>
     <string name="toolbar_edit_action_description">Editar</string>
 
     <string name="game_list_add">Añadir nuevo juego</string>
@@ -32,6 +34,11 @@
     <string name="game_detail_game_marked_favorite_message">Juego guardado como favorito</string>
     <string name="game_detail_game_unmarked_favorite_message">Juego quitado de tus favoritos</string>
     <string name="game_detail_game_undo_favorite">Deshacer</string>
+
+    <string name="record_detail_quit_edit_dialog_title">Salir de la edición</string>
+    <string name="record_detail_quit_edit_dialog_description">Estás a punto de abandonar el modo edición.</string>
+    <string name="record_detail_quit_edit_dialog_confirm_without_saving_button">Salir sin guardar</string>
+    <string name="record_detail_quit_edit_dialog_confirm_saving_button">Guardar y salir</string>
 
     <string name="players_screen_title">¿Quién está jugando hoy?</string>
     <string name="players_screen_no_players_found">No se ha encontrado a ningún jugador aún.</string>

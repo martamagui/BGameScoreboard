@@ -3,6 +3,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.comp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,7 +28,9 @@ fun RecordToolbar(
     state: RecordDetailUiState,
     showDeleteDialog: () -> Unit,
     enableDisableEditMode: () -> Unit,
-    navController: NavController
+    quitEditModeMode: () -> Unit,
+    isEditMode: Boolean,
+    navController: NavController,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     MediumTopAppBar(
@@ -41,17 +44,26 @@ fun RecordToolbar(
             )
         },
         actions = {
-            IconButton(onClick = { enableDisableEditMode() }) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
-                )
-            }
-            IconButton(onClick = { showDeleteDialog() }) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
-                )
+            if (isEditMode) {
+                IconButton(onClick = { quitEditModeMode() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
+                    )
+                }
+            } else {
+                IconButton(onClick = { enableDisableEditMode() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
+                    )
+                }
+                IconButton(onClick = { showDeleteDialog() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(id = R.string.toolbar_delete_action_description)
+                    )
+                }
             }
         },
         navigationIcon = {

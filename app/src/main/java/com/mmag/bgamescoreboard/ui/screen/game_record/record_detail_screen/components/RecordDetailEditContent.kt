@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.RecordDetailViewModel
 
 @Composable
-fun RecordDetailContent(
+fun RecordDetailEditContent(
     viewModel: RecordDetailViewModel,
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -29,7 +29,7 @@ fun RecordDetailContent(
     ] ?: listOf()
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().testTag("RecordDetailContent"),
+        modifier = Modifier.fillMaxSize().testTag("RecordDetailEditContent"),
         contentPadding = PaddingValues(4.dp)
     ) {
         item {
@@ -47,14 +47,10 @@ fun RecordDetailContent(
         if (scores.isEmpty()) {
             item {
                 RecordDetailEmptyScoresItem(Modifier.fillMaxWidth())
+                //TODO add a quit button
             }
         }
-        items(scores) { score ->
-            RecordDetailItem(
-                score, Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 12.dp)
-            )
-        }
+
+        //Todo create edit items
     }
 }

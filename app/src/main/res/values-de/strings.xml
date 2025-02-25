@@ -2,6 +2,7 @@
 <resources>
     <string name="toolbar_back_action_description">Zurück</string>
     <string name="toolbar_delete_action_description">Löschen</string>
+    <string name="toolbar_finish_action_description">Abschließen</string>
     <string name="toolbar_edit_action_description">Bearbeiten</string>
 
     <string name="game_list_add">Neues Spiel hinzufügen</string>
@@ -32,6 +33,11 @@
     <string name="game_detail_game_marked_favorite_message">Spiel als Favorit gespeichert</string>
     <string name="game_detail_game_unmarked_favorite_message">Spiel aus Favoriten entfernt</string>
     <string name="game_detail_game_undo_favorite">Rückgängig machen</string>
+
+    <string name="record_detail_quit_edit_dialog_title">Bearbeitung beenden</string>
+    <string name="record_detail_quit_edit_dialog_description">Du bist dabei, den Bearbeitungsmodus zu verlassen.</string>
+    <string name="record_detail_quit_edit_dialog_confirm_without_saving_button">Ohne Speichern beenden</string>
+    <string name="record_detail_quit_edit_dialog_confirm_saving_button">Speichern und beenden</string>
 
     <string name="players_screen_title">Wer spielt heute mit?</string>
     <string name="players_screen_no_players_found">Noch keine Spieler gefunden.</string>
