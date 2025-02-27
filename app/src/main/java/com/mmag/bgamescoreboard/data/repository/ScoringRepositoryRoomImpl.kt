@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class ScoringRepositoryRoomImpl @Inject constructor(
-    val database: BGSDatabase
+    val database: BGSDatabase,
 ) : ScoringRepository {
 
     override suspend fun addCategory(gameId: Int, categoryName: String) {
@@ -25,7 +25,6 @@ class ScoringRepositoryRoomImpl @Inject constructor(
 
     override fun getRecordsCount(): Flow<List<GameScoreRecord>> = database.recordDao().getRecords()
 
-
     override fun getRecordWithCategories(recordId: Int): Flow<RecordWithCategories?> =
         database.recordDao().getRecordWithCategories(recordId)
 
@@ -35,19 +34,20 @@ class ScoringRepositoryRoomImpl @Inject constructor(
     override suspend fun getScoreByRecordIdAndPlayer(
         recordId: Int,
         playerId: Int,
-        categoryId: Int
+        categoryId: Int,
     ): Score? =
         database.scoreDao().getScoreByRecordIdCategoryAndPlayer(recordId, playerId, categoryId)
 
+
     override fun getScoresWithPlayersByCategory(
         recordId: Int,
-        categoryId: Int
+        categoryId: Int,
     ): Flow<List<ScoreWithPlayer>> =
         database.scoreDao().getScoresWithPlayers(recordId, categoryId)
 
     override suspend fun getPlayersScoresFromRecord(
         recordId: Int,
-        playerId: Int
+        playerId: Int,
     ): Int {
         val response = database.scoreDao().getPlayersScoresFromRecord(recordId, playerId).first()
         var points = 0
@@ -70,10 +70,14 @@ class ScoringRepositoryRoomImpl @Inject constructor(
         playerId: Int,
         gameRecordId: Int,
         categoryId: Int,
-        scoreAmount: Int
+        scoreAmount: Int,
     ) {
         val score = Score(0, playerId, gameRecordId, categoryId, scoreAmount)
         database.scoreDao().addScore(score)
+    }
+
+    override suspend fun updateScore(score: Score) {
+        database.scoreDao().updateScore(score)
     }
 
     override suspend fun addRecord(date: String, boardGameId: Int): Long {

@@ -30,14 +30,14 @@ fun QuitEditRecordDialog(
             TextButton(
                 onClick = { onSaveAndQuit() }
             ) {
-                Text(text = stringResource(id = R.string.record_detail_quit_edit_dialog_confirm_saving_button))
+                Text(text = stringResource(id = R.string.record_detail_quit_edit_dialog_confirm_button))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = { onQuitWithoutSaving() }
             ) {
-                Text(stringResource(id = R.string.record_detail_quit_edit_dialog_confirm_without_saving_button))
+                Text(stringResource(id = R.string.record_detail_quit_edit_dialog_dismiss_button))
             }
         },
         modifier = Modifier.testTag("QuitEditRecordDialog")

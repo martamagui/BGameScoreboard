@@ -13,14 +13,18 @@ interface ScoringRepository {
 
     suspend fun addScore(playerId: Int, gameRecordId: Int, categoryId: Int, scoreAmount: Int)
 
+    suspend fun updateScore(score: Score)
+
     suspend fun addRecord(date: String, boardGameId: Int): Long
 
     fun getCategoriesByGameId(gameId: Int): Flow<List<ScoringCategory>>
+
     fun getRecordsCount(): Flow<List<GameScoreRecord>>
 
     fun getRecordWithCategories(gameId: Int): Flow<RecordWithCategories?>
 
     fun getCategoriesByGameRecord(gameRecordId: Int): Flow<List<ScoringCategory>>
+
     suspend fun getPlayersScoresFromRecord(
         recordId: Int,
         playerId: Int
@@ -33,5 +37,6 @@ interface ScoringRepository {
     ): Score?
 
     fun getScoresWithPlayersByCategory(recordId: Int, categoryId: Int): Flow<List<ScoreWithPlayer>>
+
     suspend fun deleteRecordAndScores(recordId: Int)
 }

@@ -34,10 +34,12 @@
     <string name="game_detail_game_unmarked_favorite_message">Game removed from favorites</string>
     <string name="game_detail_game_undo_favorite">Undo</string>
 
+    <string name="record_detail_edit_disclaimer_title">The changes you make will be reflected in the database</string>
+
     <string name="record_detail_quit_edit_dialog_title">Exit Editing</string>
     <string name="record_detail_quit_edit_dialog_description">You are about to leave edit mode.</string>
-    <string name="record_detail_quit_edit_dialog_confirm_without_saving_button">Exit without saving</string>
-    <string name="record_detail_quit_edit_dialog_confirm_saving_button">Save and exit</string>
+    <string name="record_detail_quit_edit_dialog_dismiss_button">Go back</string>
+    <string name="record_detail_quit_edit_dialog_confirm_button">Exit</string>
 
     <string name="players_screen_title">Who\'s playing today?</string>
     <string name="players_screen_no_players_found">No players found yet.</string>

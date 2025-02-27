@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.mmag.bgamescoreboard.data.db.model.Score
 import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
@@ -14,6 +15,9 @@ import kotlinx.coroutines.flow.Flow
 interface ScoreDao {
     @Insert
     suspend fun addScore(score: Score)
+
+    @Update
+    suspend fun updateScore(score: Score)
 
     @Query("SELECT *  FROM Score WHERE game_record_id=:recordId AND player_id=:playerId AND category_id=:categoryId")
     fun getScoreByRecordIdCategoryAndPlayer(recordId: Int, playerId: Int, categoryId: Int): Score?

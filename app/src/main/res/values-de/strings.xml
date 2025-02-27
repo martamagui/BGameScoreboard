@@ -34,10 +34,12 @@
     <string name="game_detail_game_unmarked_favorite_message">Spiel aus Favoriten entfernt</string>
     <string name="game_detail_game_undo_favorite">Rückgängig machen</string>
 
+    <string name="record_detail_edit_disclaimer_title">Die von dir vorgenommenen Änderungen werden in der Datenbank übernommen</string>
+
     <string name="record_detail_quit_edit_dialog_title">Bearbeitung beenden</string>
     <string name="record_detail_quit_edit_dialog_description">Du bist dabei, den Bearbeitungsmodus zu verlassen.</string>
-    <string name="record_detail_quit_edit_dialog_confirm_without_saving_button">Ohne Speichern beenden</string>
-    <string name="record_detail_quit_edit_dialog_confirm_saving_button">Speichern und beenden</string>
+    <string name="record_detail_quit_edit_dialog_dismiss_button">Zurück</string>
+    <string name="record_detail_quit_edit_dialog_confirm_button">Beenden</string>
 
     <string name="players_screen_title">Wer spielt heute mit?</string>
     <string name="players_screen_no_players_found">Noch keine Spieler gefunden.</string>

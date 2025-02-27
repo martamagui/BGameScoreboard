@@ -10,6 +10,7 @@ import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.domain.use_cases.game_record.DeleteRecordUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.scores.GetScoresWithPlayersByCategoryUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
+import com.mmag.bgamescoreboard.utils.getScoreWithPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -109,18 +110,4 @@ class RecordDetailViewModel @Inject constructor(
     }
 
     fun deleteRecord(recordId: Int) = viewModelScope.launch { deleteRecordUseCase.invoke(recordId) }
-
-    private fun getScoreWithPlayer(
-        item: ScoreWithPlayer,
-        recordId: Int,
-        totalScore: Int,
-    ) = ScoreWithPlayer(
-        Score(
-            0, item.player.id,
-            recordId,
-            0,
-            totalScore
-        ),
-        item.player
-    )
 }
