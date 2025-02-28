@@ -81,7 +81,6 @@ private fun RecordDetailEditTabLayout(
         ) {
             item {
                 RecordDetailEmptyScoresItem(Modifier.fillMaxWidth())
-                //TODO add a quit button
             }
         }
 

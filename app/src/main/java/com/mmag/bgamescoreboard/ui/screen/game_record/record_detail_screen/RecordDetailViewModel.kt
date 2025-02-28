@@ -24,7 +24,7 @@ import javax.inject.Inject
 class RecordDetailViewModel @Inject constructor(
     private val scoringRepository: ScoringRepository,
     private val deleteRecordUseCase: DeleteRecordUseCase,
-    private val getScoresWithPlayersByCategoryUseCase: GetScoresWithPlayersByCategoryUseCase
+    private val getScoresWithPlayersByCategoryUseCase: GetScoresWithPlayersByCategoryUseCase,
 ) : ViewModel() {
 
     private var _uiState: MutableStateFlow<RecordDetailUiState> = MutableStateFlow(
@@ -64,10 +64,13 @@ class RecordDetailViewModel @Inject constructor(
 
         if (!currentCategories.isNullOrEmpty() && record != null) {
             val containsTotal = currentCategories.any { item -> item.categoryName == "TOTAL" }
-            if (!containsTotal) {
-                addTotalCategory(currentHashMap, totalScoreList, currentCategories)
-                currentCategories.sortBy { selector -> selector.id }
+            if (containsTotal) {
+                currentHashMap.remove(-1)
+                currentCategories.remove(ScoringCategory(-1, currentCategories.first().gameId, "TOTAL"))
             }
+            addTotalCategory(currentHashMap, totalScoreList, currentCategories)
+            currentCategories.sortBy { selector -> selector.id }
+
             _uiState.update {
                 it.copy(
                     recordWithCategories = RecordWithCategories(record, currentCategories),

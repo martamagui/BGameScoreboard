@@ -12,8 +12,7 @@ import com.mmag.bgamescoreboard.R
 
 @Composable
 fun QuitEditRecordDialog(
-    onQuitWithoutSaving: () -> Unit,
-    onSaveAndQuit: () -> Unit,
+    onQuit: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
@@ -28,14 +27,14 @@ fun QuitEditRecordDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onSaveAndQuit() }
+                onClick = { onQuit() }
             ) {
                 Text(text = stringResource(id = R.string.record_detail_quit_edit_dialog_confirm_button))
             }
         },
         dismissButton = {
             TextButton(
-                onClick = { onQuitWithoutSaving() }
+                onClick = { onDismiss() }
             ) {
                 Text(stringResource(id = R.string.record_detail_quit_edit_dialog_dismiss_button))
             }

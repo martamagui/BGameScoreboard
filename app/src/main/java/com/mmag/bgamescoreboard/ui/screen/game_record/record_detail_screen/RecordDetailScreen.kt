@@ -77,12 +77,7 @@ fun RecordDetailScreen(
 
             if (shouldShowEditDialog) {
                 QuitEditRecordDialog(
-                    onQuitWithoutSaving = {
-                        isEditMode = false
-                        shouldShowEditDialog = false
-                    },
-                    onSaveAndQuit = {
-                        //TODO save changes
+                    onQuit = {
                         isEditMode = false
                         shouldShowEditDialog = false
                     },
