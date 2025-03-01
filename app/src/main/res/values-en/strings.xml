@@ -68,4 +68,8 @@
 
     <string name="delete_icon_description">Delete</string>
     <string name="favorite_icon_description">Add to favorites</string>
+
+    <string name="obtain_image_dialog_title">Please choose where you want to get the image from.</string>
+    <string name="obtain_image_dialog_camera_button">Cámara</string>
+    <string name="obtain_image_dialog_gallery_button">Gallería</string>
 </resources>
