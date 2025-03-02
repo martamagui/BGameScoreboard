@@ -1,4 +1,5 @@
 [versions]
+accompanistPermissions = "0.28.0"
 activityCompose = "1.10.0"
 androidGradlePlugin = "8.1.1"
 composeBom = "2025.02.00"
@@ -23,6 +24,7 @@ composeBomTest = "2023.10.01"
 
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntime" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
