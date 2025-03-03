@@ -70,6 +70,12 @@
     <string name="favorite_icon_description">Add to favorites</string>
 
     <string name="obtain_image_dialog_title">Please choose where you want to get the image from.</string>
-    <string name="obtain_image_dialog_camera_button">Cámara</string>
-    <string name="obtain_image_dialog_gallery_button">Gallería</string>
+    <string name="obtain_image_dialog_camera_button">Camera</string>
+    <string name="obtain_image_dialog_gallery_button">Gallery</string>
+
+    <string name="camera_permission_rationale_dialog_title">Permission Required</string>
+    <string name="camera_permission_rationale_dialog_description">This app needs access to the camera to take photos. Without this permission, you won\'t be able to capture images from the app. Do you want to grant the permission now?</string>
+    <string name="camera_permission_rationale_dialog_positive_button">Go to settings</string>
+    <string name="camera_permission_rationale_dialog_dismiss_button">Cancel</string>
+
 </resources>

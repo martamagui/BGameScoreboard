@@ -73,4 +73,9 @@
     <string name="obtain_image_dialog_title">Por favor, elige de dónde prefieres tomar la imagen.</string>
     <string name="obtain_image_dialog_camera_button">Cámara</string>
     <string name="obtain_image_dialog_gallery_button">Gallería</string>
+
+    <string name="camera_permission_rationale_dialog_title">Permiso necesario</string>
+    <string name="camera_permission_rationale_dialog_description">Esta aplicación necesita acceso a la cámara para tomar fotos. Sin este permiso, no podrás capturar imágenes desde la app. ¿Quieres conceder el permiso ahora?</string>
+    <string name="camera_permission_rationale_dialog_positive_button">Ir a ajustes</string>
+    <string name="camera_permission_rationale_dialog_dismiss_button">Cancelar</string>
 </resources>

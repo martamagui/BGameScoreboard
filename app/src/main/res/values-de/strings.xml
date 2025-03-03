@@ -73,4 +73,10 @@
     <string name="obtain_image_dialog_camera_button">Cámara</string>
     <string name="obtain_image_dialog_gallery_button">Gallería</string>
 
+    <string name="camera_permission_rationale_dialog_title">Berechtigung erforderlich</string>
+    <string name="camera_permission_rationale_dialog_description">Diese App benötigt Zugriff auf die Kamera, um Fotos aufzunehmen. Ohne diese Berechtigung kannst du keine Bilder in der App aufnehmen. Möchtest du die Berechtigung jetzt erteilen?</string>
+    <string name="camera_permission_rationale_dialog_positive_button">Zu den Einstellungen</string>
+    <string name="camera_permission_rationale_dialog_dismiss_button">Abbrechen</string>
+
+
 </resources>
