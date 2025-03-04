@@ -40,6 +40,8 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
+import com.mmag.bgamescoreboard.ui.navigation.utils.openAppSettings
+import com.mmag.bgamescoreboard.ui.screen.dialogs.CameraPermissionRationaleDialog
 import com.mmag.bgamescoreboard.ui.screen.new_game.components.NewGamePhotoComponent
 import com.mmag.bgamescoreboard.ui.screen.new_game.components.ObtainImageDialog
 import com.mmag.bgamescoreboard.utils.createTempPictureUri
@@ -54,6 +56,7 @@ fun NewGameScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     var isObtainImageDialogOpen by rememberSaveable { mutableStateOf(false) }
+    var shouldShowRationale by rememberSaveable { mutableStateOf(false) }
     var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
     var selectedImage by rememberSaveable {
         mutableStateOf<Uri?>(null)
@@ -77,7 +80,7 @@ fun NewGameScreen(
                 tempPhotoUri = context.createTempPictureUri()
                 cameraLauncher.launch(tempPhotoUri!!)
             } else {
-                //TODO: Mostrar mensaje de explicación
+                shouldShowRationale = true
             }
         })
 
@@ -109,7 +112,7 @@ fun NewGameScreen(
                         when (cameraPermissionState.status) {
                             is PermissionStatus.Denied -> {
                                 if (cameraPermissionState.status.shouldShowRationale) {
-                                    //TODO: Mostrar dialogo de explicación
+                                    isObtainImageDialogOpen = true
                                 } else {
                                     cameraPermissionState.launchPermissionRequest()
                                 }
@@ -126,6 +129,16 @@ fun NewGameScreen(
                         galleryLauncher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
                         isObtainImageDialogOpen = false
                     },
+                )
+            }
+
+            if (shouldShowRationale) {
+                CameraPermissionRationaleDialog(
+                    onDismiss = { isObtainImageDialogOpen = false },
+                    onPositiveAction = {
+                        shouldShowRationale = false
+                        openAppSettings(context)
+                    }
                 )
             }
         }
