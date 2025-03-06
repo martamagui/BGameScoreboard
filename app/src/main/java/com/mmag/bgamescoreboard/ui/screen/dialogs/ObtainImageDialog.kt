@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.ui.screen.new_game.components
+package com.mmag.bgamescoreboard.ui.screen.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

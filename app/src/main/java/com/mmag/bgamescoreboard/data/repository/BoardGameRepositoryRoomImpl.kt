@@ -23,6 +23,10 @@ class BoardGameRepositoryRoomImpl @Inject constructor(
         database.boardGameDao().addGame(boardGame)
     }
 
+    override suspend fun updateGame(boardGame: BoardGame) {
+        database.boardGameDao().updateGame(boardGame)
+    }
+
     override suspend fun deleteGame(gameId: Int) {
         val records = database.recordDao().getRecordWithCategories(gameId).first()
 

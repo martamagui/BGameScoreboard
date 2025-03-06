@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.ui.screen.game_detail
+package com.mmag.bgamescoreboard.ui.screen.game.game_detail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,9 +45,9 @@ import com.mmag.bgamescoreboard.ui.common.SnackBarEvent
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteBGameDialog
-import com.mmag.bgamescoreboard.ui.screen.game_detail.components.GameDetailContentHeader
-import com.mmag.bgamescoreboard.ui.screen.game_detail.components.GameDetailNotFound
-import com.mmag.bgamescoreboard.ui.screen.game_detail.components.GameDetailRecordItem
+import com.mmag.bgamescoreboard.ui.screen.game.components.GameDetailContentHeader
+import com.mmag.bgamescoreboard.ui.screen.game.components.GameDetailNotFound
+import com.mmag.bgamescoreboard.ui.screen.game.components.GameDetailRecordItem
 import com.mmag.bgamescoreboard.ui.theme.Typography
 import kotlinx.coroutines.launch
 
@@ -124,6 +123,9 @@ fun GameDetailScreen(
                     }
                 },
                 deleteAction = { shouldShowDialog = true },
+                editAction = {
+                    navController.navigate(BGSConfigRoutes.Builder.gameEdit(gameId.toString()))
+                },
                 scrollBehavior = scrollBehavior,
                 isFavorite = state.data?.game?.isFavorite ?: false
             )

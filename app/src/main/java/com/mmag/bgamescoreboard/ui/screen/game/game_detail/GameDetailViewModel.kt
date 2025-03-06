@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.ui.screen.game_detail
+package com.mmag.bgamescoreboard.ui.screen.game.game_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,7 @@ import com.mmag.bgamescoreboard.domain.use_cases.game.DeleteGameUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.GetGameDetailsUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.game.MarkAsFavoriteUseCase
 import com.mmag.bgamescoreboard.ui.model.UiStatus
+import com.mmag.bgamescoreboard.ui.screen.game.model.GameUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,14 +19,14 @@ class GameDetailViewModel @Inject constructor(
     private val getGameDetailsUseCase: GetGameDetailsUseCase,
     private val markAsFavoriteUseCase: MarkAsFavoriteUseCase,
 ) : ViewModel() {
-    private var _uiState: MutableStateFlow<GameDetailUIState> =
-        MutableStateFlow(GameDetailUIState(status = UiStatus.LOADING))
-    val uiState: MutableStateFlow<GameDetailUIState> get() = _uiState
+    private var _uiState: MutableStateFlow<GameUIState> =
+        MutableStateFlow(GameUIState(status = UiStatus.LOADING))
+    val uiState: MutableStateFlow<GameUIState> get() = _uiState
 
     fun getGameDetails(id: Int) = viewModelScope.launch {
         getGameDetailsUseCase.invoke(id).collect { response ->
             _uiState.update {
-                GameDetailUIState(
+                GameUIState(
                     status = UiStatus.SUCCESS,
                     data = response
                 )

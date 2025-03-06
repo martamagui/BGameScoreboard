@@ -9,6 +9,7 @@ interface BoardGameRepository {
     fun getAllBoardGames(): Flow<List<BoardGame>?>
     fun getBoardGame(id: Int): Flow<BoardGameWithGameRecordRelation?>
     suspend fun addGame(name: String, picture: Bitmap)
+    suspend fun updateGame(boardGame: BoardGame)
     suspend fun deleteGame(gameId:Int)
     suspend fun markAsFavorite(gameId:Int, isFavourite:Boolean)
 }

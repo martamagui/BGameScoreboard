@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.ui.screen.game_detail.components
+package com.mmag.bgamescoreboard.ui.screen.game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

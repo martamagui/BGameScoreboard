@@ -43,7 +43,7 @@ import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.utils.openAppSettings
 import com.mmag.bgamescoreboard.ui.screen.dialogs.CameraPermissionRationaleDialog
 import com.mmag.bgamescoreboard.ui.screen.new_game.components.NewGamePhotoComponent
-import com.mmag.bgamescoreboard.ui.screen.new_game.components.ObtainImageDialog
+import com.mmag.bgamescoreboard.ui.screen.dialogs.ObtainImageDialog
 import com.mmag.bgamescoreboard.utils.createTempPictureUri
 import java.io.InputStream
 

@@ -2,17 +2,14 @@ package com.mmag.bgamescoreboard.ui.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mmag.bgamescoreboard.ui.screen.game_detail.GameDetailScreen
+import com.mmag.bgamescoreboard.ui.screen.game.game_detail.GameDetailScreen
 import com.mmag.bgamescoreboard.ui.screen.game_list.GameListScreen
 import com.mmag.bgamescoreboard.ui.screen.game_record.players_screen.GameRecordPlayersScreen
 import com.mmag.bgamescoreboard.ui.screen.new_game.NewGameScreen
@@ -38,8 +35,14 @@ fun BGSNavGraph(
         composable(route = BGSConfigRoutes.NEW_GAME) {
             NewGameScreen(navController)
         }
-
         composable(route = BGSConfigRoutes.GAME,
+            arguments = listOf(
+                navArgument(BGSConfigRoutes.Args.gameId) { type = NavType.IntType }
+            )) {
+            val game = it.arguments?.getInt(BGSConfigRoutes.Args.gameId) ?: 0
+            GameDetailScreen(game, navController)
+        }
+        composable(route = BGSConfigRoutes.GAME_EDIT,
             arguments = listOf(
                 navArgument(BGSConfigRoutes.Args.gameId) { type = NavType.IntType }
             )) {
