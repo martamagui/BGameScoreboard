@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.ui.screen.new_game.components
+package com.mmag.bgamescoreboard.ui.common
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import coil.compose.AsyncImage
 import com.mmag.bgamescoreboard.R
 
 @Composable
-fun NewGamePhotoComponent(
+fun SelectGamePhotoComponent(
     modifier: Modifier,
     onClickAction: () -> Unit,
     selectedImage: Uri?,

@@ -78,4 +78,6 @@
     <string name="camera_permission_rationale_dialog_positive_button">Go to settings</string>
     <string name="camera_permission_rationale_dialog_dismiss_button">Cancel</string>
 
+    <string name="edit_game_title">Edit Game</string>
+
 </resources>

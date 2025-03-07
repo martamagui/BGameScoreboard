@@ -42,7 +42,7 @@ import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.utils.openAppSettings
 import com.mmag.bgamescoreboard.ui.screen.dialogs.CameraPermissionRationaleDialog
-import com.mmag.bgamescoreboard.ui.screen.new_game.components.NewGamePhotoComponent
+import com.mmag.bgamescoreboard.ui.common.SelectGamePhotoComponent
 import com.mmag.bgamescoreboard.ui.screen.dialogs.ObtainImageDialog
 import com.mmag.bgamescoreboard.utils.createTempPictureUri
 import java.io.InputStream
@@ -164,7 +164,7 @@ private fun NewGameContent(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            NewGamePhotoComponent(
+            SelectGamePhotoComponent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp),

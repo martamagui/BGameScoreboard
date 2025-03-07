@@ -78,5 +78,6 @@
     <string name="camera_permission_rationale_dialog_positive_button">Zu den Einstellungen</string>
     <string name="camera_permission_rationale_dialog_dismiss_button">Abbrechen</string>
 
+    <string name="edit_game_title">Spiel bearbeiten</string>
 
 </resources>

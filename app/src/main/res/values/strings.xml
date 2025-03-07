@@ -78,4 +78,6 @@
     <string name="camera_permission_rationale_dialog_description">Esta aplicación necesita acceso a la cámara para tomar fotos. Sin este permiso, no podrás capturar imágenes desde la app. ¿Quieres conceder el permiso ahora?</string>
     <string name="camera_permission_rationale_dialog_positive_button">Ir a ajustes</string>
     <string name="camera_permission_rationale_dialog_dismiss_button">Cancelar</string>
+
+    <string name="edit_game_title">Editar juego</string>
 </resources>
