@@ -1,6 +1,7 @@
 package com.mmag.bgamescoreboard.ui.screen.game.game_edition
 
 import android.Manifest
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -104,7 +105,8 @@ fun GameEditionScreen(
                         isObtainImageDialogOpen = true
                     },
                     selectedImage = selectedImage,
-                    baseGameName = previousDataUiState.data?.game?.name ?: ""
+                    baseGameName = previousDataUiState.data?.game?.name ?: "",
+                    previousPicture = previousDataUiState.data?.game?.image
                 )
             }
 
@@ -154,6 +156,7 @@ fun GameEditionContent(
     onSelectImage: () -> Unit,
     selectedImage: Uri?,
     baseGameName: String = "",
+    previousPicture: Bitmap?,
 ) {
     val context = LocalContext.current
     var gameName by rememberSaveable { mutableStateOf(baseGameName) }
@@ -172,7 +175,8 @@ fun GameEditionContent(
                     .fillMaxWidth()
                     .height(180.dp),
                 onClickAction = { onSelectImage() },
-                selectedImage = selectedImage
+                selectedImage = selectedImage,
+                previousPicture = previousPicture
             )
             Spacer(modifier = Modifier.height(32.dp))
             OutlinedTextField(
