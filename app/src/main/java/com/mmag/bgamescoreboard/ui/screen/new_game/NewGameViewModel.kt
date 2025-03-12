@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.R
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import com.mmag.bgamescoreboard.ui.model.UiStatus
+import com.mmag.bgamescoreboard.utils.toBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,20 +45,7 @@ class NewGameViewModel @Inject constructor(
     private fun convertStreamToBitmap(inputStream: InputStream?): Bitmap? {
         try {
             if (inputStream != null) {
-                val image = BitmapFactory.decodeStream(inputStream)
-                if (image.byteCount <= 2500000) {
-                    return image
-                } else {
-                    var compressedImage = image
-                    do {
-                        var scaleWidth = compressedImage.width / 2
-                        var scaleHeight = compressedImage.height / 2
-
-                        compressedImage =
-                            Bitmap.createScaledBitmap(image, scaleWidth, scaleHeight, true)
-                    } while (compressedImage.byteCount >= 2500000)
-                    return compressedImage
-                }
+                return inputStream.toBitmap()
             } else {
                 _uiState.update {
                     NewGameUiState(

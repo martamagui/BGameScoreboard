@@ -45,6 +45,7 @@ import com.mmag.bgamescoreboard.ui.navigation.utils.openAppSettings
 import com.mmag.bgamescoreboard.ui.screen.dialogs.CameraPermissionRationaleDialog
 import com.mmag.bgamescoreboard.ui.screen.dialogs.ObtainImageDialog
 import com.mmag.bgamescoreboard.utils.createTempPictureUri
+import com.mmag.bgamescoreboard.utils.toBitmap
 import java.io.InputStream
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -58,14 +59,14 @@ fun GameEditionScreen(
 ) {
     val context = LocalContext.current
     val previousDataUiState by viewModel.previousDataUiState.collectAsState()
-    //TODO añadir estados del VM
+
     var isObtainImageDialogOpen by rememberSaveable { mutableStateOf(false) }
     var shouldShowRationale by rememberSaveable { mutableStateOf(false) }
     var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
     var selectedImage by rememberSaveable {
-        //TODO añadir estado del VM como base
         mutableStateOf<Uri?>(null)
     }
+
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -98,8 +99,9 @@ fun GameEditionScreen(
         Box(Modifier.padding(padding)) {
             if (previousDataUiState.status == UiStatus.SUCCESS) {
                 GameEditionContent(
-                    onClickAction = { imageStream, gameName ->
-                        //TODO actualizar en el VM en el estado la imagen y el nombre del juego
+                    onClickAction = { image, gameName ->
+                        viewModel.updateGame(gameName, image)
+                        navController.popBackStack()
                     },
                     onSelectImage = {
                         isObtainImageDialogOpen = true
@@ -152,7 +154,7 @@ fun GameEditionScreen(
 
 @Composable
 fun GameEditionContent(
-    onClickAction: (InputStream?, String) -> Unit,
+    onClickAction: (Bitmap?, String) -> Unit,
     onSelectImage: () -> Unit,
     selectedImage: Uri?,
     baseGameName: String = "",
@@ -191,10 +193,12 @@ fun GameEditionContent(
             ) {
                 Button(
                     onClick = {
-                        val imageStream = context.contentResolver.openInputStream(selectedImage!!)
-                        onClickAction(imageStream, gameName)
+                        val imageStream: InputStream? = selectedImage?.let {
+                            context.contentResolver.openInputStream(it)
+                        }
+                        onClickAction(imageStream?.toBitmap(), gameName)
                     },
-                    enabled = (gameName.isNotEmpty() && selectedImage != null),
+                    enabled = (gameName.isNotEmpty()),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(

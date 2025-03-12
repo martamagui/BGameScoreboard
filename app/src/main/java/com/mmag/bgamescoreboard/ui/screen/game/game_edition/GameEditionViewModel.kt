@@ -1,5 +1,6 @@
 package com.mmag.bgamescoreboard.ui.screen.game.game_edition
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mmag.bgamescoreboard.domain.use_cases.game.EditGameUseCase
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameEditionViewModel @Inject constructor(
     private val getGameDetailsUseCase: GetGameDetailsUseCase,
-    private val editGameUseCase: EditGameUseCase
+    private val editGameUseCase: EditGameUseCase,
 ) : ViewModel() {
     private var _previousDataUiState: MutableStateFlow<GameUIState> =
         MutableStateFlow(GameUIState(status = UiStatus.LOADING))
@@ -32,12 +33,20 @@ class GameEditionViewModel @Inject constructor(
         }
     }
 
-    fun updateGame(){
-        if(previousDataUiState.value.data != null){
+    fun updateGame(name: String?, image: Bitmap?) {
+        if (previousDataUiState.value.data?.game != null) {
+            var newDataState = previousDataUiState.value.data?.game!!.copy()
+            if (name != null) {
+                newDataState = newDataState.copy(name = name)
+            }
+            if (image != null) {
+                newDataState = newDataState.copy(image = image)
+            }
             viewModelScope.launch {
-                editGameUseCase.invoke(previousDataUiState.value.data!!.game)
+                editGameUseCase.invoke(newDataState)
             }
         }
     }
+
 
 }
