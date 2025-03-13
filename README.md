@@ -35,7 +35,7 @@ Native Android app to save board game scores. It allows users to record and upda
 - [x] Add a edit score screen.
 - [x] Migrate gradle to version catalog.
 - [ ] Include a dialog to warn the user when no players has been selected to create a new record.
-- [ ] Build a edit game screen.
+- [x] Build a edit game screen.
 - [x] Add the option to take a picture of the game during game creation.
 - [ ] Add tests to the project.
 
