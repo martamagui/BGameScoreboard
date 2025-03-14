@@ -43,6 +43,7 @@
 
     <string name="players_screen_title">Who\'s playing today?</string>
     <string name="players_screen_no_players_found">No players found yet.</string>
+    <string name="players_screen_no_players_selected">Please select a player to start scoring.</string>
     <string name="players_screen_button_text">Save players</string>
     <string name="players_screen_hint">Add a new player</string>
 

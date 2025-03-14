@@ -43,6 +43,7 @@
 
     <string name="players_screen_title">Wer spielt heute mit?</string>
     <string name="players_screen_no_players_found">Noch keine Spieler gefunden.</string>
+    <string name="players_screen_no_players_selected">Bitte wähle einen Spieler aus, um mit der Punktevergabe zu beginnen.</string>
     <string name="players_screen_button_text">Spieler speichern</string>
     <string name="players_screen_hint">Neuen Spieler hinzufügen</string>
 

@@ -44,6 +44,7 @@
 
     <string name="players_screen_title">¿Quién está jugando hoy?</string>
     <string name="players_screen_no_players_found">No se ha encontrado a ningún jugador aún.</string>
+    <string name="players_screen_no_players_selected">Selecciona un jugador para empezar a puntuar, por favor.</string>
     <string name="players_screen_button_text">Guardar jugadores</string>
     <string name="players_screen_hint">Añade a un nuevo jugador</string>
 
@@ -80,4 +81,5 @@
     <string name="camera_permission_rationale_dialog_dismiss_button">Cancelar</string>
 
     <string name="edit_game_title">Editar juego</string>
+
 </resources>

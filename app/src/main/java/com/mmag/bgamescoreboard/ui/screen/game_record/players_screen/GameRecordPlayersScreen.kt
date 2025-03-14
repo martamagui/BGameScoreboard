@@ -15,7 +15,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Card
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -94,7 +94,7 @@ fun GameRecordPlayersScreen(
                             viewModel.savePlayer(userName)
                             userName = ""
                         },
-                        enabled = !userName.trim().isNullOrEmpty()
+                        enabled = userName.trim().isNotEmpty()
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Add, contentDescription = stringResource(
@@ -124,12 +124,12 @@ fun GameRecordPlayersScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewModel) {
     val uiState by viewModel.playersUIState.collectAsState()
     Column(modifier = modifier.padding(vertical = 24.dp)) {
-        if (uiState.status == UiStatus.SUCCESS && !uiState.data.isNullOrEmpty()) {
+        if (uiState.status == UiStatus.SUCCESS && uiState.data.isNotEmpty()) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(3),
                 verticalItemSpacing = 2.dp,
@@ -155,11 +155,25 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
                     )
                 }
             }
+            if (uiState.selectedPlayers.isEmpty()) {
+                GameRecordPlayerSelectionMessage(Modifier.fillMaxWidth().padding(vertical = 12.dp))
+            }
         } else {
             Text(
                 text = stringResource(id = R.string.players_screen_no_players_found),
                 style = Typography.bodyMedium
             )
         }
+    }
+}
+
+@Composable
+fun GameRecordPlayerSelectionMessage(modifier: Modifier) {
+    Card(modifier = modifier) {
+        Text(
+            text = stringResource(id = R.string.players_screen_no_players_selected),
+            style = Typography.bodyMedium,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+        )
     }
 }
