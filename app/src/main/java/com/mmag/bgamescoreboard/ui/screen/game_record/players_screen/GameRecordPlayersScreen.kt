@@ -30,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -128,7 +129,9 @@ fun GameRecordPlayersScreen(
 @Composable
 fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewModel) {
     val uiState by viewModel.playersUIState.collectAsState()
-    Column(modifier = modifier.padding(vertical = 24.dp)) {
+    Column(modifier = modifier
+        .padding(vertical = 24.dp)
+        .testTag("GameRecordSavedPlayers")) {
         if (uiState.status == UiStatus.SUCCESS && uiState.data.isNotEmpty()) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(3),
@@ -156,12 +159,19 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
                 }
             }
             if (uiState.selectedPlayers.isEmpty()) {
-                GameRecordPlayerSelectionMessage(Modifier.fillMaxWidth().padding(vertical = 12.dp))
+                GameRecordPlayerSelectionMessage(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp))
             }
         } else {
             Text(
                 text = stringResource(id = R.string.players_screen_no_players_found),
-                style = Typography.bodyMedium
+                style = Typography.bodyMedium,
+                modifier = Modifier
+                    .testTag("GameRecordNoPlayersFound")
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
     }
@@ -169,11 +179,13 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
 
 @Composable
 fun GameRecordPlayerSelectionMessage(modifier: Modifier) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier.testTag("GameRecordPlayerSelectionMessage")) {
         Text(
             text = stringResource(id = R.string.players_screen_no_players_selected),
             style = Typography.bodyMedium,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
 }
