@@ -2,11 +2,15 @@ package com.mmag.bgamescoreboard.ui.screen.game_record.players_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.db.model.Player
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.entities.Player
+import com.mmag.bgamescoreboard.data.db.model.entities.ScoringCategory
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
+import com.mmag.bgamescoreboard.domain.mapper.toPlayerModel
+import com.mmag.bgamescoreboard.domain.mapper.toPlayerWithScore
+import com.mmag.bgamescoreboard.domain.model.PlayerModel
 import com.mmag.bgamescoreboard.domain.use_cases.categories.GetGameCategoriesUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.categories.SaveCategoryUseCase
+import com.mmag.bgamescoreboard.domain.use_cases.player.GetMostFrequentPlayersUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.player.GetSavedPlayersUseCase
 import com.mmag.bgamescoreboard.domain.use_cases.player.SavePlayerUseCase
 import com.mmag.bgamescoreboard.ui.model.CategoryWithRecords
@@ -20,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -35,6 +38,7 @@ class GameRecordPlayersViewModel @Inject constructor(
     private val savePlayerUseCase: SavePlayerUseCase,
     private val getGameCategoriesUseCase: GetGameCategoriesUseCase,
     private val getSavedPlayersUseCase: GetSavedPlayersUseCase,
+    private val getMostFrequentPlayersUseCase: GetMostFrequentPlayersUseCase,
 ) : ViewModel() {
 
     var gameId: Int? = null
@@ -57,13 +61,29 @@ class GameRecordPlayersViewModel @Inject constructor(
     //region --- BD ---
     private fun getSavedPlayers() = viewModelScope.launch {
         getSavedPlayersUseCase.invoke().collect { players ->
-            _playersUIState.update {
-                GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = players)
+            val playerModelList = players.map { player ->
+                player.toPlayerModel()
             }
+            _playersUIState.update {
+                GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = playerModelList)
+            }
+            getMostFrequentPlayers()
         }
     }
 
-    fun addDeletePlayer(player: Player) {
+    private fun getMostFrequentPlayers() = viewModelScope.launch {
+        val frequentPlayers = getMostFrequentPlayersUseCase.invoke()
+        val frequentPlayerIds = frequentPlayers.map { it.playerId }.toSet()
+        val updatedList = playersUIState.value.data.map { player ->
+            player.copy(isFrequent = player.id in frequentPlayerIds)
+        }
+        updatedList.sortedBy { it.isFrequent }
+        _playersUIState.update {
+            it.copy(data = updatedList)
+        }
+    }
+
+    fun addDeletePlayer(player: PlayerModel) {
         val newList = playersUIState.value.selectedPlayers.toMutableList()
         if (playersUIState.value.selectedPlayers.contains(player)) {
             newList.remove(player)
@@ -100,7 +120,7 @@ class GameRecordPlayersViewModel @Inject constructor(
     fun saveScoreRecord(onDoneCallback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val recordTitle =
-                "${playersUIState.value.selectedPlayers.size} jugadores - ${getCurrentDate()}"
+                "${playersUIState.value.selectedPlayers.size} p. - ${getCurrentDate()}"
             val savedRecord: Int? = gameId?.let {
                 scoringRepository.addRecord(recordTitle, it).toInt()
             }

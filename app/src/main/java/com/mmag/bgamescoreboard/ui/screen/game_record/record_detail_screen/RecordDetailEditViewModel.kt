@@ -2,7 +2,7 @@ package com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mmag.bgamescoreboard.data.db.model.Score
+import com.mmag.bgamescoreboard.data.db.model.entities.Score
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.repository.ScoringRepository
 import com.mmag.bgamescoreboard.domain.use_cases.scores.GetScoresWithPlayersByCategoryUseCase

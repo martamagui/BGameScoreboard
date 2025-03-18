@@ -46,6 +46,7 @@
     <string name="players_screen_no_players_selected">Please select a player to start scoring.</string>
     <string name="players_screen_button_text">Save players</string>
     <string name="players_screen_hint">Add a new player</string>
+    <string name="players_screen_frequent_player_icon_description">Frequent player</string>
 
     <string name="categories_screen_title">Scoring categories</string>
     <string name="categories_screen_description">Scores will be recorded in:</string>

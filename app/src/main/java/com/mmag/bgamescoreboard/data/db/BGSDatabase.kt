@@ -8,11 +8,11 @@ import com.mmag.bgamescoreboard.data.db.dao.PlayerDao
 import com.mmag.bgamescoreboard.data.db.dao.RecordDao
 import com.mmag.bgamescoreboard.data.db.dao.ScoreDao
 import com.mmag.bgamescoreboard.data.db.dao.ScoringCategoryDao
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
-import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
-import com.mmag.bgamescoreboard.data.db.model.Player
-import com.mmag.bgamescoreboard.data.db.model.Score
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.GameScoreRecord
+import com.mmag.bgamescoreboard.data.db.model.entities.Player
+import com.mmag.bgamescoreboard.data.db.model.entities.Score
+import com.mmag.bgamescoreboard.data.db.model.entities.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.utils.ImageTypeConverters
 
 @Database(

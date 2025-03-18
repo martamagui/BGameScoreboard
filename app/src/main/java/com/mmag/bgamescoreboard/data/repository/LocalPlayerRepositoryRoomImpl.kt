@@ -2,7 +2,7 @@ package com.mmag.bgamescoreboard.data.repository
 
 import android.util.Log
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
-import com.mmag.bgamescoreboard.data.db.model.Player
+import com.mmag.bgamescoreboard.data.db.model.entities.Player
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

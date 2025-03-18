@@ -1,6 +1,6 @@
 package com.mmag.bgamescoreboard.ui.model
 
-import com.mmag.bgamescoreboard.data.db.model.Player
+import com.mmag.bgamescoreboard.data.db.model.entities.Player
 
 data class CategoryWithRecords(
     val categoryId: Int,

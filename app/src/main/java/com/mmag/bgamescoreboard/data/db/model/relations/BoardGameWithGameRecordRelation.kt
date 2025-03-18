@@ -2,8 +2,8 @@ package com.mmag.bgamescoreboard.data.db.model.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
-import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.GameScoreRecord
 
 
 data class BoardGameWithGameRecordRelation(

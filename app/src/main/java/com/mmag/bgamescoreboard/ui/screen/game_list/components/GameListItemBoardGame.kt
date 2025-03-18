@@ -35,7 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mmag.bgamescoreboard.R
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
 import com.mmag.bgamescoreboard.ui.common.SwipeableItemBackground
 import com.mmag.bgamescoreboard.ui.theme.vertGradShadow
 import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter

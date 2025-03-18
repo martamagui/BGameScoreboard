@@ -7,8 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
-import com.mmag.bgamescoreboard.ui.screen.game_record.record_detail_screen.RecordDetailViewModel
+import com.mmag.bgamescoreboard.data.db.model.entities.ScoringCategory
 
 @Composable
 fun RecordDetailTab(

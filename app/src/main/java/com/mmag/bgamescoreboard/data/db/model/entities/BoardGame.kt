@@ -1,4 +1,4 @@
-package com.mmag.bgamescoreboard.data.db.model
+package com.mmag.bgamescoreboard.data.db.model.entities
 
 import android.graphics.Bitmap
 import androidx.room.Entity

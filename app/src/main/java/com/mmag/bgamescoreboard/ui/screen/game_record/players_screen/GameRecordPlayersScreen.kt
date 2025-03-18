@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledIconButton
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -129,9 +132,11 @@ fun GameRecordPlayersScreen(
 @Composable
 fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewModel) {
     val uiState by viewModel.playersUIState.collectAsState()
-    Column(modifier = modifier
-        .padding(vertical = 24.dp)
-        .testTag("GameRecordSavedPlayers")) {
+    Column(
+        modifier = modifier
+            .padding(vertical = 24.dp)
+            .testTag("GameRecordSavedPlayers")
+    ) {
         if (uiState.status == UiStatus.SUCCESS && uiState.data.isNotEmpty()) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(3),
@@ -144,9 +149,19 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
                     FilterChip(
                         selected = uiState.selectedPlayers.contains(player),
                         onClick = { viewModel.addDeletePlayer(player) },
+                        trailingIcon = {
+                            if (player.isFrequent) {
+                                Icon(
+                                    imageVector = Icons.Default.Favorite,
+                                    contentDescription = stringResource(id = R.string.players_screen_frequent_player_icon_description),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        },
                         label = {
                             Text(
                                 text = player.name,
+                                fontWeight = if (player.isFrequent) FontWeight.Bold else FontWeight.Normal,
                                 overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Center,
                                 maxLines = 1,
@@ -162,7 +177,8 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
                 GameRecordPlayerSelectionMessage(
                     Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 12.dp))
+                        .padding(vertical = 12.dp)
+                )
             }
         } else {
             Text(

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
+import com.mmag.bgamescoreboard.data.db.model.entities.GameScoreRecord
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import kotlinx.coroutines.flow.Flow
 

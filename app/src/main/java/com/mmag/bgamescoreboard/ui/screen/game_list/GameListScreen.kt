@@ -2,7 +2,6 @@ package com.mmag.bgamescoreboard.ui.screen.game_list
 
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.mmag.bgamescoreboard.R
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
 import com.mmag.bgamescoreboard.ui.screen.dialogs.DeleteBGameDialog

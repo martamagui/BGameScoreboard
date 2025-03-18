@@ -1,6 +1,6 @@
 package com.mmag.bgamescoreboard.domain.use_cases.game
 
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
 import com.mmag.bgamescoreboard.data.repository.BoardGameRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -3,7 +3,7 @@ package com.mmag.bgamescoreboard.data.repository
 import android.graphics.Bitmap
 import android.util.Log
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
 import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordRelation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

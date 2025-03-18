@@ -1,7 +1,7 @@
 package com.mmag.bgamescoreboard.data.repository
 
 import android.graphics.Bitmap
-import com.mmag.bgamescoreboard.data.db.model.BoardGame
+import com.mmag.bgamescoreboard.data.db.model.entities.BoardGame
 import com.mmag.bgamescoreboard.data.db.model.relations.BoardGameWithGameRecordRelation
 import kotlinx.coroutines.flow.Flow
 

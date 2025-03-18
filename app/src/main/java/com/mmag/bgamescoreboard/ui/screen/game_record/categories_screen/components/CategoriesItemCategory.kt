@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.entities.ScoringCategory
 import com.mmag.bgamescoreboard.utils.capitalizeFirstLetter
 
 @Composable

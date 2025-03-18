@@ -5,10 +5,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.mmag.bgamescoreboard.data.db.model.Score
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
-import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
+import com.mmag.bgamescoreboard.data.db.model.entities.Score
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
+import com.mmag.bgamescoreboard.data.db.model.subsets.FrequentPlayer
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,4 +32,7 @@ interface ScoreDao {
 
     @Query("DELETE FROM Score WHERE game_record_id=:gameRecord")
     fun deleteScoresByRecords(gameRecord: Int): Int
+
+    @Query("SELECT player_id, COUNT(*) as count FROM (SELECT DISTINCT player_id, game_record_id FROM Score) GROUP BY player_id ORDER BY count DESC LIMIT 5")
+    suspend fun getMostFrequentPlayers(): List<FrequentPlayer>
 }

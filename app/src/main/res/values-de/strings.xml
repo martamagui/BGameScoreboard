@@ -46,6 +46,7 @@
     <string name="players_screen_no_players_selected">Bitte wähle einen Spieler aus, um mit der Punktevergabe zu beginnen.</string>
     <string name="players_screen_button_text">Spieler speichern</string>
     <string name="players_screen_hint">Neuen Spieler hinzufügen</string>
+    <string name="players_screen_frequent_player_icon_description">Häufiger Spieler</string>
 
     <string name="categories_screen_title">Punkte-Kategorien</string>
     <string name="categories_screen_description">Die Punkte werden für folgende Kategorien erfasst:</string>

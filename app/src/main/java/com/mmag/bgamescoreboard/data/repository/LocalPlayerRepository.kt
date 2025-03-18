@@ -1,6 +1,6 @@
 package com.mmag.bgamescoreboard.data.repository
 
-import com.mmag.bgamescoreboard.data.db.model.Player
+import com.mmag.bgamescoreboard.data.db.model.entities.Player
 import kotlinx.coroutines.flow.Flow
 
 interface LocalPlayerRepository {

@@ -2,11 +2,12 @@ package com.mmag.bgamescoreboard.data.repository
 
 import android.util.Log
 import com.mmag.bgamescoreboard.data.db.BGSDatabase
-import com.mmag.bgamescoreboard.data.db.model.GameScoreRecord
-import com.mmag.bgamescoreboard.data.db.model.Score
-import com.mmag.bgamescoreboard.data.db.model.ScoringCategory
+import com.mmag.bgamescoreboard.data.db.model.entities.GameScoreRecord
+import com.mmag.bgamescoreboard.data.db.model.entities.Score
+import com.mmag.bgamescoreboard.data.db.model.entities.ScoringCategory
 import com.mmag.bgamescoreboard.data.db.model.relations.RecordWithCategories
 import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
+import com.mmag.bgamescoreboard.data.db.model.subsets.FrequentPlayer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -85,12 +86,11 @@ class ScoringRepositoryRoomImpl @Inject constructor(
         return database.recordDao().addRecord(record)
     }
 
+    override suspend fun getMostFrequentPlayersFromScores(): List<FrequentPlayer> = database.scoreDao().getMostFrequentPlayers()
 
     /*region --- OTHERS ---*/
     private fun logData(msg: String) {
         Log.d("ScoreRep", msg)
     }
     /*endregion --- OTHERS ---*/
-
-
 }
