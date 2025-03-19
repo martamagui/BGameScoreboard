@@ -146,7 +146,6 @@ class GameRecordPlayersViewModel @Inject constructor(
             }
             withContext(Dispatchers.Main) { onDoneCallback() }
         }
-
     }
     //endregion --- BD ---
 

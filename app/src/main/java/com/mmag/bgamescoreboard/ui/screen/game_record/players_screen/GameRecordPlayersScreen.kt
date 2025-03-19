@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledIconButton
@@ -41,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mmag.bgamescoreboard.R
+import com.mmag.bgamescoreboard.domain.model.PlayerModel
 import com.mmag.bgamescoreboard.ui.common.BGSToolbar
 import com.mmag.bgamescoreboard.ui.model.UiStatus
 import com.mmag.bgamescoreboard.ui.navigation.BGSConfigRoutes
@@ -82,7 +82,7 @@ fun GameRecordPlayersScreen(
                         onValueChange = {
                             if (it.contains("\n")) {
                                 val text = it.trim().replace("\r", "").replace("\n", "")
-                                if (!text.isNullOrEmpty()) {
+                                if (text.isNotEmpty()) {
                                     viewModel.savePlayer(userName)
                                     userName = ""
                                 }
@@ -107,7 +107,9 @@ fun GameRecordPlayersScreen(
                         )
                     }
                 }
-                GameRecordSavedPlayers(Modifier.fillMaxWidth(), viewModel)
+                GameRecordSavedPlayers(Modifier.fillMaxWidth(), uiState) { player ->
+                    viewModel.addDeletePlayer(player)
+                }
             }
             Column(Modifier.fillMaxWidth()) {
                 Button(onClick = {
@@ -116,8 +118,6 @@ fun GameRecordPlayersScreen(
                         navController.navigate(
                             BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 2)
                         )
-                    } else {
-                        //TODO mostrar un mensaje de que seleccione personas
                     }
                 }, modifier = Modifier.fillMaxWidth()) {
                     Text(text = stringResource(id = R.string.players_screen_button_text))
@@ -130,49 +130,23 @@ fun GameRecordPlayersScreen(
 
 
 @Composable
-fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewModel) {
-    val uiState by viewModel.playersUIState.collectAsState()
+fun GameRecordSavedPlayers(
+    modifier: Modifier,
+    uiState: GameRecordsPlayersUiState,
+    addDeletePlayer: (PlayerModel) -> Unit,
+) {
     Column(
         modifier = modifier
             .padding(vertical = 24.dp)
             .testTag("GameRecordSavedPlayers")
     ) {
         if (uiState.status == UiStatus.SUCCESS && uiState.data.isNotEmpty()) {
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(3),
-                verticalItemSpacing = 2.dp,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                itemsIndexed(uiState.data) { index, player ->
-                    FilterChip(
-                        selected = uiState.selectedPlayers.contains(player),
-                        onClick = { viewModel.addDeletePlayer(player) },
-                        trailingIcon = {
-                            if (player.isFrequent) {
-                                Icon(
-                                    imageVector = Icons.Default.Favorite,
-                                    contentDescription = stringResource(id = R.string.players_screen_frequent_player_icon_description),
-                                    modifier = Modifier.size(16.dp)
-                                )
-                            }
-                        },
-                        label = {
-                            Text(
-                                text = player.name,
-                                fontWeight = if (player.isFrequent) FontWeight.Bold else FontWeight.Normal,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                maxLines = 1,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 6.dp, end = 8.dp, bottom = 6.dp)
-                            )
-                        }, modifier = Modifier.padding(0.dp)
-                    )
-                }
-            }
+            GameRecordPlayersGrid(
+                modifier = Modifier.fillMaxWidth(),
+                players = uiState.data,
+                selectedPlayers = uiState.selectedPlayers,
+                addDeletePlayer = addDeletePlayer
+            )
             if (uiState.selectedPlayers.isEmpty()) {
                 GameRecordPlayerSelectionMessage(
                     Modifier
@@ -188,6 +162,49 @@ fun GameRecordSavedPlayers(modifier: Modifier, viewModel: GameRecordPlayersViewM
                     .testTag("GameRecordNoPlayersFound")
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun GameRecordPlayersGrid(
+    modifier: Modifier,
+    players: List<PlayerModel>,
+    selectedPlayers: List<PlayerModel>,
+    addDeletePlayer: (PlayerModel) -> Unit,
+) {
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(3),
+        verticalItemSpacing = 2.dp,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier.testTag("GameRecordPlayersGrid")
+    ) {
+        itemsIndexed(players, key = { index: Int, item: PlayerModel -> item.id }) { index, player ->
+            FilterChip(
+                selected = selectedPlayers.contains(player),
+                onClick = { addDeletePlayer(player) },
+                trailingIcon = {
+                    if (player.isFrequent) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = stringResource(id = R.string.players_screen_frequent_player_icon_description),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                },
+                label = {
+                    Text(
+                        text = player.name,
+                        fontWeight = if (player.isFrequent) FontWeight.Bold else FontWeight.Normal,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 6.dp, end = 8.dp, bottom = 6.dp)
+                    )
+                }, modifier = Modifier.padding(0.dp)
             )
         }
     }
