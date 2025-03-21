@@ -48,9 +48,12 @@ fun CategoriesScreen(
     navController: NavController,
     viewModel: GameRecordPlayersViewModel = hiltViewModel<GameRecordPlayersViewModel>(
         navController.getBackStackEntry(BGSConfigRoutes.Builder.newScoreStep(gameId.toString(), 1))
-    ).apply { getCategories(gameId) },
+    ),
+    categoriesViewModel: CategoriesViewModel = hiltViewModel<CategoriesViewModel>().apply {
+        getCategories(gameId)
+    },
 ) {
-    val uiState by viewModel.categoriesUiState.collectAsState()
+    val uiState by categoriesViewModel.categoriesUiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -74,7 +77,7 @@ fun CategoriesScreen(
                 )
             }
             CategoriesContent(uiState, gameId.toString(), navController) { text ->
-                viewModel.saveCategory(text)
+                categoriesViewModel.saveCategory(text)
             }
 
         }

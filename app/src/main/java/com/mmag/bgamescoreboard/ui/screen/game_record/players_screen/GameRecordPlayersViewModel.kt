@@ -34,7 +34,6 @@ import javax.inject.Inject
 @HiltViewModel
 class GameRecordPlayersViewModel @Inject constructor(
     private val scoringRepository: ScoringRepository,
-    private val saveCategoryUseCase: SaveCategoryUseCase,
     private val savePlayerUseCase: SavePlayerUseCase,
     private val getGameCategoriesUseCase: GetGameCategoriesUseCase,
     private val getSavedPlayersUseCase: GetSavedPlayersUseCase,
@@ -111,10 +110,6 @@ class GameRecordPlayersViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun saveCategory(categoryText: String) = viewModelScope.launch {
-        saveCategoryUseCase.invoke(gameId!!, categoryText)
     }
 
     fun saveScoreRecord(onDoneCallback: () -> Unit) {

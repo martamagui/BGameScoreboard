@@ -71,7 +71,7 @@ fun BGSNavGraph(
             Log.d("STEP ", "Paso: ${step}")
             when (step) {
                 0 -> {
-                    //TODO hacer la pantalla de guardando datos
+                    //TODO should I make a save data screen at the very end?
                 }
 
                 1 -> GameRecordPlayersScreen(game, navController)
