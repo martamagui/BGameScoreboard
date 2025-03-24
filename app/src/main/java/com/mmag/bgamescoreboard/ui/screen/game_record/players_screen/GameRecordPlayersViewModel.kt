@@ -63,22 +63,19 @@ class GameRecordPlayersViewModel @Inject constructor(
             val playerModelList = players.map { player ->
                 player.toPlayerModel()
             }
-            _playersUIState.update {
-                GameRecordsPlayersUiState(status = UiStatus.SUCCESS, data = playerModelList)
-            }
-            getMostFrequentPlayers()
+            getMostFrequentPlayers(playerModelList)
         }
     }
 
-    private fun getMostFrequentPlayers() = viewModelScope.launch {
+    private fun getMostFrequentPlayers(data: List<PlayerModel>) = viewModelScope.launch {
         val frequentPlayers = getMostFrequentPlayersUseCase.invoke()
         val frequentPlayerIds = frequentPlayers.map { it.playerId }.toSet()
-        val updatedList = playersUIState.value.data.map { player ->
+        val updatedList = data.map { player ->
             player.copy(isFrequent = player.id in frequentPlayerIds)
         }
         updatedList.sortedBy { it.isFrequent }
         _playersUIState.update {
-            it.copy(data = updatedList)
+            it.copy(status = UiStatus.SUCCESS, data = updatedList)
         }
     }
 
