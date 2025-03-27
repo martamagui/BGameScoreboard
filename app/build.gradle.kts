@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.mmag.bgamescoreboard.TestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -92,6 +92,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.compose.ui.test)
     androidTestImplementation(platform(libs.compose.bom.test))
+    kspAndroidTest(libs.room.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.test.manifest)
