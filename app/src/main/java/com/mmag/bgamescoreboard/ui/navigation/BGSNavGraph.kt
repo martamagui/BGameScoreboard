@@ -3,6 +3,8 @@ package com.mmag.bgamescoreboard.ui.navigation
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,7 +29,8 @@ fun BGSNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = BGSConfigRoutes.HOME
+        startDestination = BGSConfigRoutes.HOME,
+        modifier = Modifier.testTag("BGSNavGraph")
     ) {
         composable(route = BGSConfigRoutes.HOME) {
             GameListScreen(navHostController = navController)
