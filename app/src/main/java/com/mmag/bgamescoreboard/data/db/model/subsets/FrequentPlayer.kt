@@ -4,4 +4,5 @@ import androidx.room.ColumnInfo
 
 data class FrequentPlayer(
     @ColumnInfo(name = "player_id") val playerId: Int,
+    @ColumnInfo(name = "count") val count: Int?,
 )
