@@ -47,7 +47,7 @@ fun NewRecordScoreScreen(
 ) {
     val categoryState by viewModel.categoriesUiState.collectAsState()
     val playerState by viewModel.playersUIState.collectAsState()
-    val pattern = remember { Regex("^\\d+\$") }
+    val pattern = remember { Regex("^\\d+(\\.\\d{0,2})?\$") }
 
     if (categoryState.data.size > (step - 3)) {
         Scaffold(
@@ -85,7 +85,7 @@ fun NewRecordScoreScreen(
                                             try {
                                                 viewModel.updatePlayerScoreValue(
                                                     categoryState.data[step - 3].id,
-                                                    PlayerWithScore(player.id, score.toInt())
+                                                    PlayerWithScore(player.id, score.toDouble())
                                                 )
                                             } catch (e: NumberFormatException) {
                                                 e.printStackTrace()

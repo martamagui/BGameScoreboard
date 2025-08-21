@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RecordDetailEditItem(
     playerName: String,
-    score: Int,
+    score: Double,
     modifier: Modifier,
-    onValueChange: (Int) -> Unit,
+    onValueChange: (Double) -> Unit,
 ) {
 
     var scorePoints by rememberSaveable { mutableStateOf(score) }
@@ -32,7 +32,7 @@ fun RecordDetailEditItem(
         TextField(
             value = scorePoints.toString(),
             onValueChange = { it ->
-                scorePoints = it.toIntOrNull() ?: 0
+                scorePoints = (it.toDoubleOrNull() ?: 0) as Double
                 onValueChange(scorePoints)
             },
             label = { playerName },

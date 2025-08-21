@@ -48,10 +48,10 @@ class ScoringRepositoryRoomImpl @Inject constructor(
 
     override suspend fun getPlayersScoresFromRecord(
         recordId: Int,
-        playerId: Int,
-    ): Int {
+        playerId: Int
+    ): Double {
         val response = database.scoreDao().getPlayersScoresFromRecord(recordId, playerId).first()
-        var points = 0
+        var points = 0.0
         response.forEach { item ->
             points += item.scoreAmount
         }
@@ -71,7 +71,7 @@ class ScoringRepositoryRoomImpl @Inject constructor(
         playerId: Int,
         gameRecordId: Int,
         categoryId: Int,
-        scoreAmount: Int,
+        scoreAmount: Double,
     ) {
         val score = Score(0, playerId, gameRecordId, categoryId, scoreAmount)
         database.scoreDao().addScore(score)

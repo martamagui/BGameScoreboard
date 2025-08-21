@@ -9,11 +9,11 @@ data class CategoryWithRecords(
 
 data class PlayerWithScore(
     val playerId: Int,
-    val score: Int
+    val score: Double
 )
 
 fun Player.toPlayerWithScore(): PlayerWithScore {
-    return PlayerWithScore(this.id, 0)
+    return PlayerWithScore(this.id, 0.0)
 }
 
 fun List<Player>.toPlayerWithScore(): MutableList<PlayerWithScore> {

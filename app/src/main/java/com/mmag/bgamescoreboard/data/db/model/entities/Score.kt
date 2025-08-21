@@ -15,5 +15,5 @@ data class Score(
     @ColumnInfo("category_id")
     val categoryId: Int,
     @ColumnInfo("score_amount")
-    val scoreAmount: Int
+    val scoreAmount: Double
 )

@@ -12,7 +12,7 @@ interface ScoringRepository {
 
     suspend fun addCategory(gameId: Int, categoryName: String)
 
-    suspend fun addScore(playerId: Int, gameRecordId: Int, categoryId: Int, scoreAmount: Int)
+    suspend fun addScore(playerId: Int, gameRecordId: Int, categoryId: Int, scoreAmount: Double)
 
     suspend fun updateScore(score: Score)
 
@@ -29,7 +29,7 @@ interface ScoringRepository {
     suspend fun getPlayersScoresFromRecord(
         recordId: Int,
         playerId: Int
-    ): Int
+    ): Double
 
     suspend fun getScoreByRecordIdAndPlayer(
         recordId: Int,

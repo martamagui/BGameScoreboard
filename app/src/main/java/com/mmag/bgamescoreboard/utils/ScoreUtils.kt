@@ -6,7 +6,7 @@ import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 fun getScoreWithPlayer(
     item: ScoreWithPlayer,
     recordId: Int,
-    totalScore: Int,
+    totalScore: Double,
 ) = ScoreWithPlayer(
     Score(
         0, item.player.id,

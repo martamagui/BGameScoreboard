@@ -12,6 +12,12 @@ import com.mmag.bgamescoreboard.data.db.model.relations.ScoreWithPlayer
 
 @Composable
 fun RecordDetailItem(score: ScoreWithPlayer, modifier: Modifier) {
+    val scoreAmount = score.score.scoreAmount
+    val scoreText = if (scoreAmount % 1.0 == 0.0) {
+        scoreAmount.toInt().toString()
+    } else {
+        scoreAmount.toString()
+    }
     Row(
         modifier = modifier.testTag("RecordDetailItem"),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -22,7 +28,7 @@ fun RecordDetailItem(score: ScoreWithPlayer, modifier: Modifier) {
             fontSize = 20.sp
         )
         Text(
-            text = score.score.scoreAmount.toString(),
+            text = scoreText,
             fontSize = 20.sp
         )
     }

@@ -1,5 +1,6 @@
 package com.mmag.bgamescoreboard.data.db
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -23,7 +24,8 @@ import com.mmag.bgamescoreboard.data.db.utils.ImageTypeConverters
         Score::class,
         ScoringCategory::class
     ],
-    version = 3
+    version = 4,
+    autoMigrations = [AutoMigration(from = 3, to = 4)]
 )
 @TypeConverters(ImageTypeConverters::class)
 abstract class BGSDatabase : RoomDatabase() {
